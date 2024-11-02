@@ -31,7 +31,7 @@
   "tabs": [
     {
       "name": "API Reference",
-      "openapi": "/openapi/fleetworks.yaml",
+      "openapi": "/openapi/fleetworks_openapi.json",
       "url": "api-reference"
     }
   ],

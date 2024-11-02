@@ -1,0 +1,2442 @@
+# Ref: https://github.com/fleetworks-team/fleetworks.ai/blob/d6967efd99726c829f91f5cdf5cf798513eb59dc/apps/api/src/services/ingestion/turvo/types/shipment_event.ts
+
+components:
+  schemas:
+    TurvoLoadEvent:
+      oneOf:
+        - $ref: "#/components/schemas/TurvoShipmentEventPayload"
+        - $ref: "#/components/schemas/TurvoShipmentStatusUpdateEventPayload"
+      discriminator:
+        propertyName: eventName
+
+    EventType:
+      type: string
+      enum:
+        - SHIPMENT_ADD
+        - SHIPMENT_UPDATE
+        - SHIPMENT_STATUS_UPDATE
+
+    TurvoShipmentEventPayload:
+      title: TurvoShipmentEvent
+      description: Event `SHIPMENT_ADD` and `SHIPMENT_UPDATE`
+      type: object
+      required:
+        - eventName
+      properties:
+        eventName: 
+          $ref: "#/components/schemas/EventType"
+        eventPayload:
+          $ref: "#/components/schemas/ShipmentEvent"
+
+    TurvoShipmentStatusUpdateEventPayload:
+      title: TurvoShipmentStatusUpdateEvent
+      description: Event `SHIPMENT_STATUS_UPDATE`
+      type: object
+      required:
+        - eventName
+      properties:
+        eventName:
+          $ref: "#/components/schemas/EventType"
+        eventPayload:
+          $ref: "#/components/schemas/ShipmentStatusUpdateEvent"
+
+    ShipmentStatusUpdateEvent:
+      properties:
+        id:
+          title: ShipmentStatusUpdateEvent.id
+          type: number
+        status:
+          $ref: '#/components/schemas/Status'
+          title: ShipmentStatusUpdateEvent.status
+      required:
+        - id
+        - status
+      additionalProperties: false
+      title: ShipmentStatusUpdateEvent
+      type: object
+    ShipmentEvent:
+      properties:
+        id:
+          title: ShipmentEvent.id
+          type: number
+        customId:
+          title: ShipmentEvent.customId
+          type: string
+        customerOrder:
+          items:
+            $ref: '#/components/schemas/CustomerOrder'
+            title: ShipmentEvent.customerOrder.[]
+          title: ShipmentEvent.customerOrder
+          type: array
+        endDate:
+          $ref: '#/components/schemas/EndDate'
+          title: ShipmentEvent.endDate
+        equipment:
+          items:
+            $ref: '#/components/schemas/Equipment2'
+            title: ShipmentEvent.equipment.[]
+          title: ShipmentEvent.equipment
+          type: array
+        contributors:
+          items:
+            $ref: '#/components/schemas/Contributor'
+            title: ShipmentEvent.contributors.[]
+          title: ShipmentEvent.contributors
+          type: array
+        globalRoute:
+          items:
+            $ref: '#/components/schemas/GlobalRoute'
+            title: ShipmentEvent.globalRoute.[]
+          title: ShipmentEvent.globalRoute
+          type: array
+        modeInfo:
+          items:
+            $ref: '#/components/schemas/ModeInfo'
+            title: ShipmentEvent.modeInfo.[]
+          title: ShipmentEvent.modeInfo
+          type: array
+        lane:
+          $ref: '#/components/schemas/Lane2'
+          title: ShipmentEvent.lane
+        startDate:
+          $ref: '#/components/schemas/StartDate'
+          title: ShipmentEvent.startDate
+        status:
+          $ref: '#/components/schemas/Status'
+          title: ShipmentEvent.status
+        services:
+          items:
+            $ref: '#/components/schemas/Service'
+            title: ShipmentEvent.services.[]
+          title: ShipmentEvent.services
+          type: array
+        maxPay:
+          title: ShipmentEvent.maxPay
+          type: number
+        minPay:
+          title: ShipmentEvent.minPay
+          type: number
+        carrierOrder:
+          items:
+            $ref: '#/components/schemas/CarrierOrder'
+            title: ShipmentEvent.carrierOrder.[]
+          title: ShipmentEvent.carrierOrder
+          type: array
+        margin:
+          $ref: '#/components/schemas/Margin'
+          title: ShipmentEvent.margin
+        totalPayableAmount:
+          title: ShipmentEvent.totalPayableAmount
+          type: number
+        totalReceivableAmount:
+          title: ShipmentEvent.totalReceivableAmount
+          type: number
+        type:
+          $ref: '#/components/schemas/Type'
+          title: ShipmentEvent.type
+        tags:
+          $ref: '#/components/schemas/Tags'
+          title: ShipmentEvent.tags
+        orders:
+          items:
+            $ref: '#/components/schemas/Order'
+            title: ShipmentEvent.orders.[]
+          title: ShipmentEvent.orders
+          type: array
+      required:
+        - id
+        - customId
+        - endDate
+        - equipment
+        - contributors
+        - modeInfo
+        - lane
+        - startDate
+        - status
+      additionalProperties: false
+      title: ShipmentEvent
+      type: object
+    Service:
+      properties:
+        id:
+          title: Service.id
+          type: number
+        key:
+          title: Service.key
+          type: string
+        value:
+          title: Service.value
+          type: string
+      required:
+        - id
+        - key
+        - value
+      additionalProperties: false
+      title: Service
+      type: object
+    CustomerOrder:
+      properties:
+        customer:
+          $ref: '#/components/schemas/Customer'
+          title: CustomerOrder.customer
+        id:
+          title: CustomerOrder.id
+          type: number
+        deleted:
+          title: CustomerOrder.deleted
+          type: boolean
+        equipment:
+          items:
+            $ref: '#/components/schemas/Equipment'
+            title: CustomerOrder.equipment.[]
+          title: CustomerOrder.equipment
+          type: array
+        lane:
+          $ref: '#/components/schemas/Lane'
+          title: CustomerOrder.lane
+        route:
+          items:
+            $ref: '#/components/schemas/Route'
+            title: CustomerOrder.route.[]
+          title: CustomerOrder.route
+          type: array
+        costs:
+          $ref: '#/components/schemas/Costs'
+          title: CustomerOrder.costs
+        customerPO:
+          title: CustomerOrder.customerPO
+          type: string
+        paysUnloading:
+          title: CustomerOrder.paysUnloading
+          type: boolean
+        items:
+          items:
+            $ref: '#/components/schemas/CustomerItem'
+            title: CustomerOrder.items.[]
+          title: CustomerOrder.items
+          type: array
+        totalMiles:
+          title: CustomerOrder.totalMiles
+          type: number
+        contacts:
+          items:
+            $ref: '#/components/schemas/Contact'
+            title: CustomerOrder.contacts.[]
+          title: CustomerOrder.contacts
+          type: array
+        invoiceDate:
+          title: CustomerOrder.invoiceDate
+          type: string
+        paymentDate:
+          title: CustomerOrder.paymentDate
+          type: string
+        externalIds:
+          items:
+            $ref: '#/components/schemas/ExternalId'
+            title: CustomerOrder.externalIds.[]
+          title: CustomerOrder.externalIds
+          type: array
+        additionalAttributes:
+          items:
+            $ref: '#/components/schemas/AdditionalAttribute'
+            title: CustomerOrder.additionalAttributes.[]
+          title: CustomerOrder.additionalAttributes
+          type: array
+        invoice:
+          items:
+            $ref: '#/components/schemas/Invoice'
+            title: CustomerOrder.invoice.[]
+          title: CustomerOrder.invoice
+          type: array
+        payment:
+          items:
+            $ref: '#/components/schemas/Payment'
+            title: CustomerOrder.payment.[]
+          title: CustomerOrder.payment
+          type: array
+      required:
+        - customer
+        - id
+        - deleted
+        - equipment
+        - lane
+        - route
+        - costs
+        - customerPO
+        - paysUnloading
+      additionalProperties: false
+      title: CustomerOrder
+      type: object
+    CustomerItem:
+      properties:
+        isHazmat:
+          title: CustomerItem.isHazmat
+          type: boolean
+        deleted:
+          title: CustomerItem.deleted
+          type: boolean
+        dimensions:
+          $ref: '#/components/schemas/Dimensions'
+          title: CustomerItem.dimensions
+        freight_class:
+          $ref: '#/components/schemas/FreightClass'
+          title: CustomerItem.freight_class
+        id:
+          title: CustomerItem.id
+          type: number
+        name:
+          title: CustomerItem.name
+          type: string
+        pickupLocation:
+          items:
+            $ref: '#/components/schemas/PickupLocation'
+            title: CustomerItem.pickupLocation.[]
+          title: CustomerItem.pickupLocation
+          type: array
+        qty:
+          title: CustomerItem.qty
+          type: number
+        unit:
+          $ref: '#/components/schemas/Unit'
+          title: CustomerItem.unit
+        itemNumber:
+          title: CustomerItem.itemNumber
+          type: string
+        value:
+          title: CustomerItem.value
+          type: number
+        netWeight:
+          $ref: '#/components/schemas/Weight'
+          title: CustomerItem.netWeight
+        minTemp:
+          $ref: '#/components/schemas/Temperature'
+          title: CustomerItem.minTemp
+        maxTemp:
+          $ref: '#/components/schemas/Temperature'
+          title: CustomerItem.maxTemp
+        grossWeight:
+          $ref: '#/components/schemas/Weight'
+          title: CustomerItem.grossWeight
+        deliveryLocation:
+          items:
+            $ref: '#/components/schemas/DeliveryLocation'
+            title: CustomerItem.deliveryLocation.[]
+          title: CustomerItem.deliveryLocation
+          type: array
+        nmfc:
+          title: CustomerItem.nmfc
+          type: string
+        nmfcSub:
+          title: CustomerItem.nmfcSub
+          type: string
+        notes:
+          title: CustomerItem.notes
+          type: string
+        vin:
+          title: CustomerItem.vin
+          type: string
+        unitWeight:
+          $ref: '#/components/schemas/Weight'
+          title: CustomerItem.unitWeight
+        unitGrossWeight:
+          $ref: '#/components/schemas/Weight'
+          title: CustomerItem.unitGrossWeight
+        unitVolume:
+          $ref: '#/components/schemas/Volume'
+          title: CustomerItem.unitVolume
+        netVolume:
+          $ref: '#/components/schemas/Volume'
+          title: CustomerItem.netVolume
+        handlingQty:
+          title: CustomerItem.handlingQty
+          type: number
+        handlingQtyunit:
+          $ref: '#/components/schemas/Unit'
+          title: CustomerItem.handlingQtyunit
+      required:
+        - isHazmat
+        - deleted
+        - dimensions
+        - freight_class
+        - id
+        - name
+        - pickupLocation
+        - unit
+        - itemNumber
+        - netWeight
+        - grossWeight
+        - deliveryLocation
+      additionalProperties: false
+      title: CustomerItem
+      type: object
+    Volume:
+      properties:
+        volume:
+          title: Volume.volume
+          type: number
+        unit:
+          properties:
+            key:
+              title: Volume.unit.key
+              type: string
+            value:
+              title: Volume.unit.value
+              type: string
+          required:
+            - key
+            - value
+          additionalProperties: false
+          title: Volume.unit
+          type: object
+      required:
+        - volume
+        - unit
+      additionalProperties: false
+      title: Volume
+      type: object
+    Dimensions:
+      properties:
+        length:
+          title: Dimensions.length
+          type: number
+        width:
+          title: Dimensions.width
+          type: number
+        height:
+          title: Dimensions.height
+          type: number
+        units:
+          $ref: '#/components/schemas/Unit'
+          title: Dimensions.units
+      required:
+        - length
+        - width
+        - height
+        - units
+      additionalProperties: false
+      title: Dimensions
+      type: object
+    FreightClass:
+      properties:
+        id:
+          title: FreightClass.id
+          type: number
+        key:
+          title: FreightClass.key
+          type: string
+        value:
+          title: FreightClass.value
+          type: string
+      required:
+        - id
+        - key
+        - value
+      additionalProperties: false
+      title: FreightClass
+      type: object
+    Unit:
+      properties:
+        id:
+          title: Unit.id
+          type: number
+        key:
+          title: Unit.key
+          type: string
+        value:
+          title: Unit.value
+          type: string
+      required:
+        - id
+        - key
+        - value
+      additionalProperties: false
+      title: Unit
+      type: object
+    Weight:
+      properties:
+        weight:
+          title: Weight.weight
+          type: number
+        weightUnit:
+          $ref: '#/components/schemas/WeightUnit'
+          title: Weight.weightUnit
+      required:
+        - weight
+        - weightUnit
+      additionalProperties: false
+      title: Weight
+      type: object
+    WeightUnit:
+      properties:
+        key:
+          title: WeightUnit.key
+          type: string
+        value:
+          title: WeightUnit.value
+          type: string
+      required:
+        - key
+        - value
+      additionalProperties: false
+      title: WeightUnit
+      type: object
+    Temperature:
+      properties:
+        temp:
+          title: Temperature.temp
+          type: number
+        temp_unit:
+          $ref: '#/components/schemas/TempUnit'
+          title: Temperature.temp_unit
+      required:
+        - temp
+        - temp_unit
+      additionalProperties: false
+      title: Temperature
+      type: object
+    TempUnit:
+      properties:
+        id:
+          title: TempUnit.id
+          type: string
+        key:
+          enum:
+            - '1510'
+            - '1511'
+          title: TempUnit.key
+          type: string
+        value:
+          enum:
+            - ℉
+            - °C
+          title: TempUnit.value
+          type: string
+      required:
+        - id
+        - key
+        - value
+      additionalProperties: false
+      title: TempUnit
+      type: object
+    DeliveryLocation:
+      properties:
+        name:
+          title: DeliveryLocation.name
+          type: string
+        id:
+          title: DeliveryLocation.id
+          type: number
+        globalShipLocationId:
+          title: DeliveryLocation.globalShipLocationId
+          type: number
+      additionalProperties: false
+      title: DeliveryLocation
+      type: object
+    PickupLocation:
+      properties:
+        name:
+          title: PickupLocation.name
+          type: string
+        id:
+          title: PickupLocation.id
+          type: number
+        globalShipLocationId:
+          title: PickupLocation.globalShipLocationId
+          type: number
+      required:
+        - name
+        - id
+        - globalShipLocationId
+      additionalProperties: false
+      title: PickupLocation
+      type: object
+    Customer:
+      properties:
+        id:
+          title: Customer.id
+          type: number
+        name:
+          title: Customer.name
+          type: string
+        owner:
+          $ref: '#/components/schemas/Owner'
+          title: Customer.owner
+        comissions:
+          items:
+            $ref: '#/components/schemas/Comission'
+            title: Customer.comissions.[]
+          title: Customer.comissions
+          type: array
+      required:
+        - id
+        - name
+        - owner
+      additionalProperties: false
+      title: Customer
+      type: object
+    Owner:
+      properties:
+        id:
+          title: Owner.id
+          type: number
+        name:
+          title: Owner.name
+          type: string
+      required:
+        - id
+        - name
+      additionalProperties: false
+      title: Owner
+      type: object
+    Comission:
+      properties:
+        value:
+          title: Comission.value
+          type: number
+        userId:
+          title: Comission.userId
+          type: number
+        amount:
+          title: Comission.amount
+          type: number
+      required:
+        - value
+        - userId
+        - amount
+      additionalProperties: false
+      title: Comission
+      type: object
+    Equipment:
+      properties:
+        id:
+          title: Equipment.id
+          type: number
+        type:
+          $ref: '#/components/schemas/Type'
+          title: Equipment.type
+        size:
+          $ref: '#/components/schemas/Size'
+          title: Equipment.size
+        temp:
+          title: Equipment.temp
+          type: number
+        weight:
+          title: Equipment.weight
+          type: number
+      required:
+        - id
+        - type
+        - size
+        - temp
+        - weight
+      additionalProperties: false
+      title: Equipment
+      type: object
+    Type:
+      properties:
+        id:
+          title: Type.id
+          type: number
+        value:
+          title: Type.value
+          type: string
+        key:
+          title: Type.key
+          type: string
+      required:
+        - id
+        - value
+        - key
+      additionalProperties: false
+      title: Type
+      type: object
+    Size:
+      properties:
+        id:
+          title: Size.id
+          type: number
+        key:
+          title: Size.key
+          type: string
+        value:
+          title: Size.value
+          type: string
+      required:
+        - id
+        - key
+        - value
+      additionalProperties: false
+      title: Size
+      type: object
+    Lane:
+      properties:
+        end:
+          title: Lane.end
+          type: string
+        start:
+          title: Lane.start
+          type: string
+      required:
+        - end
+        - start
+      additionalProperties: false
+      title: Lane
+      type: object
+    Route:
+      properties:
+        address:
+          $ref: '#/components/schemas/Address'
+          title: Route.address
+        appointment:
+          $ref: '#/components/schemas/Appointment'
+          title: Route.appointment
+        appointmentNo:
+          title: Route.appointmentNo
+          type: string
+        deleted:
+          title: Route.deleted
+          type: boolean
+        notes:
+          title: Route.notes
+          type: string
+        location:
+          $ref: '#/components/schemas/Location'
+          title: Route.location
+        originalAppointment:
+          $ref: '#/components/schemas/OriginalAppointment'
+          title: Route.originalAppointment
+        plannedAppointment:
+          $ref: '#/components/schemas/PlannedAppointment'
+          title: Route.plannedAppointment
+        poNumbers:
+          items:
+            title: Route.poNumbers.[]
+            type: string
+          title: Route.poNumbers
+          type: array
+        sequence:
+          title: Route.sequence
+          type: number
+        services:
+          items:
+            $ref: '#/components/schemas/Service'
+            title: Route.services.[]
+          title: Route.services
+          type: array
+        id:
+          title: Route.id
+          type: number
+        stopType:
+          $ref: '#/components/schemas/StopType'
+          title: Route.stopType
+        contact:
+          $ref: '#/components/schemas/Contact'
+          title: Route.contact
+        email:
+          title: Route.email
+          type: string
+        phone:
+          title: Route.phone
+          type: string
+        attributes:
+          $ref: '#/components/schemas/Attributes'
+          title: Route.attributes
+      required:
+        - address
+        - appointment
+        - deleted
+        - location
+        - originalAppointment
+        - sequence
+        - id
+        - stopType
+      additionalProperties: false
+      title: Route
+      type: object
+    Address:
+      properties:
+        city:
+          title: Address.city
+          type: string
+        country:
+          title: Address.country
+          type: string
+        longitude:
+          title: Address.longitude
+          type: number
+        lat:
+          title: Address.lat
+          type: number
+        id:
+          title: Address.id
+          type: string
+        line1:
+          title: Address.line1
+          type: string
+        line2:
+          title: Address.line2
+          type: string
+        state:
+          title: Address.state
+          type: string
+        zip:
+          title: Address.zip
+          type: string
+      required:
+        - city
+        - country
+        - longitude
+        - lat
+        - id
+        - line1
+        - line2
+        - state
+        - zip
+      additionalProperties: false
+      title: Address
+      type: object
+    Appointment:
+      properties:
+        start:
+          title: Appointment.start
+          type: string
+        flex:
+          title: Appointment.flex
+          type: number
+        timeZone:
+          title: Appointment.timeZone
+          type: string
+        scheduling:
+          $ref: '#/components/schemas/Scheduling'
+          title: Appointment.scheduling
+      required:
+        - start
+        - flex
+        - timeZone
+        - scheduling
+      additionalProperties: false
+      title: Appointment
+      type: object
+    Scheduling:
+      properties:
+        value:
+          title: Scheduling.value
+          type: string
+        id:
+          title: Scheduling.id
+          type: number
+        key:
+          title: Scheduling.key
+          type: string
+      required:
+        - value
+        - id
+        - key
+      additionalProperties: false
+      title: Scheduling
+      type: object
+    Location:
+      properties:
+        id:
+          title: Location.id
+          type: number
+        name:
+          title: Location.name
+          type: string
+      required:
+        - id
+        - name
+      additionalProperties: false
+      title: Location
+      type: object
+    OriginalAppointment:
+      properties:
+        start:
+          title: OriginalAppointment.start
+          type: string
+        flex:
+          title: OriginalAppointment.flex
+          type: number
+        timeZone:
+          title: OriginalAppointment.timeZone
+          type: string
+        scheduling:
+          $ref: '#/components/schemas/Scheduling2'
+          title: OriginalAppointment.scheduling
+      required:
+        - start
+        - flex
+        - timeZone
+        - scheduling
+      additionalProperties: false
+      title: OriginalAppointment
+      type: object
+    Scheduling2:
+      properties:
+        value:
+          title: Scheduling2.value
+          type: string
+        key:
+          title: Scheduling2.key
+          type: string
+      required:
+        - value
+        - key
+      additionalProperties: false
+      title: Scheduling2
+      type: object
+    PlannedAppointment:
+      properties:
+        appointment:
+          properties:
+            from:
+              $ref: '#/components/schemas/AppointmentTime'
+              title: PlannedAppointment.appointment.from
+            to:
+              $ref: '#/components/schemas/AppointmentTime'
+              title: PlannedAppointment.appointment.to
+          required:
+            - from
+            - to
+          additionalProperties: false
+          title: PlannedAppointment.appointment
+          type: object
+        scheduling:
+          $ref: '#/components/schemas/Scheduling2'
+          title: PlannedAppointment.scheduling
+      required:
+        - appointment
+        - scheduling
+      additionalProperties: false
+      title: PlannedAppointment
+      type: object
+    AppointmentTime:
+      properties:
+        start:
+          title: AppointmentTime.start
+          type: string
+        flex:
+          title: AppointmentTime.flex
+          type: number
+        timeZone:
+          title: AppointmentTime.timeZone
+          type: string
+      required:
+        - start
+        - flex
+        - timeZone
+      additionalProperties: false
+      title: AppointmentTime
+      type: object
+    StopType:
+      properties:
+        id:
+          title: StopType.id
+          type: number
+        value:
+          title: StopType.value
+          type: string
+        key:
+          title: StopType.key
+          type: string
+      required:
+        - id
+        - value
+        - key
+      additionalProperties: false
+      title: StopType
+      type: object
+    Contact:
+      properties:
+        id:
+          title: Contact.id
+          type: number
+        name:
+          title: Contact.name
+          type: string
+        email:
+          items:
+            $ref: '#/components/schemas/Email'
+            title: Contact.email.[]
+          title: Contact.email
+          type: array
+        phone:
+          items:
+            $ref: '#/components/schemas/Phone'
+            title: Contact.phone.[]
+          title: Contact.phone
+          type: array
+        title:
+          title: Contact.title
+          type: string
+        role:
+          $ref: '#/components/schemas/Role'
+          title: Contact.role
+        deleted:
+          title: Contact.deleted
+          type: boolean
+      required:
+        - id
+        - name
+      additionalProperties: false
+      title: Contact
+      type: object
+    Email:
+      properties:
+        email:
+          title: Email.email
+          type: string
+        id:
+          title: Email.id
+          type: string
+        type:
+          $ref: '#/components/schemas/Type'
+          title: Email.type
+      required:
+        - email
+        - id
+        - type
+      additionalProperties: false
+      title: Email
+      type: object
+    Phone:
+      properties:
+        countryCode:
+          title: Phone.countryCode
+          type: string
+        extension:
+          title: Phone.extension
+          type: string
+        id:
+          title: Phone.id
+          type: string
+        number:
+          title: Phone.number
+          type: string
+        type:
+          $ref: '#/components/schemas/Type'
+          title: Phone.type
+      required:
+        - countryCode
+        - extension
+        - id
+        - number
+        - type
+      additionalProperties: false
+      title: Phone
+      type: object
+    Role:
+      properties:
+        key:
+          title: Role.key
+          type: string
+        value:
+          title: Role.value
+          type: string
+      required:
+        - key
+        - value
+      additionalProperties: false
+      title: Role
+      type: object
+    Costs:
+      properties:
+        subTotal:
+          title: Costs.subTotal
+          type: number
+        totalAmount:
+          title: Costs.totalAmount
+          type: number
+        totalTax:
+          title: Costs.totalTax
+          type: number
+        notes:
+          title: Costs.notes
+          type: string
+        lineItem:
+          items:
+            $ref: '#/components/schemas/LineItem'
+            title: Costs.lineItem.[]
+          title: Costs.lineItem
+          type: array
+        transactionCurrency:
+          $ref: '#/components/schemas/Currency'
+          title: Costs.transactionCurrency
+        normalizedCurrency:
+          $ref: '#/components/schemas/Currency'
+          title: Costs.normalizedCurrency
+      required:
+        - subTotal
+        - totalAmount
+        - totalTax
+      additionalProperties: false
+      title: Costs
+      type: object
+    LineItem:
+      properties:
+        amount:
+          title: LineItem.amount
+          type: number
+        deleted:
+          title: LineItem.deleted
+          type: boolean
+        id:
+          title: LineItem.id
+          type: number
+        notes:
+          title: LineItem.notes
+          type: string
+        price:
+          title: LineItem.price
+          type: number
+        qty:
+          title: LineItem.qty
+          type: number
+        code:
+          $ref: '#/components/schemas/Code'
+          title: LineItem.code
+        billable:
+          title: LineItem.billable
+          type: boolean
+      required:
+        - amount
+        - deleted
+        - id
+        - price
+        - qty
+        - code
+      additionalProperties: false
+      title: LineItem
+      type: object
+    Currency:
+      properties:
+        displayName:
+          title: Currency.displayName
+          type: string
+        key:
+          title: Currency.key
+          type: string
+        totalAmount:
+          title: Currency.totalAmount
+          type: number
+      required:
+        - displayName
+        - key
+      additionalProperties: false
+      title: Currency
+      type: object
+    EndDate:
+      properties:
+        date:
+          title: EndDate.date
+          type: string
+        flex:
+          title: EndDate.flex
+          type: number
+        timeZone:
+          title: EndDate.timeZone
+          type: string
+      required:
+        - date
+        - flex
+        - timeZone
+      additionalProperties: false
+      title: EndDate
+      type: object
+    Equipment2:
+      properties:
+        id:
+          title: Equipment2.id
+          type: number
+        type:
+          $ref: '#/components/schemas/Type'
+          title: Equipment2.type
+        size:
+          $ref: '#/components/schemas/Size'
+          title: Equipment2.size
+        temp:
+          title: Equipment2.temp
+          type: number
+        weight:
+          title: Equipment2.weight
+          type: number
+        tempUnits:
+          $ref: '#/components/schemas/TempUnit'
+          title: Equipment2.tempUnits
+        weightUnits:
+          $ref: '#/components/schemas/WeightUnit'
+          title: Equipment2.weightUnits
+        deleted:
+          title: Equipment2.deleted
+          type: boolean
+      required:
+        - id
+        - type
+        - size
+        - temp
+        - weight
+      additionalProperties: false
+      title: Equipment2
+      type: object
+    Contributor:
+      properties:
+        id:
+          title: Contributor.id
+          type: number
+        title:
+          $ref: '#/components/schemas/Title'
+          title: Contributor.title
+        contributorUser:
+          $ref: '#/components/schemas/ContributorUser'
+          title: Contributor.contributorUser
+        deleted:
+          title: Contributor.deleted
+          type: boolean
+      required:
+        - id
+        - title
+        - contributorUser
+      additionalProperties: false
+      title: Contributor
+      type: object
+    Title:
+      properties:
+        key:
+          title: Title.key
+          type: string
+        value:
+          title: Title.value
+          type: string
+      required:
+        - key
+        - value
+      additionalProperties: false
+      title: Title
+      type: object
+    ContributorUser:
+      properties:
+        name:
+          title: ContributorUser.name
+          type: string
+        id:
+          title: ContributorUser.id
+          type: number
+      required:
+        - name
+        - id
+      additionalProperties: false
+      title: ContributorUser
+      type: object
+    GlobalRoute:
+      properties:
+        name:
+          title: GlobalRoute.name
+          type: string
+        id:
+          title: GlobalRoute.id
+          type: number
+        schedulingType:
+          $ref: '#/components/schemas/SchedulingType'
+          title: GlobalRoute.schedulingType
+        address:
+          $ref: '#/components/schemas/Address2'
+          title: GlobalRoute.address
+        stopType:
+          $ref: '#/components/schemas/StopType2'
+          title: GlobalRoute.stopType
+        timezone:
+          title: GlobalRoute.timezone
+          type: string
+        location:
+          $ref: '#/components/schemas/Location2'
+          title: GlobalRoute.location
+        segmentId:
+          title: GlobalRoute.segmentId
+          type: string
+        segmentSequence:
+          title: GlobalRoute.segmentSequence
+          type: number
+        sequence:
+          title: GlobalRoute.sequence
+          type: number
+        state:
+          title: GlobalRoute.state
+          type: string
+        appointment:
+          $ref: '#/components/schemas/Appointment2'
+          title: GlobalRoute.appointment
+        stop_level_fragment_distance:
+          title: GlobalRoute.stop_level_fragment_distance
+          type: number
+        originalAppointmentDate:
+          $ref: '#/components/schemas/OriginalAppointmentDate'
+          title: GlobalRoute.originalAppointmentDate
+        plannedDate:
+          $ref: '#/components/schemas/PlannedDate'
+          title: GlobalRoute.plannedDate
+        customerOrder:
+          items:
+            $ref: '#/components/schemas/CustomerOrder2'
+            title: GlobalRoute.customerOrder.[]
+          title: GlobalRoute.customerOrder
+          type: array
+        deleted:
+          title: GlobalRoute.deleted
+          type: boolean
+        notes:
+          title: GlobalRoute.notes
+          type: string
+        poNumbers:
+          items:
+            title: GlobalRoute.poNumbers.[]
+            type: string
+          title: GlobalRoute.poNumbers
+          type: array
+        services:
+          items:
+            $ref: '#/components/schemas/Service'
+            title: GlobalRoute.services.[]
+          title: GlobalRoute.services
+          type: array
+        recalculateDistance:
+          title: GlobalRoute.recalculateDistance
+          type: boolean
+        fragmentDistance:
+          $ref: '#/components/schemas/Distance'
+          title: GlobalRoute.fragmentDistance
+        layoverTime:
+          $ref: '#/components/schemas/Time'
+          title: GlobalRoute.layoverTime
+        contact:
+          $ref: '#/components/schemas/Contact'
+          title: GlobalRoute.contact
+        attributes:
+          $ref: '#/components/schemas/Attributes'
+          title: GlobalRoute.attributes
+        eta_to_stop:
+          $ref: '#/components/schemas/EtaToStop'
+          title: GlobalRoute.eta_to_stop
+        order_requested_date:
+          $ref: '#/components/schemas/OrderRequestedDate'
+          title: GlobalRoute.order_requested_date
+        plannedAppointmentDate:
+          $ref: '#/components/schemas/PlannedAppointmentDate'
+          title: GlobalRoute.plannedAppointmentDate
+        carrierOrder:
+          items:
+            $ref: '#/components/schemas/CarrierOrder'
+            title: GlobalRoute.carrierOrder.[]
+          title: GlobalRoute.carrierOrder
+          type: array
+      required:
+        - name
+        - id
+        - schedulingType
+        - address
+        - stopType
+        - timezone
+        - location
+        - segmentId
+        - segmentSequence
+        - sequence
+        - state
+        - appointment
+        - originalAppointmentDate
+        - plannedDate
+        - customerOrder
+        - deleted
+      additionalProperties: false
+      title: GlobalRoute
+      type: object
+    Distance:
+      properties:
+        value:
+          title: Distance.value
+          type: number
+        units:
+          properties:
+            key:
+              title: Distance.units.key
+              type: string
+            value:
+              title: Distance.units.value
+              type: string
+          required:
+            - key
+            - value
+          additionalProperties: false
+          title: Distance.units
+          type: object
+      required:
+        - value
+        - units
+      additionalProperties: false
+      title: Distance
+      type: object
+    Time:
+      properties:
+        value:
+          title: Time.value
+          type: number
+        units:
+          properties:
+            key:
+              title: Time.units.key
+              type: string
+            value:
+              title: Time.units.value
+              type: string
+          required:
+            - key
+            - value
+          additionalProperties: false
+          title: Time.units
+          type: object
+      required:
+        - value
+        - units
+      additionalProperties: false
+      title: Time
+      type: object
+    SchedulingType:
+      properties:
+        key:
+          title: SchedulingType.key
+          type: string
+        value:
+          title: SchedulingType.value
+          type: string
+      required:
+        - key
+        - value
+      additionalProperties: false
+      title: SchedulingType
+      type: object
+    Address2:
+      properties:
+        city:
+          title: Address2.city
+          type: string
+        state:
+          title: Address2.state
+          type: string
+        countryName:
+          title: Address2.countryName
+          type: string
+        countryCode:
+          title: Address2.countryCode
+          type: string
+        line1:
+          title: Address2.line1
+          type: string
+        line2:
+          title: Address2.line2
+          type: string
+        longitude:
+          title: Address2.longitude
+          type: number
+        lat:
+          title: Address2.lat
+          type: number
+      required:
+        - city
+        - state
+        - countryName
+        - countryCode
+        - line1
+        - line2
+        - longitude
+        - lat
+      additionalProperties: false
+      title: Address2
+      type: object
+    StopType2:
+      properties:
+        key:
+          title: StopType2.key
+          type: string
+        value:
+          title: StopType2.value
+          type: string
+      required:
+        - key
+        - value
+      additionalProperties: false
+      title: StopType2
+      type: object
+    Location2:
+      properties:
+        id:
+          title: Location2.id
+          type: number
+      required:
+        - id
+      additionalProperties: false
+      title: Location2
+      type: object
+    Appointment2:
+      properties:
+        date:
+          title: Appointment2.date
+          type: string
+        timeZone:
+          title: Appointment2.timeZone
+          type: string
+        flex:
+          title: Appointment2.flex
+          type: number
+        hasTime:
+          title: Appointment2.hasTime
+          type: boolean
+      required:
+        - date
+        - timeZone
+        - flex
+        - hasTime
+      additionalProperties: false
+      title: Appointment2
+      type: object
+    OriginalAppointmentDate:
+      properties:
+        appointment:
+          $ref: '#/components/schemas/Appointment3'
+          title: OriginalAppointmentDate.appointment
+        schedulingType:
+          $ref: '#/components/schemas/SchedulingType2'
+          title: OriginalAppointmentDate.schedulingType
+      required:
+        - appointment
+        - schedulingType
+      additionalProperties: false
+      title: OriginalAppointmentDate
+      type: object
+    Appointment3:
+      properties:
+        date:
+          title: Appointment3.date
+          type: string
+        flex:
+          title: Appointment3.flex
+          type: number
+        timeZone:
+          title: Appointment3.timeZone
+          type: string
+      required:
+        - date
+        - flex
+        - timeZone
+      additionalProperties: false
+      title: Appointment3
+      type: object
+    SchedulingType2:
+      properties:
+        value:
+          title: SchedulingType2.value
+          type: string
+        key:
+          title: SchedulingType2.key
+          type: string
+      required:
+        - value
+        - key
+      additionalProperties: false
+      title: SchedulingType2
+      type: object
+    PlannedDate:
+      properties:
+        appointment:
+          $ref: '#/components/schemas/Appointment4'
+          title: PlannedDate.appointment
+        schedulingType:
+          $ref: '#/components/schemas/SchedulingType3'
+          title: PlannedDate.schedulingType
+      required:
+        - appointment
+        - schedulingType
+      additionalProperties: false
+      title: PlannedDate
+      type: object
+    Appointment4:
+      properties:
+        date:
+          title: Appointment4.date
+          type: string
+        flex:
+          title: Appointment4.flex
+          type: number
+        timeZone:
+          title: Appointment4.timeZone
+          type: string
+      required:
+        - date
+        - flex
+        - timeZone
+      additionalProperties: false
+      title: Appointment4
+      type: object
+    SchedulingType3:
+      properties:
+        value:
+          title: SchedulingType3.value
+          type: string
+        key:
+          title: SchedulingType3.key
+          type: string
+      required:
+        - value
+        - key
+      additionalProperties: false
+      title: SchedulingType3
+      type: object
+    CustomerOrder2:
+      properties:
+        customerId:
+          title: CustomerOrder2.customerId
+          type: number
+        id:
+          title: CustomerOrder2.id
+          type: number
+        deleted:
+          title: CustomerOrder2.deleted
+          type: boolean
+      required:
+        - customerId
+        - id
+        - deleted
+      additionalProperties: false
+      title: CustomerOrder2
+      type: object
+    ModeInfo:
+      properties:
+        id:
+          title: ModeInfo.id
+          type: number
+        segmentId:
+          title: ModeInfo.segmentId
+          type: string
+        mode:
+          $ref: '#/components/schemas/Mode'
+          title: ModeInfo.mode
+        serviceType:
+          $ref: '#/components/schemas/ServiceType'
+          title: ModeInfo.serviceType
+        deleted:
+          title: ModeInfo.deleted
+          type: boolean
+        masterBillOfLading:
+          title: ModeInfo.masterBillOfLading
+          type: string
+        containerNumber:
+          title: ModeInfo.containerNumber
+          type: string
+        bookingNumber:
+          title: ModeInfo.bookingNumber
+          type: string
+        voyageNumber:
+          title: ModeInfo.voyageNumber
+          type: string
+        railCarNumber:
+          title: ModeInfo.railCarNumber
+          type: string
+        trackingNumber:
+          title: ModeInfo.trackingNumber
+          type: string
+        steamShipLine:
+          $ref: '#/components/schemas/SteamShipLine'
+          title: ModeInfo.steamShipLine
+        holds:
+          items:
+            $ref: '#/components/schemas/Hold'
+            title: ModeInfo.holds.[]
+          title: ModeInfo.holds
+          type: array
+        integrationMetadata:
+          $ref: '#/components/schemas/IntegrationMetadata'
+          title: ModeInfo.integrationMetadata
+      required:
+        - id
+        - segmentId
+        - mode
+        - serviceType
+      additionalProperties: false
+      title: ModeInfo
+      type: object
+    Mode:
+      properties:
+        key:
+          title: Mode.key
+          type: string
+        value:
+          title: Mode.value
+          type: string
+      required:
+        - key
+        - value
+      additionalProperties: false
+      title: Mode
+      type: object
+    ServiceType:
+      properties:
+        key:
+          title: ServiceType.key
+          type: string
+        value:
+          title: ServiceType.value
+          type: string
+      required:
+        - key
+        - value
+      additionalProperties: false
+      title: ServiceType
+      type: object
+    SteamShipLine:
+      properties:
+        scac:
+          title: SteamShipLine.scac
+          type: string
+        name:
+          title: SteamShipLine.name
+          type: string
+      required:
+        - scac
+        - name
+      additionalProperties: false
+      title: SteamShipLine
+      type: object
+    Hold:
+      properties:
+        id:
+          title: Hold.id
+          type: string
+        sourceId:
+          title: Hold.sourceId
+          type: string
+        amountDue:
+          title: Hold.amountDue
+          type: number
+        type:
+          $ref: '#/components/schemas/Type'
+          title: Hold.type
+        category:
+          $ref: '#/components/schemas/Category'
+          title: Hold.category
+        status:
+          $ref: '#/components/schemas/Status'
+          title: Hold.status
+        currency:
+          $ref: '#/components/schemas/Currency'
+          title: Hold.currency
+        createdAt:
+          $ref: '#/components/schemas/DateTime'
+          title: Hold.createdAt
+        resolvedAt:
+          $ref: '#/components/schemas/DateTime'
+          title: Hold.resolvedAt
+      required:
+        - id
+        - sourceId
+        - amountDue
+        - type
+        - category
+        - status
+        - currency
+        - createdAt
+        - resolvedAt
+      additionalProperties: false
+      title: Hold
+      type: object
+    Category:
+      properties:
+        key:
+          title: Category.key
+          type: string
+        value:
+          title: Category.value
+          type: string
+      required:
+        - key
+        - value
+      additionalProperties: false
+      title: Category
+      type: object
+    DateTime:
+      properties:
+        date:
+          title: DateTime.date
+          type: string
+        timeZone:
+          title: DateTime.timeZone
+          type: string
+        hasTime:
+          title: DateTime.hasTime
+          type: boolean
+      required:
+        - date
+        - timeZone
+        - hasTime
+      additionalProperties: false
+      title: DateTime
+      type: object
+    IntegrationMetadata:
+      properties:
+        yardLocation:
+          title: IntegrationMetadata.yardLocation
+          type: string
+        containerTerminal:
+          title: IntegrationMetadata.containerTerminal
+          type: string
+        reportedAt:
+          $ref: '#/components/schemas/DateTime'
+          title: IntegrationMetadata.reportedAt
+        emptyReturnDate:
+          $ref: '#/components/schemas/DateTime'
+          title: IntegrationMetadata.emptyReturnDate
+        perdiemStartDate:
+          $ref: '#/components/schemas/DateTime'
+          title: IntegrationMetadata.perdiemStartDate
+        fullOutgateDate:
+          $ref: '#/components/schemas/DateTime'
+          title: IntegrationMetadata.fullOutgateDate
+        cutoffDate:
+          $ref: '#/components/schemas/DateTime'
+          title: IntegrationMetadata.cutoffDate
+        loadingDate:
+          $ref: '#/components/schemas/DateTime'
+          title: IntegrationMetadata.loadingDate
+        earliestReturnDate:
+          $ref: '#/components/schemas/DateTime'
+          title: IntegrationMetadata.earliestReturnDate
+        emptyContainerPickup:
+          $ref: '#/components/schemas/DateTime'
+          title: IntegrationMetadata.emptyContainerPickup
+        fullIngateDate:
+          $ref: '#/components/schemas/DateTime'
+          title: IntegrationMetadata.fullIngateDate
+        destination:
+          $ref: '#/components/schemas/Destination'
+          title: IntegrationMetadata.destination
+        type:
+          $ref: '#/components/schemas/Type'
+          title: IntegrationMetadata.type
+        currentLocation:
+          title: IntegrationMetadata.currentLocation
+          type: string
+        status:
+          title: IntegrationMetadata.status
+          type: string
+      required:
+        - yardLocation
+        - containerTerminal
+        - reportedAt
+        - emptyReturnDate
+        - perdiemStartDate
+        - fullOutgateDate
+        - cutoffDate
+        - loadingDate
+        - earliestReturnDate
+        - emptyContainerPickup
+        - fullIngateDate
+        - destination
+        - type
+        - currentLocation
+        - status
+      additionalProperties: false
+      title: IntegrationMetadata
+      type: object
+    Destination:
+      properties:
+        lastFreeDay:
+          $ref: '#/components/schemas/DateTime'
+          title: Destination.lastFreeDay
+        eta:
+          $ref: '#/components/schemas/DateTime'
+          title: Destination.eta
+        location:
+          title: Destination.location
+          type: string
+      required:
+        - lastFreeDay
+        - eta
+        - location
+      additionalProperties: false
+      title: Destination
+      type: object
+    Lane2:
+      properties:
+        end:
+          title: Lane2.end
+          type: string
+        start:
+          title: Lane2.start
+          type: string
+      required:
+        - end
+        - start
+      additionalProperties: false
+      title: Lane2
+      type: object
+    StartDate:
+      properties:
+        date:
+          title: StartDate.date
+          type: string
+        timeZone:
+          title: StartDate.timeZone
+          type: string
+        flex:
+          title: StartDate.flex
+          type: number
+      required:
+        - date
+        - timeZone
+        - flex
+      additionalProperties: false
+      title: StartDate
+      type: object
+    Status:
+      properties:
+        code:
+          $ref: '#/components/schemas/Code'
+          title: Status.code
+        notes:
+          title: Status.notes
+          type: string
+        updatedBy:
+          $ref: '#/components/schemas/UpdatedBy'
+          title: Status.updatedBy
+      required:
+        - code
+        - notes
+      additionalProperties: false
+      title: Status
+      type: object
+    Code:
+      properties:
+        id:
+          title: Code.id
+          type: number
+        value:
+          title: Code.value
+          type: string
+        key:
+          title: Code.key
+          type: string
+      required:
+        - id
+        - value
+        - key
+      additionalProperties: false
+      title: Code
+      type: object
+    UpdatedBy:
+      properties:
+        name:
+          title: UpdatedBy.name
+          type: string
+        photo:
+          title: UpdatedBy.photo
+          type: string
+        id:
+          title: UpdatedBy.id
+          type: number
+      required:
+        - name
+        - photo
+        - id
+      additionalProperties: false
+      title: UpdatedBy
+      type: object
+    CarrierOrder:
+      properties:
+        carrier:
+          $ref: '#/components/schemas/Carrier'
+          title: CarrierOrder.carrier
+        id:
+          title: CarrierOrder.id
+          type: number
+        contacts:
+          items:
+            $ref: '#/components/schemas/Contact'
+            title: CarrierOrder.contacts.[]
+          title: CarrierOrder.contacts
+          type: array
+        deduction:
+          items:
+            $ref: '#/components/schemas/Deduction'
+            title: CarrierOrder.deduction.[]
+          title: CarrierOrder.deduction
+          type: array
+        costs:
+          $ref: '#/components/schemas/Costs'
+          title: CarrierOrder.costs
+        deleted:
+          title: CarrierOrder.deleted
+          type: boolean
+        drivers:
+          items:
+            $ref: '#/components/schemas/Driver'
+            title: CarrierOrder.drivers.[]
+          title: CarrierOrder.drivers
+          type: array
+        equipment:
+          items:
+            $ref: '#/components/schemas/Equipment2'
+            title: CarrierOrder.equipment.[]
+          title: CarrierOrder.equipment
+          type: array
+        externalIds:
+          items:
+            $ref: '#/components/schemas/ExternalId'
+            title: CarrierOrder.externalIds.[]
+          title: CarrierOrder.externalIds
+          type: array
+        additionalAttributes:
+          items:
+            $ref: '#/components/schemas/AdditionalAttribute'
+            title: CarrierOrder.additionalAttributes.[]
+          title: CarrierOrder.additionalAttributes
+          type: array
+        invoiceDate:
+          title: CarrierOrder.invoiceDate
+          type: string
+        paymentDate:
+          title: CarrierOrder.paymentDate
+          type: string
+        invoice:
+          items:
+            $ref: '#/components/schemas/Invoice'
+            title: CarrierOrder.invoice.[]
+          title: CarrierOrder.invoice
+          type: array
+        payment:
+          items:
+            $ref: '#/components/schemas/Payment'
+            title: CarrierOrder.payment.[]
+          title: CarrierOrder.payment
+          type: array
+        carrierPO:
+          title: CarrierOrder.carrierPO
+          type: string
+        operatedBy:
+          items:
+            $ref: '#/components/schemas/OperatedBy'
+            title: CarrierOrder.operatedBy.[]
+          title: CarrierOrder.operatedBy
+          type: array
+      required:
+        - carrier
+        - id
+        - costs
+        - deleted
+      additionalProperties: false
+      title: CarrierOrder
+      type: object
+    Carrier:
+      properties:
+        id:
+          title: Carrier.id
+          type: number
+        name:
+          title: Carrier.name
+          type: string
+        dotNo:
+          title: Carrier.dotNo
+          type: number
+        mcNo:
+          title: Carrier.mcNo
+          type: string
+        owner:
+          $ref: '#/components/schemas/Owner'
+          title: Carrier.owner
+      required:
+        - id
+        - name
+        - dotNo
+        - mcNo
+        - owner
+      additionalProperties: false
+      title: Carrier
+      type: object
+    Deduction:
+      properties:
+        amount:
+          title: Deduction.amount
+          type: number
+        id:
+          title: Deduction.id
+          type: number
+        name:
+          title: Deduction.name
+          type: string
+        notes:
+          title: Deduction.notes
+          type: string
+        date:
+          title: Deduction.date
+          type: string
+        deleted:
+          title: Deduction.deleted
+          type: boolean
+      required:
+        - amount
+        - id
+        - name
+        - notes
+        - date
+        - deleted
+      additionalProperties: false
+      title: Deduction
+      type: object
+    Driver:
+      properties:
+        segmentId:
+          title: Driver.segmentId
+          type: string
+        segmentSequence:
+          title: Driver.segmentSequence
+          type: number
+        contextType:
+          title: Driver.contextType
+          type: string
+        context:
+          $ref: '#/components/schemas/Context'
+          title: Driver.context
+        phone:
+          $ref: '#/components/schemas/Phone'
+          title: Driver.phone
+        email:
+          $ref: '#/components/schemas/Email'
+          title: Driver.email
+        driverAssignmentId:
+          title: Driver.driverAssignmentId
+          type: number
+        deleted:
+          title: Driver.deleted
+          type: boolean
+      required:
+        - segmentId
+        - segmentSequence
+        - contextType
+        - context
+        - phone
+        - email
+        - driverAssignmentId
+        - deleted
+      additionalProperties: false
+      title: Driver
+      type: object
+    Context:
+      properties:
+        id:
+          title: Context.id
+          type: number
+        name:
+          title: Context.name
+          type: string
+      required:
+        - id
+        - name
+      additionalProperties: false
+      title: Context
+      type: object
+    ExternalId:
+      properties:
+        deleted:
+          title: ExternalId.deleted
+          type: boolean
+        id:
+          title: ExternalId.id
+          type: number
+        type:
+          $ref: '#/components/schemas/Type'
+          title: ExternalId.type
+        value:
+          title: ExternalId.value
+          type: string
+      required:
+        - deleted
+        - id
+        - type
+        - value
+      additionalProperties: false
+      title: ExternalId
+      type: object
+    AdditionalAttribute:
+      properties:
+        deleted:
+          title: AdditionalAttribute.deleted
+          type: boolean
+        name:
+          title: AdditionalAttribute.name
+          type: string
+        type:
+          title: AdditionalAttribute.type
+          type: string
+        value:
+          title: AdditionalAttribute.value
+          type: string
+      required:
+        - deleted
+        - name
+        - type
+        - value
+      additionalProperties: false
+      title: AdditionalAttribute
+      type: object
+    Invoice:
+      properties:
+        amount:
+          title: Invoice.amount
+          type: number
+        date:
+          title: Invoice.date
+          type: string
+        deductionAmount:
+          title: Invoice.deductionAmount
+          type: number
+        deleted:
+          title: Invoice.deleted
+          type: boolean
+        document:
+          $ref: '#/components/schemas/Document'
+          title: Invoice.document
+        dueDate:
+          title: Invoice.dueDate
+          type: string
+        id:
+          title: Invoice.id
+          type: string
+        number:
+          title: Invoice.number
+          type: string
+        isFullyPaid:
+          title: Invoice.isFullyPaid
+          type: boolean
+        notes:
+          title: Invoice.notes
+          type: string
+        status:
+          $ref: '#/components/schemas/Status'
+          title: Invoice.status
+      required:
+        - amount
+        - date
+        - deductionAmount
+        - deleted
+        - document
+        - dueDate
+        - id
+        - number
+        - isFullyPaid
+        - notes
+        - status
+      additionalProperties: false
+      title: Invoice
+      type: object
+    Document:
+      properties:
+        id:
+          title: Document.id
+          type: string
+      required:
+        - id
+      additionalProperties: false
+      title: Document
+      type: object
+    Payment:
+      properties:
+        amount:
+          title: Payment.amount
+          type: number
+        deleted:
+          title: Payment.deleted
+          type: boolean
+        fees:
+          items:
+            title: Payment.fees.[]
+          title: Payment.fees
+          type: array
+        id:
+          title: Payment.id
+          type: number
+        notes:
+          title: Payment.notes
+          type: string
+        invoice:
+          $ref: '#/components/schemas/InvoiceReference'
+          title: Payment.invoice
+        paymentDate:
+          title: Payment.paymentDate
+          type: string
+        method:
+          $ref: '#/components/schemas/PaymentMethod'
+          title: Payment.method
+      required:
+        - amount
+        - deleted
+        - id
+        - notes
+        - invoice
+        - paymentDate
+        - method
+      additionalProperties: false
+      title: Payment
+      type: object
+    InvoiceReference:
+      properties:
+        id:
+          title: InvoiceReference.id
+          type: string
+      required:
+        - id
+      additionalProperties: false
+      title: InvoiceReference
+      type: object
+    PaymentMethod:
+      properties:
+        id:
+          title: PaymentMethod.id
+          type: number
+        key:
+          title: PaymentMethod.key
+          type: string
+        value:
+          title: PaymentMethod.value
+          type: string
+        payTo:
+          title: PaymentMethod.payTo
+          type: string
+      required:
+        - id
+        - key
+        - value
+        - payTo
+      additionalProperties: false
+      title: PaymentMethod
+      type: object
+    OperatedBy:
+      properties:
+        name:
+          title: OperatedBy.name
+          type: string
+        photo:
+          title: OperatedBy.photo
+          type: string
+      required:
+        - name
+        - photo
+      additionalProperties: false
+      title: OperatedBy
+      type: object
+    Margin:
+      properties:
+        amount:
+          title: Margin.amount
+          type: number
+        value:
+          title: Margin.value
+          type: number
+      required:
+        - amount
+        - value
+      additionalProperties: false
+      title: Margin
+      type: object
+    Tags:
+      properties:
+        value:
+          items:
+            title: Tags.value.[]
+            type: string
+          title: Tags.value
+          type: array
+      required:
+        - value
+      additionalProperties: false
+      title: Tags
+      type: object
+    Order:
+      properties:
+        deleted:
+          title: Order.deleted
+          type: boolean
+        id:
+          title: Order.id
+          type: string
+      required:
+        - deleted
+        - id
+      additionalProperties: false
+      title: Order
+      type: object
+    Attributes:
+      properties:
+        arrival:
+          $ref: '#/components/schemas/DateTime'
+          title: Attributes.arrival
+        departed:
+          $ref: '#/components/schemas/DateTime'
+          title: Attributes.departed
+      additionalProperties: false
+      title: Attributes
+      type: object
+    EtaToStop:
+      properties:
+        formattedEtaValue:
+          title: EtaToStop.formattedEtaValue
+          type: string
+        etaValue:
+          title: EtaToStop.etaValue
+          type: number
+        nextStopMiles:
+          title: EtaToStop.nextStopMiles
+          type: number
+      required:
+        - formattedEtaValue
+        - etaValue
+        - nextStopMiles
+      additionalProperties: false
+      title: EtaToStop
+      type: object
+    OrderRequestedDate:
+      properties:
+        schedulingType:
+          $ref: '#/components/schemas/SchedulingType3'
+          title: OrderRequestedDate.schedulingType
+        appointment:
+          $ref: '#/components/schemas/Appointment5'
+          title: OrderRequestedDate.appointment
+      required:
+        - schedulingType
+        - appointment
+      additionalProperties: false
+      title: OrderRequestedDate
+      type: object
+    Appointment5:
+      properties:
+        from:
+          $ref: '#/components/schemas/AppointmentTime'
+          title: Appointment5.from
+        to:
+          $ref: '#/components/schemas/AppointmentTime'
+          title: Appointment5.to
+      required:
+        - from
+        - to
+      additionalProperties: false
+      title: Appointment5
+      type: object
+    PlannedAppointmentDate:
+      properties:
+        schedulingType:
+          $ref: '#/components/schemas/SchedulingType3'
+          title: PlannedAppointmentDate.schedulingType
+        appointment:
+          $ref: '#/components/schemas/Appointment5'
+          title: PlannedAppointmentDate.appointment
+      required:
+        - schedulingType
+        - appointment
+      additionalProperties: false
+      title: PlannedAppointmentDate
+      type: object

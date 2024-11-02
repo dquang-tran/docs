@@ -1,0 +1,11 @@
+{
+  "name": "docs",
+  "version": "1.0.0",
+  "description": "FleetWorks Documentation",
+  "scripts": {
+    "build": "openapi-generator-cli generate -g openapi -i openapi/fleetworks.yaml -o openapi --additional-properties='outputFileName=fleetworks_openapi.json'",
+    "dev": "mintlify dev"
+  },
+  "author": "",
+  "license": "ISC"
+}

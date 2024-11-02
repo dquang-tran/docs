@@ -1,0 +1,496 @@
+# https://github.com/fleetworks-team/fleetworks.ai/blob/d6967efd99726c829f91f5cdf5cf798513eb59dc/apps/api/src/services/ingestion/tai/tai_types.ts#L1
+
+components:
+  schemas:
+    ShipmentWebhookBody:
+      title: TaiLoadEvent
+      properties:
+        shipmentId:
+          title: ShipmentWebhookBody.shipmentId
+          type: number
+        latitude:
+          title: ShipmentWebhookBody.latitude
+          type: number
+        longitude:
+          title: ShipmentWebhookBody.longitude
+          type: number
+        lastLocationUpdate:
+          title: ShipmentWebhookBody.lastLocationUpdate
+          type: string
+        mileage:
+          title: ShipmentWebhookBody.mileage
+          type: number
+        customer:
+          $ref: '#/components/schemas/Customer'
+          title: ShipmentWebhookBody.customer
+        payerOrganization:
+          $ref: '#/components/schemas/PayerOrganization'
+          title: ShipmentWebhookBody.payerOrganization
+        totalBuy:
+          title: ShipmentWebhookBody.totalBuy
+          type: number
+        totalSell:
+          title: ShipmentWebhookBody.totalSell
+          type: number
+        status:
+          title: ShipmentWebhookBody.status
+          type: string
+        carrierList:
+          items:
+            $ref: '#/components/schemas/CarrierList'
+            title: ShipmentWebhookBody.carrierList.[]
+          title: ShipmentWebhookBody.carrierList
+          type: array
+        attachments:
+          items:
+            title: ShipmentWebhookBody.attachments.[]
+          title: ShipmentWebhookBody.attachments
+          type: array
+        shipmentType:
+          title: ShipmentWebhookBody.shipmentType
+          type: string
+        stackable:
+          title: ShipmentWebhookBody.stackable
+          type: boolean
+        trailerType:
+          title: ShipmentWebhookBody.trailerType
+          type: string
+        weightUnits:
+          title: ShipmentWebhookBody.weightUnits
+          type: string
+        dimensionUnits:
+          title: ShipmentWebhookBody.dimensionUnits
+          type: string
+        serviceLevel:
+          title: ShipmentWebhookBody.serviceLevel
+          type: string
+        shipmentReferenceNumbers:
+          items:
+            $ref: '#/components/schemas/ShipmentReferenceNumber'
+            title: ShipmentWebhookBody.shipmentReferenceNumbers.[]
+          title: ShipmentWebhookBody.shipmentReferenceNumbers
+          type: array
+        stops:
+          items:
+            $ref: '#/components/schemas/Stop'
+            title: ShipmentWebhookBody.stops.[]
+          title: ShipmentWebhookBody.stops
+          type: array
+        commodities:
+          items:
+            $ref: '#/components/schemas/Commodity'
+            title: ShipmentWebhookBody.commodities.[]
+          title: ShipmentWebhookBody.commodities
+          type: array
+        accessorialCodes:
+          items:
+            $ref: '#/components/schemas/AccessorialCode'
+            title: ShipmentWebhookBody.accessorialCodes.[]
+          title: ShipmentWebhookBody.accessorialCodes
+          type: array
+        shipmentAlerts:
+          items:
+            $ref: '#/components/schemas/ShipmentAlert'
+            title: ShipmentWebhookBody.shipmentAlerts.[]
+          title: ShipmentWebhookBody.shipmentAlerts
+          type: array
+        driverCellPhoneNumber:
+          title: ShipmentWebhookBody.driverCellPhoneNumber
+          type: string
+        hazmatEmergencyContactNumber:
+          title: ShipmentWebhookBody.hazmatEmergencyContactNumber
+          type: string
+      required:
+        - shipmentId
+        - latitude
+        - longitude
+        - lastLocationUpdate
+        - mileage
+        - customer
+        - payerOrganization
+        - totalBuy
+        - totalSell
+        - status
+        - carrierList
+        - attachments
+        - shipmentType
+        - stackable
+        - trailerType
+        - weightUnits
+        - dimensionUnits
+        - serviceLevel
+        - shipmentReferenceNumbers
+        - stops
+        - commodities
+        - accessorialCodes
+        - shipmentAlerts
+        - driverCellPhoneNumber
+        - hazmatEmergencyContactNumber
+      additionalProperties: false
+      type: object
+    Customer:
+      properties:
+        name:
+          title: Customer.name
+          type: string
+        referenceNumber:
+          title: Customer.referenceNumber
+          type: string
+        staffID:
+          title: Customer.staffID
+          type: number
+        staffName:
+          title: Customer.staffName
+          type: string
+        staffReferenceNumber:
+          title: Customer.staffReferenceNumber
+          type: string
+        salesRepNames:
+          title: Customer.salesRepNames
+          type: string
+        billToOrganizationId:
+          title: Customer.billToOrganizationId
+          type: number
+        officeOrganizationId:
+          title: Customer.officeOrganizationId
+          type: number
+      required:
+        - name
+        - referenceNumber
+        - staffID
+        - staffName
+        - staffReferenceNumber
+        - salesRepNames
+        - billToOrganizationId
+        - officeOrganizationId
+      additionalProperties: false
+      title: Customer
+      type: object
+    PayerOrganization:
+      properties:
+        organizationId:
+          title: PayerOrganization.organizationId
+          type: number
+        name:
+          title: PayerOrganization.name
+          type: string
+        address:
+          $ref: '#/components/schemas/Address'
+          title: PayerOrganization.address
+      required:
+        - organizationId
+        - name
+        - address
+      additionalProperties: false
+      title: PayerOrganization
+      type: object
+    Address:
+      properties:
+        streetAddress:
+          title: Address.streetAddress
+          type: string
+        city:
+          title: Address.city
+          type: string
+        state:
+          title: Address.state
+          type: string
+        zipCode:
+          title: Address.zipCode
+          type: string
+        country:
+          title: Address.country
+          type: string
+      required:
+        - streetAddress
+        - city
+        - state
+        - zipCode
+        - country
+      additionalProperties: false
+      title: Address
+      type: object
+    CarrierList:
+      properties:
+        carrierMasterId:
+          title: CarrierList.carrierMasterId
+          type: number
+        name:
+          title: CarrierList.name
+          type: string
+        scac:
+          title: CarrierList.scac
+          type: string
+        dotNumber:
+          title: CarrierList.dotNumber
+          type: string
+        mcNumber:
+          title: CarrierList.mcNumber
+          type: string
+        trackingURL:
+          title: CarrierList.trackingURL
+          type: string
+        city:
+          title: CarrierList.city
+          type: string
+        state:
+          title: CarrierList.state
+          type: string
+        zipCode:
+          title: CarrierList.zipCode
+          type: string
+        phoneNumber:
+          title: CarrierList.phoneNumber
+          type: string
+        tariffName:
+          title: CarrierList.tariffName
+          type: string
+        transitType:
+          title: CarrierList.transitType
+          type: string
+        status:
+          title: CarrierList.status
+          type: number
+        buy:
+          title: CarrierList.buy
+          type: number
+        sell:
+          title: CarrierList.sell
+          type: number
+      required:
+        - carrierMasterId
+        - name
+        - scac
+        - dotNumber
+        - mcNumber
+        - trackingURL
+        - city
+        - state
+        - zipCode
+        - phoneNumber
+        - tariffName
+        - transitType
+        - status
+        - buy
+        - sell
+      additionalProperties: false
+      title: CarrierList
+      type: object
+    ShipmentReferenceNumber:
+      properties:
+        referenceType:
+          title: ShipmentReferenceNumber.referenceType
+          type: string
+        value:
+          title: ShipmentReferenceNumber.value
+          type: string
+      required:
+        - referenceType
+        - value
+      additionalProperties: false
+      title: ShipmentReferenceNumber
+      type: object
+    Stop:
+      properties:
+        companyName:
+          title: Stop.companyName
+          type: string
+        streetAddress:
+          title: Stop.streetAddress
+          type: string
+        streetAddressTwo:
+          title: Stop.streetAddressTwo
+          type: string
+        city:
+          title: Stop.city
+          type: string
+        state:
+          title: Stop.state
+          type: string
+        zipCode:
+          title: Stop.zipCode
+          type: string
+        country:
+          title: Stop.country
+          type: string
+        contactName:
+          title: Stop.contactName
+          type: string
+        phone:
+          title: Stop.phone
+          type: string
+        fax:
+          title: Stop.fax
+          type: string
+        email:
+          title: Stop.email
+          type: string
+        instructions:
+          title: Stop.instructions
+          type: string
+        notes:
+          title: Stop.notes
+          type: string
+        referenceNumber:
+          title: Stop.referenceNumber
+          type: string
+        estimatedReadyDateTime:
+          title: Stop.estimatedReadyDateTime
+          nullable: true
+          type: string
+        estimatedCloseDateTime:
+          title: Stop.estimatedCloseDateTime
+          nullable: true
+          type: string
+        appointmentReadyDateTime:
+          title: Stop.appointmentReadyDateTime
+          nullable: true
+          type: string
+        appointmentCloseDateTime:
+          title: Stop.appointmentCloseDateTime
+          nullable: true
+          type: string
+        actualArrivalDateTime:
+          title: Stop.actualArrivalDateTime
+          type: string
+        actualDepartureDateTime:
+          title: Stop.actualDepartureDateTime
+          type: string
+        stopType:
+          title: Stop.stopType
+          type: string
+      required:
+        - companyName
+        - streetAddress
+        - streetAddressTwo
+        - city
+        - state
+        - zipCode
+        - country
+        - contactName
+        - phone
+        - fax
+        - email
+        - instructions
+        - notes
+        - referenceNumber
+        - estimatedReadyDateTime
+        - estimatedCloseDateTime
+        - appointmentReadyDateTime
+        - appointmentCloseDateTime
+        - actualArrivalDateTime
+        - actualDepartureDateTime
+        - stopType
+      additionalProperties: false
+      title: Stop
+      type: object
+    Commodity:
+      properties:
+        handlingQuantity:
+          title: Commodity.handlingQuantity
+          type: number
+        packagingType:
+          title: Commodity.packagingType
+          type: string
+        length:
+          title: Commodity.length
+          type: number
+        width:
+          title: Commodity.width
+          type: number
+        height:
+          title: Commodity.height
+          type: number
+        weightTotal:
+          title: Commodity.weightTotal
+          type: number
+        hazardousMaterial:
+          title: Commodity.hazardousMaterial
+          type: boolean
+        piecesTotal:
+          title: Commodity.piecesTotal
+          type: number
+        freightClass:
+          title: Commodity.freightClass
+          type: string
+        nmfc:
+          title: Commodity.nmfc
+          type: string
+        description:
+          title: Commodity.description
+          type: string
+        referenceNumber:
+          title: Commodity.referenceNumber
+          type: string
+        additionalMarkings:
+          title: Commodity.additionalMarkings
+          type: string
+        unNumber:
+          title: Commodity.unNumber
+          type: string
+        packingGroup:
+          title: Commodity.packingGroup
+          type: string
+        hazmatCustomClassDescription:
+          title: Commodity.hazmatCustomClassDescription
+          type: string
+        hazmatPieceDescription:
+          title: Commodity.hazmatPieceDescription
+          type: string
+        harmonizedCode:
+          title: Commodity.harmonizedCode
+          type: string
+        hazardClasses:
+          items:
+            title: Commodity.hazardClasses.[]
+            type: string
+          title: Commodity.hazardClasses
+          type: array
+      required:
+        - handlingQuantity
+        - packagingType
+        - length
+        - width
+        - height
+        - weightTotal
+        - hazardousMaterial
+        - piecesTotal
+        - freightClass
+        - nmfc
+        - description
+        - referenceNumber
+      additionalProperties: false
+      title: Commodity
+      type: object
+    AccessorialCode:
+      properties:
+        code:
+          title: AccessorialCode.code
+          type: string
+        name:
+          title: AccessorialCode.name
+          type: string
+      required:
+        - code
+        - name
+      additionalProperties: false
+      title: AccessorialCode
+      type: object
+    ShipmentAlert:
+      properties:
+        type:
+          title: ShipmentAlert.type
+          type: string
+        createdDate:
+          title: ShipmentAlert.createdDate
+          type: string
+        resolved:
+          title: ShipmentAlert.resolved
+          type: boolean
+      required:
+        - type
+        - createdDate
+        - resolved
+      additionalProperties: false
+      title: ShipmentAlert
+      type: object

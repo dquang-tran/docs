@@ -1,0 +1,17 @@
+# Ref: https://github.com/fleetworks-team/fleetworks.ai/blob/71db1cda199acf949d495643fc294116b03a7ce3/apps/api/src/utils/clients/mcleod_types.ts#L434
+
+components:
+  schemas:
+    McleodLoadEvent:
+      title: McleodLoadEvent
+      type: object
+      required:
+        - __type
+        - id
+      properties:
+        __type: 
+          type: string
+          enum:
+            - "movement"
+        id: 
+          type: string

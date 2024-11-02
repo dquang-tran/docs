@@ -1,12 +1,4 @@
-# Mintlify Starter Kit
-
-Click on `Use this template` to copy the Mintlify starter kit. The starter kit contains examples including
-
-- Guide pages
-- Navigation
-- Customizations
-- API Reference pages
-- Use of popular components
+# FleetWorks Documentation
 
 ### 👩‍💻 Development
 
@@ -16,15 +8,23 @@ Install the [Mintlify CLI](https://www.npmjs.com/package/mintlify) to preview th
 npm i -g mintlify
 ```
 
+Install `openapi-generator-cli`
+
+```
+npm install @openapitools/openapi-generator-cli -g
+```
+
 Run the following command at the root of your documentation (where mint.json is)
 
 ```
+openapi-generator-cli generate -g openapi -i openapi/fleetworks.yaml -o openapi --additional-properties="outputFileName=fleetworks_openapi.json"
+
 mintlify dev
 ```
 
 ### 😎 Publishing Changes
 
-Install our Github App to autopropagate changes from youre repo to your deployment. Changes will be deployed to production automatically after pushing to the default branch. Find the link to install on your dashboard. 
+Install our Github App to autopropagate changes from youre repo to your deployment. Changes will be deployed to production automatically after pushing to the default branch. Find the link to install on your dashboard.
 
 #### Troubleshooting
 
