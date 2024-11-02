@@ -3,15 +3,15 @@ openapi: 3.0.3
 info:
   version: "1.0.0"
 
-  title: Fleetworks.ai API Documentation
+  title: FleetWorks.ai API Documentation
   x-logo:
     url: "https://www.fleetworks.ai/logo.png"
 
-  description: This is the documents for Fleetworks.ai API specification
+  description: This is the documents for FleetWorks.ai API specification
 
 tags:
   - name: Ingestion
-    description: Ingest loads to Fleetworks system
+    description: Ingest loads to FleetWorks system
 servers:
   - url: "https://api.fleetworks.ai"
 
@@ -21,7 +21,7 @@ paths:
       tags:
         - Ingestion
       summary: Load Events Webhook
-      description: This endpoint receives load events for various integrations and ingest to Fleetworks system.
+      description: This endpoint receives load events for various integrations and ingest to FleetWorks system.
       operationId: webhooksLoadsEvents
       security:
         - auth: []
@@ -42,7 +42,7 @@ components:
     auth:
       type: http
       scheme: bearer
-      description: An authentication token that identifies the organization associated with the event. You can reach out to Fleetworks team to request for a token.
+      description: An authentication token that identifies the organization associated with the event. You can reach out to FleetWorks team to request for a token.
 
   requestBodies:
     WebhooksLoadsEventsRequest:
