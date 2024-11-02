@@ -1,0 +1,251 @@
+openapi: 3.0.3
+
+info:
+  version: "1.0.0"
+
+  title: Fleetworks.ai API Documentation
+  x-logo:
+    url: "https://www.fleetworks.ai/logo.png"
+
+  description: This is the documents for Fleetworks.ai API specification
+
+tags:
+  - name: Ingestion
+    description: Ingest loads to Fleetworks system
+servers:
+  - url: "https://api.fleetworks.ai"
+
+paths:
+  "/api/webhooks/loads/events":
+    post:
+      tags:
+        - Ingestion
+      summary: Load Events Webhook
+      description: This endpoint receives load events for various integrations and ingest to Fleetworks system.
+      operationId: webhooksLoadsEvents
+      security:
+        - auth: []
+      requestBody:
+        $ref: "#/components/requestBodies/WebhooksLoadsEventsRequest"
+      responses:
+        "200":
+          $ref: "#/components/responses/WebhooksLoadsEventsResponse"
+        "400":
+          description: Invalid request
+          $ref: "#/components/responses/ErrorResponse"
+        "401":
+          description: Unauthorized or invalid API key
+          $ref: "#/components/responses/ErrorResponse"
+
+components:
+  securitySchemes:
+    auth:
+      type: http
+      scheme: bearer
+      description: An authentication token that identifies the organization associated with the event. You can reach out to Fleetworks team to request for a token.
+
+  requestBodies:
+    WebhooksLoadsEventsRequest:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/LoadEvent"
+      required: true
+
+  responses:
+    ErrorResponse:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+
+    WebhooksLoadsEventsResponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+
+  schemas:
+    LoadEvent:
+      type: object
+      properties:
+        event:
+          type: string
+          enum: ["load_carrier_bounced","load_cancelled", "offer_created", "offer_removed"]
+        data:
+          oneOf:
+            - $ref: "#/components/schemas/LoadCarrierEventData"
+            - $ref: "#/components/schemas/OfferEventData"
+
+    EquipmentType:
+      type: string
+      enum:
+        - DRV
+        - FBE
+        - RFR
+        - CON
+        - CUR
+        - DDP
+        - IMC
+        - SDK
+        - STK
+        - LTL
+        - BLK
+        - TNK
+        - OTH
+
+    LSLoad:
+      type: object
+      properties:
+        ref_number:
+          type: string
+        id:
+          type: string
+          nullable: true
+        active_offer:
+          type: object
+          nullable: true
+          properties:
+            id:
+              type: string
+            price:
+              type: number
+        carrier:
+          type: object
+          nullable: true
+          properties:
+            id:
+              type: string
+            mc:
+              type: number
+            dot:
+              type: number
+        equipment_type:
+          $ref: '#/components/schemas/EquipmentType'
+        commodity:
+          type: string
+          nullable: true
+        distance:
+          type: number
+          nullable: true
+        weight:
+          type: number
+          nullable: true
+        requirements:
+          type: object
+          nullable: true
+          properties:
+            beer:
+              type: boolean
+            chemicals:
+              type: boolean
+            ctpat:
+              type: boolean
+            food_grade:
+              type: boolean
+            frozen:
+              type: boolean
+            hazmat:
+              type: boolean
+            hvhr:
+              type: boolean
+            pharmaceuticals:
+              type: boolean
+            produce:
+              type: boolean
+            teams:
+              type: boolean
+            tsa:
+              type: boolean
+            twic:
+              type: boolean
+            vented_vans:
+              type: boolean
+        dimensions:
+          type: object
+          nullable: true
+        stops:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                  - PU
+                  - DEL
+              address:
+                type: string
+              city:
+                type: string
+              state:
+                type: string
+              country:
+                type: string
+              latitude:
+                type: number
+              longitude:
+                type: number
+              zipcode:
+                type: string
+              window_start:
+                type: string
+                format: date-time
+              window_end:
+                type: string
+                format: date-time
+              window_timezone:
+                type: string
+              requirements:
+                type: object
+                nullable: true
+              facility_info:
+                type: object
+                nullable: true
+
+    LoadCarrierEventData:
+      type: object
+      properties:
+        load_id:
+          type: string
+        load:
+          $ref: '#/components/schemas/LSLoad'
+
+    OfferEventData:
+      type: object
+      properties:
+        offer:
+          type: object
+          properties:
+            id:
+              type: string
+            price:
+              type: number
+            load:
+              $ref: '#/components/schemas/LSLoad'
+            action:
+              type: object
+              nullable: true
+
+    LoadOfferEvent:
+      type: object
+      properties:
+        event:
+          type: string
+          enum:
+            - load_carrier_bounced
+            - load_cancelled
+            - offer_created
+            - offer_removed
+        data:
+          allOf:
+            - $ref: '#/components/schemas/LoadCarrierEventData'
+            - $ref: '#/components/schemas/OfferEventData'
