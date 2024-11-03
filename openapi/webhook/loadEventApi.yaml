@@ -1,0 +1,47 @@
+
+paths:
+  /:
+    post:
+      tags:
+        - Ingestion
+      summary: Load Events Webhook
+      description: This endpoint receives load events for various integrations and ingest to FleetWorks system. The type of integration depends on organization settings.
+      operationId: webhooksLoadsEvents
+      security:
+        - auth: []
+      requestBody:
+        $ref: "#/components/requestBodies/WebhooksLoadsEventsRequest"
+      responses:
+        "200":
+          $ref: "#/components/responses/WebhooksLoadsEventsResponse"
+        "400":
+          description: Invalid request
+          $ref: "../fleetworks.yaml#/components/responses/ErrorResponse"
+        "401":
+          description: Unauthorized or invalid API key
+          $ref: "../fleetworks.yaml#/components/responses/ErrorResponse"
+  
+components:
+  requestBodies:
+    WebhooksLoadsEventsRequest:
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: "schema/native.yaml#/components/schemas/NativeLoadEvent"
+              - $ref: "schema/turvo.yaml#/components/schemas/TurvoLoadEvent"
+              - $ref: "schema/mcleod.yaml#/components/schemas/McleodLoadEvent"
+              - $ref: "schema/tai.yaml#/components/schemas/ShipmentWebhookBody"
+              - $ref: "schema/everest.yaml#/components/schemas/EverestEvent"
+              - $ref: "schema/loadsmart.yaml#/components/schemas/LoadOfferEvent"
+
+  responses:
+    WebhooksLoadsEventsResponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean

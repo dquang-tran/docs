@@ -1,0 +1,245 @@
+# https://github.com/fleetworks-team/fleetworks.ai/blob/09253aa7fa6e2b5341221a3ae7a38c899f558405/apps/api/src/services/ingestion/loadsmart/loadsmart_types.ts#L87
+
+components:
+  schemas:
+    LSLoad:
+      properties:
+        ref_number:
+          title: LSLoad.ref_number
+          type: string
+        id:
+          title: LSLoad.id
+          type: string
+        active_offer:
+          properties:
+            id:
+              title: LSLoad.active_offer.id
+              type: string
+            price:
+              title: LSLoad.active_offer.price
+              type: number
+          required:
+            - id
+            - price
+          additionalProperties: false
+          title: LSLoad.active_offer
+          type: object
+        carrier:
+          properties:
+            id:
+              title: LSLoad.carrier.id
+              type: string
+            mc:
+              title: LSLoad.carrier.mc
+              type: number
+            dot:
+              title: LSLoad.carrier.dot
+              type: number
+          required:
+            - id
+            - mc
+            - dot
+          additionalProperties: false
+          title: LSLoad.carrier
+          type: object
+        equipment_type:
+          title: LSLoad.equipment_type
+        commodity:
+          title: LSLoad.commodity
+          type: string
+        distance:
+          title: LSLoad.distance
+          type: number
+        weight:
+          title: LSLoad.weight
+          type: number
+        requirements:
+          properties:
+            beer:
+              title: LSLoad.requirements.beer
+              type: boolean
+            chemicals:
+              title: LSLoad.requirements.chemicals
+              type: boolean
+            ctpat:
+              title: LSLoad.requirements.ctpat
+              type: boolean
+            food_grade:
+              title: LSLoad.requirements.food_grade
+              type: boolean
+            frozen:
+              title: LSLoad.requirements.frozen
+              type: boolean
+            hazmat:
+              title: LSLoad.requirements.hazmat
+              type: boolean
+            hvhr:
+              title: LSLoad.requirements.hvhr
+              type: boolean
+            pharmaceuticals:
+              title: LSLoad.requirements.pharmaceuticals
+              type: boolean
+            produce:
+              title: LSLoad.requirements.produce
+              type: boolean
+            teams:
+              title: LSLoad.requirements.teams
+              type: boolean
+            tsa:
+              title: LSLoad.requirements.tsa
+              type: boolean
+            twic:
+              title: LSLoad.requirements.twic
+              type: boolean
+            vented_vans:
+              title: LSLoad.requirements.vented_vans
+              type: boolean
+          required:
+            - beer
+            - chemicals
+            - ctpat
+            - food_grade
+            - frozen
+            - hazmat
+            - hvhr
+            - pharmaceuticals
+            - produce
+            - teams
+            - tsa
+            - twic
+            - vented_vans
+          additionalProperties: false
+          title: LSLoad.requirements
+          type: object
+        dimensions:
+          title: LSLoad.dimensions
+        stops:
+          items:
+            properties:
+              type:
+                enum:
+                  - PU
+                  - DEL
+                title: LSLoad.stops.[].type
+                type: string
+              address:
+                title: LSLoad.stops.[].address
+                type: string
+              city:
+                title: LSLoad.stops.[].city
+                type: string
+              state:
+                title: LSLoad.stops.[].state
+                type: string
+              country:
+                title: LSLoad.stops.[].country
+                type: string
+              latitude:
+                title: LSLoad.stops.[].latitude
+                type: number
+              longitude:
+                title: LSLoad.stops.[].longitude
+                type: number
+              zipcode:
+                title: LSLoad.stops.[].zipcode
+                type: string
+              window_start:
+                title: LSLoad.stops.[].window_start
+                type: string
+              window_end:
+                title: LSLoad.stops.[].window_end
+                type: string
+              window_timezone:
+                title: LSLoad.stops.[].window_timezone
+                type: string
+              requirements:
+                title: LSLoad.stops.[].requirements
+              facility_info:
+                title: LSLoad.stops.[].facility_info
+            required:
+              - type
+              - address
+              - city
+              - state
+              - country
+              - latitude
+              - longitude
+              - zipcode
+              - window_start
+              - window_end
+              - window_timezone
+            additionalProperties: false
+            title: LSLoad.stops.[]
+            type: object
+          title: LSLoad.stops
+          type: array
+      required:
+        - ref_number
+        - equipment_type
+        - stops
+      additionalProperties: false
+      title: LSLoad
+      type: object
+    LoadCarrierEventData:
+      properties:
+        load_id:
+          title: LoadCarrierEventData.load_id
+          type: string
+        load:
+          $ref: '#/components/schemas/LSLoad'
+          title: LoadCarrierEventData.load
+      required:
+        - load_id
+        - load
+      additionalProperties: false
+      title: LoadCarrierEventData
+      type: object
+    OfferEventData:
+      properties:
+        offer:
+          properties:
+            id:
+              title: OfferEventData.offer.id
+              type: string
+            price:
+              title: OfferEventData.offer.price
+              type: number
+            load:
+              $ref: '#/components/schemas/LSLoad'
+              title: OfferEventData.offer.load
+            action:
+              title: OfferEventData.offer.action
+          required:
+            - id
+            - price
+            - load
+            - action
+          additionalProperties: false
+          title: OfferEventData.offer
+          type: object
+      required:
+        - offer
+      additionalProperties: false
+      title: OfferEventData
+      type: object
+    LoadOfferEvent:
+      properties:
+        event:
+          enum:
+            - load_carrier_bounced
+            - load_cancelled
+            - offer_created
+            - offer_removed
+          title: LoadOfferEvent.event
+          type: string
+        data:
+          allOf:
+            - $ref: '#/components/schemas/LoadCarrierEventData'
+            - $ref: '#/components/schemas/OfferEventData'
+          title: LoadOfferEvent.data
+      required:
+        - event
+        - data
+      additionalProperties: false
+      title: LoadSmartLoadEvent
+      type: object
