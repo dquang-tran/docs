@@ -18,9 +18,9 @@ servers:
   - url: "https://api.fleetworks.ai"
 
 paths:
-  "/api/inboundWebhooks/loads/events":
+  "/api/webhooks/loads/events":
     $ref: "inboundWebhooks/loadEventApi.yaml#/paths/~1"
-  "/api/inboundWebhooks/carrier/events":
+  "/api/webhooks/carrier/events":
     $ref: "inboundWebhooks/carrierEventApi.yaml#/paths/~1"
   "/api/organizations/{orgId}/export/calls":
     $ref: "exportEndpoints/exportCalls.yaml#/paths/~1"

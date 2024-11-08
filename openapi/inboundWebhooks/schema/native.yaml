@@ -150,9 +150,6 @@ components:
         state:
           title: Address.state
           type: string
-        state_name:
-          title: Address.state_name
-          type: string
         country:
           title: Address.country
           type: string
@@ -165,7 +162,6 @@ components:
       required:
         - city
         - state
-        - state_name
         - country
         - zip
         - timezone

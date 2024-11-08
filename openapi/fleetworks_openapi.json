@@ -19,7 +19,7 @@
     "name" : "Data Exporting"
   } ],
   "paths" : {
-    "/api/inboundWebhooks/loads/events" : {
+    "/api/webhooks/loads/events" : {
       "post" : {
         "description" : "This endpoint receives load events for various integrations and ingest to FleetWorks system. The type of integration depends on organization settings.",
         "operationId" : "webhooksLoadsEvents",
@@ -65,7 +65,7 @@
         "tags" : [ "Ingestion" ]
       }
     },
-    "/api/inboundWebhooks/carrier/events" : {
+    "/api/webhooks/carrier/events" : {
       "post" : {
         "description" : "FleetWorks can take into account the “standing” of a carrier with your brokerage. We can support different formatting and statuses. By default, we support the shape below. This shape can be adjusted to fit your specific needs.",
         "operationId" : "webhooksCarrierEvents",
@@ -502,10 +502,6 @@
             "title" : "Address.state",
             "type" : "string"
           },
-          "state_name" : {
-            "title" : "Address.state_name",
-            "type" : "string"
-          },
           "country" : {
             "title" : "Address.country",
             "type" : "string"
@@ -519,7 +515,7 @@
             "type" : "string"
           }
         },
-        "required" : [ "city", "country", "state", "state_name", "timezone", "zip" ],
+        "required" : [ "city", "country", "state", "timezone", "zip" ],
         "title" : "Address",
         "type" : "object"
       },
