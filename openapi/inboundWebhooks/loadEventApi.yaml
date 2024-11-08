@@ -1,4 +1,3 @@
-
 paths:
   /:
     post:
@@ -20,20 +19,14 @@ paths:
         "401":
           description: Unauthorized or invalid API key
           $ref: "../fleetworks.yaml#/components/responses/ErrorResponse"
-  
+
 components:
   requestBodies:
     WebhooksLoadsEventsRequest:
       content:
         application/json:
           schema:
-            oneOf:
-              - $ref: "schema/native.yaml#/components/schemas/NativeLoadEvent"
-              - $ref: "schema/turvo.yaml#/components/schemas/TurvoLoadEvent"
-              - $ref: "schema/mcleod.yaml#/components/schemas/McleodLoadEvent"
-              - $ref: "schema/tai.yaml#/components/schemas/ShipmentWebhookBody"
-              - $ref: "schema/everest.yaml#/components/schemas/EverestEvent"
-              - $ref: "schema/loadsmart.yaml#/components/schemas/LoadOfferEvent"
+            $ref: "schema/native.yaml#/components/schemas/NativeLoadEvent"
 
   responses:
     WebhooksLoadsEventsResponse:

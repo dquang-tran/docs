@@ -1,0 +1,27 @@
+components:
+  schemas:
+    WebhooksCarrierEventsRequest:
+      type: object
+      required:
+        - dotNumber
+        - status
+        - complianceStatus
+      properties:
+        dotNumber:
+          type: string
+          description: The Department of Transportation (DOT) number of the carrier
+        status:
+          type: string
+          enum: [ACTIVE, INACTIVE]
+        complianceStatus:
+          type: string
+          enum: [in_network, do_not_use, not_in_network]
+        mcNumber:
+          type: string
+          description: The Motor Carrier (MC) number of the carrier
+
+    WebhooksCarrierEventsResponse:
+      type: object
+      properties:
+        success:
+          type: boolean

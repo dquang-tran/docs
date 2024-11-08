@@ -1,0 +1,48 @@
+paths:
+  /:
+    post:
+      tags:
+        - Ingestion
+      summary: Carrier Events Webhook
+      description: FleetWorks can take into account the “standing” of a carrier with your brokerage. We can support different formatting and statuses. By default, we support the shape below. This shape can be adjusted to fit your specific needs.
+      operationId: webhooksCarrierEvents
+      security:
+        - auth: []
+      requestBody:
+        $ref: "#/components/requestBodies/webhooksCarrierEventsRequest"
+      responses:
+        "200":
+          $ref: "#/components/responses/webhooksCarrierEventsResponse"
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+        "401":
+          $ref: "#/components/responses/ErrorResponse"
+
+components:
+  requestBodies:
+    webhooksCarrierEventsRequest:
+      content:
+        application/json:
+          schema:
+            $ref: "./schema/carrierEventSchemas.yaml#/components/schemas/WebhooksCarrierEventsRequest"
+
+  responses:
+    webhooksCarrierEventsResponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+
+    ErrorResponse:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string

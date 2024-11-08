@@ -1,0 +1,36 @@
+components:
+  schemas:
+    BidEvent:
+      type: object
+      required:
+        - loadId
+        - bidAmount
+      properties:
+        loadId:
+          type: string
+          description: The identifier for the load on which the bid was made
+        bidAmount:
+          type: number
+          description: The amount of the bid
+        notes:
+          type: string
+          description: Any additional notes or details about the bid
+        url:
+          type: string
+          description: URL linking to the bid on FleetWorks platform
+        phone:
+          type: string
+          format: E164
+          description: Phone number if the bid came from a phone call in E164 format
+        email:
+          type: string
+          format: email
+          description: Email if the bid came from email
+        mcNumber:
+          type: string
+          description: The MC number of the carrier, if provided
+        dotNumber:
+          type: string
+          description: The DOT number of the carrier, if provided
+      additionalProperties: false
+      title: BidEvent

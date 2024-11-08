@@ -38,15 +38,11 @@
   "navigation": [
     {
       "group": "Get Started",
-      "pages": [
-        "introduction"
-      ]
+      "pages": ["introduction", "outbound-events"]
     },
     {
       "group": "API Documentation",
-      "pages": [
-        "api-reference/authentication"
-      ]
+      "pages": ["api-reference/authentication"]
     }
   ],
   "footerSocials": {

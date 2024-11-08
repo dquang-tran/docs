@@ -1,0 +1,53 @@
+openapi: 3.0.0
+info:
+  title: FleetWorks Outbound Events
+  version: 1.0.0
+
+paths:
+  /:
+    post:
+      tags:
+        - Outbound Webhooks
+      summary: Bid Events Webhook
+      description: FleetWorks can send bid events to your TMS when carriers submit bids on loads. The webhook payload includes comprehensive bid information including the bid amount, carrier details, and contact information. We support customizable formatting to match your specific needs.
+      operationId: webhooksBidEvents
+      security:
+        - auth: []
+      requestBody:
+        $ref: "#/components/requestBodies/webhooksBidEventsRequest"
+      responses:
+        "200":
+          $ref: "#/components/responses/webhooksBidEventsResponse"
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+        "401":
+          $ref: "#/components/responses/ErrorResponse"
+
+components:
+  requestBodies:
+    webhooksBidEventsRequest:
+      content:
+        application/json:
+          schema:
+            $ref: "./schema/bidEvent.yaml#/components/schemas/BidEvent"
+
+  responses:
+    webhooksBidEventsResponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+
+    ErrorResponse:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string

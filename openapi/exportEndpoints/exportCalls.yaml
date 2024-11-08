@@ -1,0 +1,68 @@
+paths:
+  /:
+    get:
+      tags:
+        - Data Exporting
+      summary: Export Calls
+      description: Export call records for an organization within a specified time range. Optional filtering by load ID and MC number is supported.
+      operationId: exportCalls
+      security:
+        - auth: []
+      parameters:
+        - name: orgId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Organization ID to export calls for
+        - name: startTime
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date-time
+          description: Start time for call export in ISO8601 format
+        - name: endTime
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date-time
+          description: End time for call export in ISO8601 format
+        - name: loadId
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Optional load ID to filter calls
+        - name: mcNumber
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Optional MC number to filter calls
+      responses:
+        "200":
+          description: Successful export
+          content:
+            application/json:
+              schema:
+                $ref: "./schema/exportObjects.yaml#/components/schemas/Calls"
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+        "401":
+          $ref: "#/components/responses/ErrorResponse"
+        "403":
+          $ref: "#/components/responses/ErrorResponse"
+
+components:
+  responses:
+    ErrorResponse:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string

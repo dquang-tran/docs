@@ -1,0 +1,57 @@
+The goal of carrier sales conversations is to collect a bid from the carrier and possibly book the load. FleetWorks can send bid events to your TMS when carriers submit bids on loads. The webhook payload includes the bid amount, carrier details, and contact information. We support customizable formatting to match your specific needs.
+
+<Note>
+  Configure your webhook URL in the FleetWorks dashboard to receive these events.
+</Note>
+
+## Bid Event
+
+We push bid events to your TMS when carriers submit bids on loads. The webhook payload includes the bid amount, carrier details, and contact information. We support customizable formatting to match your specific needs.
+
+<ParamField path="loadId" type="string" required>
+  The identifier for the load on which the bid was made
+</ParamField>
+
+<ParamField path="bidAmount" type="number" required>
+  The amount of the bid
+</ParamField>
+
+<ParamField path="notes" type="string">
+  Any additional notes or details about the bid
+</ParamField>
+
+<ParamField path="url" type="string">
+  URL linking to the bid on FleetWorks platform
+</ParamField>
+
+<ParamField path="phone" type="string">
+  Phone number if the bid came from a phone call (in E.164 format, e.g. +14155552671)
+</ParamField>
+
+<ParamField path="email" type="string">
+  Email address if the bid came from email
+</ParamField>
+
+<ParamField path="mcNumber" type="string">
+  The MC number of the carrier, if provided
+</ParamField>
+
+<ParamField path="dotNumber" type="string">
+  The DOT number of the carrier, if provided
+</ParamField>
+
+
+<RequestExample>
+```json Example Bid Event Payload
+{
+  "loadId": "load_xyz789",
+  "bidAmount": 1250.00,
+  "notes": "Available to pick up tomorrow morning",
+  "url": "https://app.fleetworks.com/bids/abc123",
+  "phone": "+14155552671",
+  "email": "dispatch@abctrucking.com",
+  "mcNumber": "MC123456",
+  "dotNumber": "12345678"
+}
+```
+</RequestExample>

@@ -1,0 +1,174 @@
+components:
+  schemas:
+    NativeLoadEvent:
+      properties:
+        id:
+          title: NativeLoadEvent.id
+          type: string
+        pickupTime:
+          title: NativeLoadEvent.pickupTime
+          type: string
+        pickupEndTime:
+          title: NativeLoadEvent.pickupEndTime
+          nullable: true
+          type: string
+        dropoffTime:
+          title: NativeLoadEvent.dropoffTime
+          type: string
+        dropoffEndTime:
+          title: NativeLoadEvent.dropoffEndTime
+          nullable: true
+          type: string
+        origin:
+          $ref: "#/components/schemas/Address"
+          title: NativeLoadEvent.origin
+        destination:
+          $ref: "#/components/schemas/Address"
+          title: NativeLoadEvent.destination
+        status:
+          $ref: "#/components/schemas/LoadStatus"
+          title: NativeLoadEvent.status
+        customerName:
+          title: NativeLoadEvent.customerName
+          nullable: true
+          type: string
+        stops:
+          items:
+            $ref: "#/components/schemas/LoadStop"
+            title: NativeLoadEvent.stops.[]
+          title: NativeLoadEvent.stops
+          type: array
+        equipment:
+          title: NativeLoadEvent.equipment
+          nullable: true
+          type: string
+        minTemperatureF:
+          title: NativeLoadEvent.minTemperatureF
+          nullable: true
+          type: number
+        maxTemperatureF:
+          title: NativeLoadEvent.maxTemperatureF
+          nullable: true
+          type: number
+        totalDistance:
+          title: NativeLoadEvent.totalDistance
+          nullable: true
+          type: number
+        weight:
+          title: NativeLoadEvent.weight
+          nullable: true
+          type: number
+        commodity:
+          title: NativeLoadEvent.commodity
+          nullable: true
+          type: string
+        teamServiceRequired:
+          title: NativeLoadEvent.teamServiceRequired
+          nullable: true
+          type: boolean
+        isHazmat:
+          title: NativeLoadEvent.isHazmat
+          nullable: true
+          type: boolean
+        customerRate:
+          title: NativeLoadEvent.customerRate
+          nullable: true
+          type: number
+        startRate:
+          title: NativeLoadEvent.startRate
+          nullable: true
+          type: number
+        maxRate:
+          title: NativeLoadEvent.maxRate
+          nullable: true
+          type: number
+        bookNowRate:
+          title: NativeLoadEvent.bookNowRate
+          nullable: true
+          type: number
+        specialInstructions:
+          title: NativeLoadEvent.specialInstructions
+          nullable: true
+          type: string
+        shipmentContactNumber:
+          title: NativeLoadEvent.shipmentContactNumber
+          nullable: true
+          type: string
+      required:
+        - id
+        - pickupTime
+        - dropoffTime
+        - origin
+        - destination
+        - status
+      additionalProperties: false
+      title: NativeLoadEvent
+      type: object
+
+    LoadStatus:
+      enum:
+        - INACTIVE
+        - ACTIVE
+      title: LoadStatus
+      type: string
+
+    LoadStop:
+      properties:
+        type:
+          $ref: "#/components/schemas/StopType"
+          title: LoadStop.type
+        address:
+          $ref: "#/components/schemas/Address"
+          title: LoadStop.address
+        windowStart:
+          title: LoadStop.windowStart
+          type: string
+        windowEnd:
+          title: LoadStop.windowEnd
+          nullable: true
+          type: string
+      required:
+        - type
+        - address
+        - windowStart
+      additionalProperties: false
+      title: LoadStop
+      type: object
+
+    StopType:
+      enum:
+        - pickup
+        - dropoff
+      title: StopType
+      type: string
+
+    Address:
+      properties:
+        city:
+          title: Address.city
+          type: string
+        state:
+          title: Address.state
+          type: string
+        state_name:
+          title: Address.state_name
+          type: string
+        country:
+          title: Address.country
+          type: string
+        zip:
+          title: Address.zip
+          type: string
+        timezone:
+          title: Address.timezone
+          type: string
+      required:
+        - city
+        - state
+        - state_name
+        - country
+        - zip
+        - timezone
+      additionalProperties: false
+      title: Address
+      type: object
