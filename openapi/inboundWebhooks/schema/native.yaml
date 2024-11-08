@@ -2,6 +2,55 @@ components:
   schemas:
     NativeLoadEvent:
       description: "The startRate, maxRate, and customerRate, and customerName are what we display in the UI. These help provide context when the broker is calling back a carrier to negotiate."
+      example:
+        id: "5678"
+        pickupTime: "2025-04-08T22:00:00"
+        pickupEndTime: "2025-04-08T23:00:00"
+        dropoffTime: "2025-04-12T08:00:00"
+        dropoffEndTime: "2025-04-12T12:00:00"
+        origin:
+          zip: "12345"
+          city: "NEW YORK"
+          state: "NY"
+          country: "US"
+          timezone: "America/New_York"
+        destination:
+          zip: "67890"
+          city: "LOS ANGELES"
+          state: "CA"
+          country: "US"
+          timezone: "America/Los_Angeles"
+        status: "active"
+        customerName: "Nike"
+        stops:
+          - type: "pickup"
+            address:
+              city: "Buffalo"
+              state: "NY"
+              country: "US"
+              timezone: "America/New_York"
+              zip: "67890"
+            windowStart: "2024-04-10T07:15:00"
+            windowEnd: null
+          - type: "dropoff"
+            address:
+              city: "Aurora"
+              state: "CO"
+              country: "US"
+              timezone: "America/Denver"
+              zip: "80010"
+            windowStart: "2024-04-11T17:45:00"
+            windowEnd: null
+        equipment: "53ft Dry Van"
+        totalDistance: 1120
+        weight: 42000
+        commodity: "Electronics"
+        customerRate: 2000
+        startRate: 1500
+        maxRate: 2500
+        bookNowRate: 1500
+        specialInstructions: "Driver's assist required. Tracking required."
+        teamServiceRequired: true
       properties:
         id:
           title: NativeLoadEvent.id
