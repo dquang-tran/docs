@@ -1,97 +1,122 @@
 components:
   schemas:
     NativeLoadEvent:
+      description: "The startRate, maxRate, and customerRate, and customerName are what we display in the UI. These help provide context when the broker is calling back a carrier to negotiate."
       properties:
         id:
           title: NativeLoadEvent.id
+          description: A unique identifier for the load
           type: string
         pickupTime:
           title: NativeLoadEvent.pickupTime
+          description: The local start time for the pickup in the ISO format
           type: string
         pickupEndTime:
           title: NativeLoadEvent.pickupEndTime
+          description: The local end time for the pickup in the ISO format. Send this if pick up time is a window
           nullable: true
           type: string
         dropoffTime:
           title: NativeLoadEvent.dropoffTime
+          description: The local start time for the dropoff in the ISO format
           type: string
         dropoffEndTime:
           title: NativeLoadEvent.dropoffEndTime
+          description: The local end time for the dropoff in the ISO format. Send this if dropoff time is a window
           nullable: true
           type: string
         origin:
           $ref: "#/components/schemas/Address"
+          description: The pickup location. This includes the following required fields - zip, city, state, country, and timezone
           title: NativeLoadEvent.origin
         destination:
           $ref: "#/components/schemas/Address"
+          description: The dropoff location. This includes the same fields as origin
           title: NativeLoadEvent.destination
         status:
           $ref: "#/components/schemas/LoadStatus"
+          description: The status of the load, either "active" or "inactive". Set load to active when you want it to be surfaced to the carriers and "inactive" when it's either new and not ready to be posted, or already covered
           title: NativeLoadEvent.status
         customerName:
           title: NativeLoadEvent.customerName
+          description: The name of the customer
           nullable: true
           type: string
         stops:
           items:
             $ref: "#/components/schemas/LoadStop"
             title: NativeLoadEvent.stops.[]
+          description: An array of additional stops in between pick up and drop off, each with a type ("pickup" or "dropoff"), address, windowStart, and optional windowEnd
           title: NativeLoadEvent.stops
           type: array
         equipment:
           title: NativeLoadEvent.equipment
+          description: The type of equipment required for the load
           nullable: true
           type: string
         minTemperatureF:
           title: NativeLoadEvent.minTemperatureF
+          description: The minimum temperature requirement for the load in Fahrenheit
           nullable: true
           type: number
         maxTemperatureF:
           title: NativeLoadEvent.maxTemperatureF
+          description: The maximum temperature requirement for the load in Fahrenheit
           nullable: true
           type: number
         totalDistance:
           title: NativeLoadEvent.totalDistance
+          description: The total distance of the load in miles
           nullable: true
           type: number
         weight:
           title: NativeLoadEvent.weight
+          description: The weight of the load in pounds
           nullable: true
           type: number
         commodity:
           title: NativeLoadEvent.commodity
+          description: The type of commodity being transported
           nullable: true
           type: string
         teamServiceRequired:
           title: NativeLoadEvent.teamServiceRequired
+          description: A boolean indicating whether team service is required
           nullable: true
           type: boolean
         isHazmat:
           title: NativeLoadEvent.isHazmat
+          description: Whether the load contains hazardous materials
           nullable: true
           type: boolean
         customerRate:
           title: NativeLoadEvent.customerRate
+          description: The rate charged to the customer
           nullable: true
           type: number
         startRate:
           title: NativeLoadEvent.startRate
+          description: The starting rate for the load
           nullable: true
           type: number
         maxRate:
           title: NativeLoadEvent.maxRate
+          description: The maximum rate for the load for negotiation
           nullable: true
           type: number
         bookNowRate:
           title: NativeLoadEvent.bookNowRate
+          description: The rate for booking the load. This is the rate that the bot will relay to the carrier
           nullable: true
           type: number
         specialInstructions:
           title: NativeLoadEvent.specialInstructions
+          description: Any special instructions for the load
           nullable: true
           type: string
         shipmentContactNumber:
           title: NativeLoadEvent.shipmentContactNumber
+          description: A string representing a phone number in E.164 format, i.e. "+18008463400". If extension is present, "+15152733178;ext=3178"
           nullable: true
           type: string
       required:
@@ -109,6 +134,7 @@ components:
       enum:
         - INACTIVE
         - ACTIVE
+      description: Represents the current status of the load
       title: LoadStatus
       type: string
 
@@ -122,9 +148,11 @@ components:
           title: LoadStop.address
         windowStart:
           title: LoadStop.windowStart
+          description: The start time of the window for this stop
           type: string
         windowEnd:
           title: LoadStop.windowEnd
+          description: The end time of the window for this stop
           nullable: true
           type: string
       required:
@@ -139,6 +167,7 @@ components:
       enum:
         - pickup
         - dropoff
+      description: Indicates whether the stop is for pickup or dropoff
       title: StopType
       type: string
 
@@ -146,18 +175,23 @@ components:
       properties:
         city:
           title: Address.city
+          description: City name
           type: string
         state:
           title: Address.state
+          description: State code
           type: string
         country:
           title: Address.country
+          description: Country code
           type: string
         zip:
           title: Address.zip
+          description: ZIP/Postal code
           type: string
         timezone:
           title: Address.timezone
+          description: Timezone identifier for the location
           type: string
       required:
         - city

@@ -372,25 +372,31 @@
       },
       "NativeLoadEvent" : {
         "additionalProperties" : false,
+        "description" : "The startRate, maxRate, and customerRate, and customerName are what we display in the UI. These help provide context when the broker is calling back a carrier to negotiate.",
         "properties" : {
           "id" : {
+            "description" : "A unique identifier for the load",
             "title" : "NativeLoadEvent.id",
             "type" : "string"
           },
           "pickupTime" : {
+            "description" : "The local start time for the pickup in the ISO format",
             "title" : "NativeLoadEvent.pickupTime",
             "type" : "string"
           },
           "pickupEndTime" : {
+            "description" : "The local end time for the pickup in the ISO format. Send this if pick up time is a window",
             "nullable" : true,
             "title" : "NativeLoadEvent.pickupEndTime",
             "type" : "string"
           },
           "dropoffTime" : {
+            "description" : "The local start time for the dropoff in the ISO format",
             "title" : "NativeLoadEvent.dropoffTime",
             "type" : "string"
           },
           "dropoffEndTime" : {
+            "description" : "The local end time for the dropoff in the ISO format. Send this if dropoff time is a window",
             "nullable" : true,
             "title" : "NativeLoadEvent.dropoffEndTime",
             "type" : "string"
@@ -405,11 +411,13 @@
             "$ref" : "#/components/schemas/LoadStatus"
           },
           "customerName" : {
+            "description" : "The name of the customer",
             "nullable" : true,
             "title" : "NativeLoadEvent.customerName",
             "type" : "string"
           },
           "stops" : {
+            "description" : "An array of additional stops in between pick up and drop off, each with a type (\"pickup\" or \"dropoff\"), address, windowStart, and optional windowEnd",
             "items" : {
               "$ref" : "#/components/schemas/LoadStop"
             },
@@ -417,71 +425,85 @@
             "type" : "array"
           },
           "equipment" : {
+            "description" : "The type of equipment required for the load",
             "nullable" : true,
             "title" : "NativeLoadEvent.equipment",
             "type" : "string"
           },
           "minTemperatureF" : {
+            "description" : "The minimum temperature requirement for the load in Fahrenheit",
             "nullable" : true,
             "title" : "NativeLoadEvent.minTemperatureF",
             "type" : "number"
           },
           "maxTemperatureF" : {
+            "description" : "The maximum temperature requirement for the load in Fahrenheit",
             "nullable" : true,
             "title" : "NativeLoadEvent.maxTemperatureF",
             "type" : "number"
           },
           "totalDistance" : {
+            "description" : "The total distance of the load in miles",
             "nullable" : true,
             "title" : "NativeLoadEvent.totalDistance",
             "type" : "number"
           },
           "weight" : {
+            "description" : "The weight of the load in pounds",
             "nullable" : true,
             "title" : "NativeLoadEvent.weight",
             "type" : "number"
           },
           "commodity" : {
+            "description" : "The type of commodity being transported",
             "nullable" : true,
             "title" : "NativeLoadEvent.commodity",
             "type" : "string"
           },
           "teamServiceRequired" : {
+            "description" : "A boolean indicating whether team service is required",
             "nullable" : true,
             "title" : "NativeLoadEvent.teamServiceRequired",
             "type" : "boolean"
           },
           "isHazmat" : {
+            "description" : "Whether the load contains hazardous materials",
             "nullable" : true,
             "title" : "NativeLoadEvent.isHazmat",
             "type" : "boolean"
           },
           "customerRate" : {
+            "description" : "The rate charged to the customer",
             "nullable" : true,
             "title" : "NativeLoadEvent.customerRate",
             "type" : "number"
           },
           "startRate" : {
+            "description" : "The starting rate for the load",
             "nullable" : true,
             "title" : "NativeLoadEvent.startRate",
             "type" : "number"
           },
           "maxRate" : {
+            "description" : "The maximum rate for the load for negotiation",
             "nullable" : true,
             "title" : "NativeLoadEvent.maxRate",
             "type" : "number"
           },
           "bookNowRate" : {
+            "description" : "The rate for booking the load. This is the rate that the bot will relay to the carrier",
             "nullable" : true,
             "title" : "NativeLoadEvent.bookNowRate",
             "type" : "number"
           },
           "specialInstructions" : {
+            "description" : "Any special instructions for the load",
             "nullable" : true,
             "title" : "NativeLoadEvent.specialInstructions",
             "type" : "string"
           },
           "shipmentContactNumber" : {
+            "description" : "A string representing a phone number in E.164 format, i.e. \"+18008463400\". If extension is present, \"+15152733178;ext=3178\"",
             "nullable" : true,
             "title" : "NativeLoadEvent.shipmentContactNumber",
             "type" : "string"
@@ -495,22 +517,27 @@
         "additionalProperties" : false,
         "properties" : {
           "city" : {
+            "description" : "City name",
             "title" : "Address.city",
             "type" : "string"
           },
           "state" : {
+            "description" : "State code",
             "title" : "Address.state",
             "type" : "string"
           },
           "country" : {
+            "description" : "Country code",
             "title" : "Address.country",
             "type" : "string"
           },
           "zip" : {
+            "description" : "ZIP/Postal code",
             "title" : "Address.zip",
             "type" : "string"
           },
           "timezone" : {
+            "description" : "Timezone identifier for the location",
             "title" : "Address.timezone",
             "type" : "string"
           }
@@ -520,6 +547,7 @@
         "type" : "object"
       },
       "LoadStatus" : {
+        "description" : "Represents the current status of the load",
         "enum" : [ "INACTIVE", "ACTIVE" ],
         "title" : "LoadStatus",
         "type" : "string"
@@ -534,10 +562,12 @@
             "$ref" : "#/components/schemas/Address"
           },
           "windowStart" : {
+            "description" : "The start time of the window for this stop",
             "title" : "LoadStop.windowStart",
             "type" : "string"
           },
           "windowEnd" : {
+            "description" : "The end time of the window for this stop",
             "nullable" : true,
             "title" : "LoadStop.windowEnd",
             "type" : "string"
@@ -548,6 +578,7 @@
         "type" : "object"
       },
       "StopType" : {
+        "description" : "Indicates whether the stop is for pickup or dropoff",
         "enum" : [ "pickup", "dropoff" ],
         "title" : "StopType",
         "type" : "string"
