@@ -17,6 +17,9 @@
   }, {
     "description" : "Export data from FleetWorks",
     "name" : "Data Exporting"
+  }, {
+    "description" : "Custom AI agent use case",
+    "name" : "Custom Use Case"
   } ],
   "paths" : {
     "/api/webhooks/loads/events" : {
@@ -302,6 +305,60 @@
         "summary" : "Export Bids",
         "tags" : [ "Data Exporting" ]
       }
+    },
+    "/api/custom-use-cases/{agentId}/calls" : {
+      "post" : {
+        "description" : "Trigger outbound call",
+        "operationId" : "customUseCasesCall",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "agentId",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/CreateCallRequest"
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/webhooksLoadsEvents_200_response"
+                }
+              }
+            },
+            "description" : "Success"
+          },
+          "400" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/webhooksLoadsEvents_400_response"
+                }
+              }
+            },
+            "description" : "Error response"
+          },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/webhooksLoadsEvents_400_response"
+                }
+              }
+            },
+            "description" : "Error response"
+          }
+        },
+        "security" : [ {
+          "auth" : [ ]
+        } ],
+        "summary" : "Trigger outbound call",
+        "tags" : [ "Custom Use Case" ]
+      }
     }
   },
   "components" : {
@@ -320,6 +377,15 @@
           "application/json" : {
             "schema" : {
               "$ref" : "#/components/schemas/WebhooksCarrierEventsRequest"
+            }
+          }
+        }
+      },
+      "CreateCallRequest" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/customUseCasesCall_request"
             }
           }
         }
@@ -347,6 +413,16 @@
         "description" : "Success"
       },
       "webhooksCarrierEventsResponse" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/webhooksLoadsEvents_200_response"
+            }
+          }
+        },
+        "description" : "Success"
+      },
+      "CreateCallResponse" : {
         "content" : {
           "application/json" : {
             "schema" : {
@@ -675,6 +751,15 @@
             "type" : "string"
           }
         },
+        "type" : "object"
+      },
+      "customUseCasesCall_request" : {
+        "properties" : {
+          "toPhone" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "toPhone" ],
         "type" : "object"
       },
       "Calls_inner" : {

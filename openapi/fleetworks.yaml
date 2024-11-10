@@ -14,6 +14,8 @@ tags:
     description: Ingest loads to FleetWorks system
   - name: Data Exporting
     description: Export data from FleetWorks
+  - name: Custom Use Case
+    description: Custom AI agent use case
 servers:
   - url: "https://api.fleetworks.ai"
 
@@ -26,6 +28,8 @@ paths:
     $ref: "exportEndpoints/exportCalls.yaml#/paths/~1"
   "/api/organizations/{orgId}/export/bids":
     $ref: "exportEndpoints/exportBids.yaml#/paths/~1"
+  "/api/custom-use-cases/{agentId}/calls":
+    $ref: "customUseCases/calls.yaml#/paths/~1"
 
 components:
   securitySchemes:

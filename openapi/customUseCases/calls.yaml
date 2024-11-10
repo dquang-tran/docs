@@ -1,0 +1,51 @@
+paths:
+  /:
+    post:
+      tags:
+        - Custom Use Case
+      summary: Trigger outbound call
+      description: Trigger outbound call
+      operationId: customUseCasesCall
+      security:
+        - auth: []
+      parameters:
+        - name: agentId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        $ref: "#/components/requestBodies/CreateCallRequest"
+      responses:
+        "200":
+          $ref: "#/components/responses/CreateCallResponse"
+        "400":
+          description: Invalid request
+          $ref: "../fleetworks.yaml#/components/responses/ErrorResponse"
+        "401":
+          description: Unauthorized or invalid API key
+          $ref: "../fleetworks.yaml#/components/responses/ErrorResponse"
+
+components:
+  requestBodies:
+    CreateCallRequest:
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - toPhone
+            properties:
+              toPhone:
+                type: string
+
+  responses:
+    CreateCallResponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
