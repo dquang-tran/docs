@@ -114,25 +114,17 @@
         "tags" : [ "Ingestion" ]
       }
     },
-    "/api/organizations/{orgId}/export/calls" : {
+    "/api/export/calls" : {
       "get" : {
         "description" : "Export call records for an organization within a specified time range. Optional filtering by load ID and MC number is supported.",
         "operationId" : "exportCalls",
         "parameters" : [ {
-          "description" : "Organization ID to export calls for",
-          "in" : "path",
-          "name" : "orgId",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
           "description" : "Start time for call export in ISO8601 format",
           "in" : "query",
           "name" : "startTime",
           "required" : true,
           "schema" : {
-            "format" : "date-time",
+            "format" : "date",
             "type" : "string"
           }
         }, {
@@ -141,7 +133,7 @@
           "name" : "endTime",
           "required" : true,
           "schema" : {
-            "format" : "date-time",
+            "format" : "date",
             "type" : "string"
           }
         }, {
@@ -160,13 +152,34 @@
           "schema" : {
             "type" : "string"
           }
+        }, {
+          "description" : "Pagination offset",
+          "in" : "query",
+          "name" : "offset",
+          "required" : false,
+          "schema" : {
+            "default" : 0,
+            "minimum" : 0,
+            "type" : "number"
+          }
+        }, {
+          "description" : "Pagination limit",
+          "in" : "query",
+          "name" : "limit",
+          "required" : false,
+          "schema" : {
+            "default" : 100,
+            "maximum" : 500,
+            "minimum" : 1,
+            "type" : "number"
+          }
         } ],
         "responses" : {
           "200" : {
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/Calls"
+                  "$ref" : "#/components/schemas/exportCalls_200_response"
                 }
               }
             },
@@ -210,25 +223,17 @@
         "tags" : [ "Data Exporting" ]
       }
     },
-    "/api/organizations/{orgId}/export/bids" : {
+    "/api/export/sales-bids" : {
       "get" : {
         "description" : "Export bid records for an organization within a specified time range. Optional filtering by load ID and MC number is supported.",
         "operationId" : "exportBids",
         "parameters" : [ {
-          "description" : "Organization ID to export bids for",
-          "in" : "path",
-          "name" : "organizationId",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
           "description" : "Start time for bid export in ISO8601 format",
           "in" : "query",
           "name" : "startTime",
           "required" : true,
           "schema" : {
-            "format" : "date-time",
+            "format" : "date",
             "type" : "string"
           }
         }, {
@@ -237,7 +242,7 @@
           "name" : "endTime",
           "required" : true,
           "schema" : {
-            "format" : "date-time",
+            "format" : "date",
             "type" : "string"
           }
         }, {
@@ -256,13 +261,34 @@
           "schema" : {
             "type" : "string"
           }
+        }, {
+          "description" : "Pagination offset",
+          "in" : "query",
+          "name" : "offset",
+          "required" : false,
+          "schema" : {
+            "default" : 0,
+            "minimum" : 0,
+            "type" : "number"
+          }
+        }, {
+          "description" : "Pagination limit",
+          "in" : "query",
+          "name" : "limit",
+          "required" : false,
+          "schema" : {
+            "default" : 100,
+            "maximum" : 500,
+            "minimum" : 1,
+            "type" : "number"
+          }
         } ],
         "responses" : {
           "200" : {
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/Bids"
+                  "$ref" : "#/components/schemas/exportBids_200_response"
                 }
               }
             },
@@ -434,17 +460,110 @@
       }
     },
     "schemas" : {
-      "Calls" : {
-        "items" : {
-          "$ref" : "#/components/schemas/Calls_inner"
+      "PaginationResponse" : {
+        "description" : "Pagination response",
+        "properties" : {
+          "limit" : {
+            "type" : "number"
+          },
+          "offset" : {
+            "type" : "number"
+          },
+          "total" : {
+            "type" : "number"
+          }
         },
-        "type" : "array"
+        "type" : "object"
       },
-      "Bids" : {
-        "items" : {
-          "$ref" : "#/components/schemas/Bids_inner"
+      "CallForExport" : {
+        "properties" : {
+          "id" : {
+            "description" : "The ID of the call",
+            "type" : "integer"
+          },
+          "vocodeId" : {
+            "description" : "The vocode ID of the call",
+            "nullable" : true,
+            "type" : "string"
+          },
+          "fromPhone" : {
+            "description" : "The phone number the call came from",
+            "type" : "string"
+          },
+          "toPhone" : {
+            "description" : "The phone number the call was placed to",
+            "type" : "string"
+          },
+          "summary" : {
+            "description" : "The summary of the call",
+            "nullable" : true,
+            "type" : "string"
+          },
+          "createdAt" : {
+            "description" : "The date and time the call was created",
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "loadId" : {
+            "description" : "The load ID linked to the call",
+            "type" : "string"
+          },
+          "mcNumber" : {
+            "description" : "The carrier mcNumber",
+            "type" : "string"
+          },
+          "recordingUrl" : {
+            "description" : "The URL of the recording of the call",
+            "nullable" : true,
+            "type" : "string"
+          }
         },
-        "type" : "array"
+        "type" : "object"
+      },
+      "SalesBidForExport" : {
+        "properties" : {
+          "loadId" : {
+            "description" : "The internal ID of the load this bid is for",
+            "type" : "integer"
+          },
+          "originLocation" : {
+            "description" : "The origin location for the load.",
+            "type" : "string"
+          },
+          "destinationLocation" : {
+            "description" : "The destination location for the load.",
+            "type" : "string"
+          },
+          "carrierMc" : {
+            "description" : "Motor Carrier (MC) number for the carrier.",
+            "type" : "string"
+          },
+          "carrierDot" : {
+            "description" : "Department of Transportation (DOT) number for the carrier.",
+            "type" : "string"
+          },
+          "phoneNumber" : {
+            "description" : "Contact phone number for the carrier.",
+            "type" : "string"
+          },
+          "extension" : {
+            "description" : "Phone extension, if applicable.",
+            "type" : "string"
+          },
+          "callerName" : {
+            "description" : "Name of the individual making the call.",
+            "type" : "string"
+          },
+          "callSummary" : {
+            "description" : "Summary of the call details.",
+            "type" : "string"
+          },
+          "callDateTime" : {
+            "description" : "Date and time when the call occurred.",
+            "format" : "date-time",
+            "type" : "string"
+          }
+        }
       },
       "NativeLoadEvent" : {
         "additionalProperties" : false,
@@ -753,6 +872,34 @@
         },
         "type" : "object"
       },
+      "exportCalls_200_response" : {
+        "properties" : {
+          "calls" : {
+            "items" : {
+              "$ref" : "#/components/schemas/CallForExport"
+            },
+            "type" : "array"
+          },
+          "pagination" : {
+            "$ref" : "#/components/schemas/PaginationResponse"
+          }
+        },
+        "type" : "object"
+      },
+      "exportBids_200_response" : {
+        "properties" : {
+          "salesBids" : {
+            "items" : {
+              "$ref" : "#/components/schemas/SalesBidForExport"
+            },
+            "type" : "array"
+          },
+          "pagination" : {
+            "$ref" : "#/components/schemas/PaginationResponse"
+          }
+        },
+        "type" : "object"
+      },
       "customUseCasesCall_request" : {
         "properties" : {
           "toPhone" : {
@@ -760,189 +907,6 @@
           }
         },
         "required" : [ "toPhone" ],
-        "type" : "object"
-      },
-      "Calls_inner" : {
-        "properties" : {
-          "id" : {
-            "description" : "The ID of the call",
-            "type" : "integer"
-          },
-          "vocodeId" : {
-            "description" : "The vocode ID of the call",
-            "nullable" : true,
-            "type" : "string"
-          },
-          "type" : {
-            "description" : "The type of call",
-            "enum" : [ "INBOUND", "OUTBOUND" ],
-            "type" : "string"
-          },
-          "status" : {
-            "description" : "The status of the call",
-            "enum" : [ "PENDING", "IN_PROGRESS", "COMPLETED", "FAILED", "CANCELED" ],
-            "type" : "string"
-          },
-          "fromPhone" : {
-            "description" : "The phone number the call came from",
-            "type" : "string"
-          },
-          "toPhone" : {
-            "description" : "The phone number the call was placed to",
-            "type" : "string"
-          },
-          "transcript" : {
-            "description" : "The transcript of the call",
-            "nullable" : true,
-            "type" : "object"
-          },
-          "recordingUrl" : {
-            "description" : "The URL of the recording of the call",
-            "nullable" : true,
-            "type" : "string"
-          },
-          "conversationSeconds" : {
-            "description" : "The number of seconds in the call",
-            "format" : "float",
-            "nullable" : true,
-            "type" : "number"
-          },
-          "summary" : {
-            "description" : "The summary of the call",
-            "nullable" : true,
-            "type" : "string"
-          },
-          "contentTags" : {
-            "description" : "The tags of the call",
-            "items" : {
-              "type" : "string"
-            },
-            "type" : "array"
-          },
-          "callQualityTags" : {
-            "description" : "The call quality tags of the call",
-            "items" : {
-              "type" : "string"
-            },
-            "type" : "array"
-          },
-          "providerType" : {
-            "description" : "The type of provider the call came from",
-            "nullable" : true,
-            "type" : "string"
-          },
-          "sentimentScore" : {
-            "description" : "Sentiment score of the call",
-            "format" : "float",
-            "nullable" : true,
-            "type" : "number"
-          },
-          "callerName" : {
-            "description" : "The name of the caller",
-            "nullable" : true,
-            "type" : "string"
-          },
-          "callerExt" : {
-            "description" : "The extension of the caller",
-            "nullable" : true,
-            "type" : "string"
-          },
-          "forwardedTo" : {
-            "description" : "The phone number the call was forwarded to",
-            "nullable" : true,
-            "type" : "string"
-          },
-          "reviewStatus" : {
-            "description" : "The review status of the call",
-            "enum" : [ "PENDING", "REVIEWED", "FLAGGED" ],
-            "nullable" : true,
-            "type" : "string"
-          },
-          "reviewerId" : {
-            "description" : "The ID of the reviewer who reviewed the call",
-            "nullable" : true,
-            "type" : "integer"
-          },
-          "reviewedAt" : {
-            "description" : "The date and time the call was reviewed",
-            "format" : "date-time",
-            "nullable" : true,
-            "type" : "string"
-          },
-          "callQueueId" : {
-            "description" : "The ID of the call queue the call was assigned to",
-            "nullable" : true,
-            "type" : "integer"
-          },
-          "agentId" : {
-            "description" : "The ID of the agent who handled the call",
-            "nullable" : true,
-            "type" : "integer"
-          },
-          "createdAt" : {
-            "description" : "The date and time the call was created",
-            "format" : "date-time",
-            "type" : "string"
-          },
-          "updatedAt" : {
-            "description" : "The date and time the call was last updated",
-            "format" : "date-time",
-            "type" : "string"
-          }
-        },
-        "type" : "object"
-      },
-      "Bids_inner" : {
-        "properties" : {
-          "id" : {
-            "description" : "The unique identifier for the bid",
-            "type" : "integer"
-          },
-          "conversationId" : {
-            "description" : "The ID of the conversation this bid is associated with",
-            "type" : "integer"
-          },
-          "loadId" : {
-            "description" : "The internal ID of the load this bid is for",
-            "type" : "integer"
-          },
-          "organizationId" : {
-            "description" : "The ID of the organization making the bid",
-            "type" : "integer"
-          },
-          "bidAmount" : {
-            "description" : "The current bid amount",
-            "format" : "decimal",
-            "type" : "number"
-          },
-          "initialBid" : {
-            "description" : "The initial bid amount if different from current bid",
-            "format" : "decimal",
-            "nullable" : true,
-            "type" : "number"
-          },
-          "notes" : {
-            "description" : "Optional notes associated with the bid",
-            "nullable" : true,
-            "type" : "string"
-          },
-          "createdAt" : {
-            "description" : "The date and time the bid was created",
-            "format" : "date-time",
-            "type" : "string"
-          },
-          "updatedAt" : {
-            "description" : "The date and time the bid was last updated",
-            "format" : "date-time",
-            "type" : "string"
-          },
-          "deletedAt" : {
-            "description" : "The date and time the bid was soft deleted, if applicable",
-            "format" : "date-time",
-            "nullable" : true,
-            "type" : "string"
-          }
-        },
         "type" : "object"
       }
     },

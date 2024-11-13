@@ -24,9 +24,9 @@ paths:
     $ref: "inboundWebhooks/loadEventApi.yaml#/paths/~1"
   "/api/webhooks/carrier/events":
     $ref: "inboundWebhooks/carrierEventApi.yaml#/paths/~1"
-  "/api/organizations/{orgId}/export/calls":
+  "/api/export/calls":
     $ref: "exportEndpoints/exportCalls.yaml#/paths/~1"
-  "/api/organizations/{orgId}/export/bids":
+  "/api/export/sales-bids":
     $ref: "exportEndpoints/exportBids.yaml#/paths/~1"
   "/api/custom-use-cases/{agentId}/calls":
     $ref: "customUseCases/calls.yaml#/paths/~1"
@@ -48,3 +48,15 @@ components:
             properties:
               error:
                 type: string
+
+  schemas:
+    PaginationResponse:
+      description: Pagination response
+      type: object
+      properties:
+        limit:
+          type: number
+        offset: 
+          type: number
+        total:
+          type: number
