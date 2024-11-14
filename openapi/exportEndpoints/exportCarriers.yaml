@@ -1,0 +1,137 @@
+paths:
+  /:
+    get:
+      tags:
+        - Carriers
+      summary: Get Carriers by Lane
+      description: Retrieve carrier records that have operated in a specified lane with optional filtering by radius and equipment types
+      operationId: getCarriersByLane
+      security:
+        - auth: []
+      parameters:
+        - name: origin
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Origin location for the lane (city, state format)
+        - name: destination
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Destination location for the lane (city, state format)
+        - name: radius
+          in: query
+          required: false
+          schema:
+            type: number
+            minimum: 0
+          description: Search radius in miles around origin and destination points
+        - name: equipmentTypes
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Comma-separated list of equipment types to filter by
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  carriers:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Carrier"
+                  pagination:
+                    $ref: "#/components/schemas/PaginationResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+components:
+  schemas:
+    Carrier:
+      type: object
+      properties:
+        mcNumber:
+          type: string
+          description: Motor Carrier (MC) number
+          example: "123456"
+        dotNumber:
+          type: number
+          description: Department of Transportation (DOT) number
+          example: 1234
+        name:
+          type: string
+          description: Carrier company name
+          example: "FleetWorks Trucking"
+        address:
+          type: string
+          description: Carrier's business address
+          example: "123 1st St, New York, NY"
+        fleetsize:
+          type: number
+          description: Number of trucks in carrier's fleet
+          example: 3
+        avgRate:
+          type: string
+          description: Average rate for the carrier
+          example: "1234"
+        lanes:
+          type: array
+          items:
+            type: object
+            properties:
+              origin:
+                type: string
+                example: "New York, NY"
+              destination:
+                type: string
+                example: "Chicago, IL"
+              avgRate:
+                type: string
+                example: "1234"
+              totalBids:
+                type: number
+                example: 1
+        ruleAssessment:
+          type: string
+          enum: ["pass", "partial_pass", "incomplete", "fail"]
+          example: "pass"
+
+    PaginationResponse:
+      type: object
+      properties:
+        total:
+          type: number
+          description: Total number of records
+          example: 1
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+        code:
+          type: string
+          description: Error code

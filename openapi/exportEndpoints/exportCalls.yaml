@@ -2,10 +2,10 @@ paths:
   /:
     get:
       tags:
-        - Data Exporting
-      summary: Export Calls
-      description: Export call records for an organization within a specified time range. Optional filtering by load ID and MC number is supported.
-      operationId: exportCalls
+        - Calls
+      summary: List Calls
+      description: List call records for within a specified time range. Optional filtering by load ID and MC number is supported.
+      operationId: listCalls
       security:
         - auth: []
       parameters:
@@ -15,14 +15,14 @@ paths:
           schema:
             type: string
             format: date
-          description: Start time for call export in ISO8601 format
+          description: Start time for calls list in ISO8601 format
         - name: endTime
           in: query
           required: true
           schema:
             type: string
             format: date
-          description: End time for call export in ISO8601 format
+          description: End time for calls list in ISO8601 format
         - name: loadId
           in: query
           required: false
@@ -55,7 +55,7 @@ paths:
 
       responses:
         "200":
-          description: Successful export
+          description: Success
           content:
             application/json:
               schema:

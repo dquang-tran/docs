@@ -15,11 +15,17 @@
     "description" : "Ingest loads to FleetWorks system",
     "name" : "Ingestion"
   }, {
-    "description" : "Export data from FleetWorks",
-    "name" : "Data Exporting"
+    "description" : "Endpoints for calls",
+    "name" : "Calls"
+  }, {
+    "description" : "Endpoints for bids",
+    "name" : "Bids"
+  }, {
+    "description" : "Endpoints for carriers",
+    "name" : "Carriers"
   }, {
     "description" : "Custom AI agent use case",
-    "name" : "Custom Use Case"
+    "name" : "Custom Use Cases"
   } ],
   "paths" : {
     "/api/webhooks/loads/events" : {
@@ -114,12 +120,12 @@
         "tags" : [ "Ingestion" ]
       }
     },
-    "/api/export/calls" : {
+    "/api/v1/calls" : {
       "get" : {
-        "description" : "Export call records for an organization within a specified time range. Optional filtering by load ID and MC number is supported.",
-        "operationId" : "exportCalls",
+        "description" : "List call records for within a specified time range. Optional filtering by load ID and MC number is supported.",
+        "operationId" : "listCalls",
         "parameters" : [ {
-          "description" : "Start time for call export in ISO8601 format",
+          "description" : "Start time for calls list in ISO8601 format",
           "in" : "query",
           "name" : "startTime",
           "required" : true,
@@ -128,7 +134,7 @@
             "type" : "string"
           }
         }, {
-          "description" : "End time for call export in ISO8601 format",
+          "description" : "End time for calls list in ISO8601 format",
           "in" : "query",
           "name" : "endTime",
           "required" : true,
@@ -179,11 +185,11 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/exportCalls_200_response"
+                  "$ref" : "#/components/schemas/listCalls_200_response"
                 }
               }
             },
-            "description" : "Successful export"
+            "description" : "Success"
           },
           "400" : {
             "content" : {
@@ -219,16 +225,16 @@
         "security" : [ {
           "auth" : [ ]
         } ],
-        "summary" : "Export Calls",
-        "tags" : [ "Data Exporting" ]
+        "summary" : "List Calls",
+        "tags" : [ "Calls" ]
       }
     },
-    "/api/export/sales-bids" : {
+    "/api/v1/sales-bids" : {
       "get" : {
-        "description" : "Export bid records for an organization within a specified time range. Optional filtering by load ID and MC number is supported.",
-        "operationId" : "exportBids",
+        "description" : "List bid records for an organization within a specified time range. Optional filtering by load ID and MC number is supported.",
+        "operationId" : "listBids",
         "parameters" : [ {
-          "description" : "Start time for bid export in ISO8601 format",
+          "description" : "Start time for bids list in ISO8601 format",
           "in" : "query",
           "name" : "startTime",
           "required" : true,
@@ -237,7 +243,7 @@
             "type" : "string"
           }
         }, {
-          "description" : "End time for bid export in ISO8601 format",
+          "description" : "End time for bids list in ISO8601 format",
           "in" : "query",
           "name" : "endTime",
           "required" : true,
@@ -288,11 +294,11 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/exportBids_200_response"
+                  "$ref" : "#/components/schemas/listBids_200_response"
                 }
               }
             },
-            "description" : "Successful export"
+            "description" : "Success"
           },
           "400" : {
             "content" : {
@@ -328,8 +334,95 @@
         "security" : [ {
           "auth" : [ ]
         } ],
-        "summary" : "Export Bids",
-        "tags" : [ "Data Exporting" ]
+        "summary" : "List Bids",
+        "tags" : [ "Bids" ]
+      }
+    },
+    "/api/v1/carriers" : {
+      "get" : {
+        "description" : "Retrieve carrier records that have operated in a specified lane with optional filtering by radius and equipment types",
+        "operationId" : "getCarriersByLane",
+        "parameters" : [ {
+          "description" : "Origin location for the lane (city, state format)",
+          "in" : "query",
+          "name" : "origin",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Destination location for the lane (city, state format)",
+          "in" : "query",
+          "name" : "destination",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Search radius in miles around origin and destination points",
+          "in" : "query",
+          "name" : "radius",
+          "required" : false,
+          "schema" : {
+            "minimum" : 0,
+            "type" : "number"
+          }
+        }, {
+          "description" : "Comma-separated list of equipment types to filter by",
+          "in" : "query",
+          "name" : "equipmentTypes",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/getCarriersByLane_200_response"
+                }
+              }
+            },
+            "description" : "Success"
+          },
+          "400" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description" : "Bad Request"
+          },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description" : "Unauthorized"
+          },
+          "403" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description" : "Forbidden"
+          }
+        },
+        "security" : [ {
+          "auth" : [ ]
+        } ],
+        "summary" : "Get Carriers by Lane",
+        "tags" : [ "Carriers" ]
       }
     },
     "/api/custom-use-cases/{agentId}/calls" : {
@@ -383,7 +476,7 @@
           "auth" : [ ]
         } ],
         "summary" : "Trigger outbound call",
-        "tags" : [ "Custom Use Case" ]
+        "tags" : [ "Custom Use Cases" ]
       }
     }
   },
@@ -564,6 +657,75 @@
             "type" : "string"
           }
         }
+      },
+      "Carrier" : {
+        "properties" : {
+          "mcNumber" : {
+            "description" : "Motor Carrier (MC) number",
+            "example" : "123456",
+            "type" : "string"
+          },
+          "dotNumber" : {
+            "description" : "Department of Transportation (DOT) number",
+            "example" : 1234,
+            "type" : "number"
+          },
+          "name" : {
+            "description" : "Carrier company name",
+            "example" : "FleetWorks Trucking",
+            "type" : "string"
+          },
+          "address" : {
+            "description" : "Carrier's business address",
+            "example" : "123 1st St, New York, NY",
+            "type" : "string"
+          },
+          "fleetsize" : {
+            "description" : "Number of trucks in carrier's fleet",
+            "example" : 3,
+            "type" : "number"
+          },
+          "avgRate" : {
+            "description" : "Average rate for the carrier",
+            "example" : "1234",
+            "type" : "string"
+          },
+          "lanes" : {
+            "items" : {
+              "$ref" : "#/components/schemas/Carrier_lanes_inner"
+            },
+            "type" : "array"
+          },
+          "ruleAssessment" : {
+            "enum" : [ "pass", "partial_pass", "incomplete", "fail" ],
+            "example" : "pass",
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
+      "PaginationResponse_1" : {
+        "properties" : {
+          "total" : {
+            "description" : "Total number of records",
+            "example" : 1,
+            "type" : "number"
+          }
+        },
+        "type" : "object"
+      },
+      "ErrorResponse" : {
+        "properties" : {
+          "error" : {
+            "description" : "Error message",
+            "type" : "string"
+          },
+          "code" : {
+            "description" : "Error code",
+            "type" : "string"
+          }
+        },
+        "type" : "object"
       },
       "NativeLoadEvent" : {
         "additionalProperties" : false,
@@ -872,7 +1034,7 @@
         },
         "type" : "object"
       },
-      "exportCalls_200_response" : {
+      "listCalls_200_response" : {
         "properties" : {
           "calls" : {
             "items" : {
@@ -886,7 +1048,7 @@
         },
         "type" : "object"
       },
-      "exportBids_200_response" : {
+      "listBids_200_response" : {
         "properties" : {
           "salesBids" : {
             "items" : {
@@ -900,6 +1062,20 @@
         },
         "type" : "object"
       },
+      "getCarriersByLane_200_response" : {
+        "properties" : {
+          "carriers" : {
+            "items" : {
+              "$ref" : "#/components/schemas/Carrier"
+            },
+            "type" : "array"
+          },
+          "pagination" : {
+            "$ref" : "#/components/schemas/PaginationResponse_1"
+          }
+        },
+        "type" : "object"
+      },
       "customUseCasesCall_request" : {
         "properties" : {
           "toPhone" : {
@@ -908,11 +1084,32 @@
         },
         "required" : [ "toPhone" ],
         "type" : "object"
+      },
+      "Carrier_lanes_inner" : {
+        "properties" : {
+          "origin" : {
+            "example" : "New York, NY",
+            "type" : "string"
+          },
+          "destination" : {
+            "example" : "Chicago, IL",
+            "type" : "string"
+          },
+          "avgRate" : {
+            "example" : "1234",
+            "type" : "string"
+          },
+          "totalBids" : {
+            "example" : 1,
+            "type" : "number"
+          }
+        },
+        "type" : "object"
       }
     },
     "securitySchemes" : {
       "auth" : {
-        "description" : "An authentication token that identifies the organization associated with the event. You can reach out to FleetWorks team to request for a token.",
+        "description" : "An authentication token that identifies the organization associated with the event. You can reach out to FleetWorks team to request a token.",
         "scheme" : "bearer",
         "type" : "http"
       }

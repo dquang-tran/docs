@@ -2,10 +2,10 @@ paths:
   /:
     get:
       tags:
-        - Data Exporting
-      summary: Export Bids
-      description: Export bid records for an organization within a specified time range. Optional filtering by load ID and MC number is supported.
-      operationId: exportBids
+        - Bids
+      summary: List Bids
+      description: List bid records for an organization within a specified time range. Optional filtering by load ID and MC number is supported.
+      operationId: listBids
       security:
         - auth: []
       parameters:
@@ -15,14 +15,14 @@ paths:
           schema:
             type: string
             format: date
-          description: Start time for bid export in ISO8601 format
+          description: Start time for bids list in ISO8601 format
         - name: endTime
           in: query
           required: true
           schema:
             type: string
             format: date
-          description: End time for bid export in ISO8601 format
+          description: End time for bids list in ISO8601 format
         - name: loadId
           in: query
           required: false
@@ -54,7 +54,7 @@ paths:
           description: Pagination limit
       responses:
         "200":
-          description: Successful export
+          description: Success
           content:
             application/json:
               schema:

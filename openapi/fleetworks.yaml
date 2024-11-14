@@ -12,8 +12,12 @@ info:
 tags:
   - name: Ingestion
     description: Ingest loads to FleetWorks system
-  - name: Data Exporting
-    description: Export data from FleetWorks
+  - name: Calls
+    description: Endpoints for calls
+  - name: Bids
+    description: Endpoints for bids
+  - name: Carriers
+    description: Endpoints for carriers
   - name: Custom Use Cases
     description: Custom AI agent use case
 servers:
@@ -24,10 +28,12 @@ paths:
     $ref: "inboundWebhooks/loadEventApi.yaml#/paths/~1"
   "/api/webhooks/carrier/events":
     $ref: "inboundWebhooks/carrierEventApi.yaml#/paths/~1"
-  "/api/export/calls":
+  "/api/v1/calls":
     $ref: "exportEndpoints/exportCalls.yaml#/paths/~1"
-  "/api/export/sales-bids":
+  "/api/v1/sales-bids":
     $ref: "exportEndpoints/exportBids.yaml#/paths/~1"
+  "/api/v1/carriers":
+    $ref: "exportEndpoints/exportCarriers.yaml#/paths/~1"
   "/api/custom-use-cases/{agentId}/calls":
     $ref: "customUseCases/calls.yaml#/paths/~1"
 
@@ -56,7 +62,7 @@ components:
       properties:
         limit:
           type: number
-        offset: 
+        offset:
           type: number
         total:
           type: number
