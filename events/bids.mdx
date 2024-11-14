@@ -1,0 +1,52 @@
+FleetWorks sends bid events to your TMS when carriers submit bids on loads. The webhook payload contains bid details and carrier information.
+
+<Note>
+  Configure your webhook URL in the FleetWorks dashboard to receive bid events.
+</Note>
+
+## Bid Event Payload
+
+<ParamField path="loadId" type="string" required>
+  Load identifier
+</ParamField>
+
+<ParamField path="bidAmount" type="number" required>
+  Bid amount
+</ParamField>
+
+<ParamField path="notes" type="string">
+  Additional bid details
+</ParamField>
+
+<ParamField path="url" type="string">
+  Link to bid on FleetWorks platform
+</ParamField>
+
+<ParamField path="source" type="object" required>
+  Source of the bid
+  <Expandable>
+    <ParamField path="type" type="string" required>
+      Type of source ("call" or "email")
+    </ParamField>
+    <ParamField path="id" type="string" required>
+      Unique identifier of the source (call ID or email thread ID)
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField path="phone" type="string">
+  Carrier phone number (E.164 format, e.g. +14155552671)
+</ParamField>
+
+<ParamField path="email" type="string">
+  Carrier email address
+</ParamField>
+
+<ParamField path="mcNumber" type="string">
+  Carrier MC number
+</ParamField>
+
+<ParamField path="dotNumber" type="string">
+  Carrier DOT number
+</ParamField>
+

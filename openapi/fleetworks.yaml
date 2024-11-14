@@ -14,7 +14,7 @@ tags:
     description: Ingest loads to FleetWorks system
   - name: Data Exporting
     description: Export data from FleetWorks
-  - name: Custom Use Case
+  - name: Custom Use Cases
     description: Custom AI agent use case
 servers:
   - url: "https://api.fleetworks.ai"
@@ -36,7 +36,7 @@ components:
     auth:
       type: http
       scheme: bearer
-      description: An authentication token that identifies the organization associated with the event. You can reach out to FleetWorks team to request for a token.
+      description: An authentication token that identifies the organization associated with the event. You can reach out to FleetWorks team to request a token.
 
   responses:
     ErrorResponse:

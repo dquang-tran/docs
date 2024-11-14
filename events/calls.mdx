@@ -1,0 +1,48 @@
+FleetWorks sends call events to your TMS when carriers interact with our voice AI system. The webhook payload contains details about the call and carrier information.
+
+<Note>
+  Configure your webhook URL in the FleetWorks dashboard to receive call events.
+</Note>
+
+## Call Event Payload
+
+<ParamField path="callId" type="string" required>
+  Unique call identifier
+</ParamField>
+
+<ParamField path="direction" type="string" required>
+  Call direction ("inbound" or "outbound")
+</ParamField>
+
+<ParamField path="startTime" type="string" required>
+  Call start time in ISO 8601 format
+</ParamField>
+
+<ParamField path="endTime" type="string" required>
+  Call end time in ISO 8601 format
+</ParamField>
+
+<ParamField path="duration" type="number" required>
+  Call duration in seconds
+</ParamField>
+
+<ParamField path="phone" type="string" required>
+  Carrier phone number (E.164 format, e.g. +14155552671)
+</ParamField>
+
+<ParamField path="mcNumber" type="string">
+  Carrier MC number if identified during call
+</ParamField>
+
+<ParamField path="dotNumber" type="string">
+  Carrier DOT number if identified during call
+</ParamField>
+
+<ParamField path="transcription" type="string">
+  Text transcription of the call
+</ParamField>
+
+<ParamField path="recordingUrl" type="string">
+  URL to download call recording
+</ParamField>
+

@@ -2,7 +2,7 @@ paths:
   /:
     post:
       tags:
-        - Custom Use Case
+        - Custom Use Cases
       summary: Trigger outbound call
       description: Trigger outbound call
       operationId: customUseCasesCall

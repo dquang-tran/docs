@@ -37,8 +37,12 @@
   ],
   "navigation": [
     {
-      "group": "Get Started",
-      "pages": ["introduction", "outbound-events"]
+      "group": "General",
+      "pages": ["introduction", "voice", "email"]
+    },
+    {
+      "group": "Events",
+      "pages": ["events/bids", "events/calls"]
     },
     {
       "group": "API Documentation",
