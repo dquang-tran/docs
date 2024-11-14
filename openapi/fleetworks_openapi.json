@@ -229,7 +229,7 @@
         "tags" : [ "Calls" ]
       }
     },
-    "/api/v1/sales-bids" : {
+    "/api/v1/bids" : {
       "get" : {
         "description" : "List bid records for an organization within a specified time range. Optional filtering by load ID and MC number is supported.",
         "operationId" : "listBids",
