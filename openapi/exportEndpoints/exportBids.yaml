@@ -9,25 +9,19 @@ paths:
       security:
         - auth: []
       parameters:
-        - name: organizationId
-          in: path
-          required: true
-          schema:
-            type: string
-          description: Organization ID to export bids for
         - name: startTime
           in: query
           required: true
           schema:
             type: string
-            format: date-time
+            format: date
           description: Start time for bid export in ISO8601 format
         - name: endTime
           in: query
           required: true
           schema:
             type: string
-            format: date-time
+            format: date
           description: End time for bid export in ISO8601 format
         - name: loadId
           in: query
@@ -41,28 +35,76 @@ paths:
           schema:
             type: string
           description: Optional MC number to filter bids
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: number
+            minimum: 0
+            default: 0
+          description: Pagination offset
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: number
+            minimum: 1
+            maximum: 500
+            default: 100
+          description: Pagination limit
       responses:
         "200":
           description: Successful export
           content:
             application/json:
               schema:
-                $ref: "./schema/exportObjects.yaml#/components/schemas/Bids"
+                type: object
+                properties:
+                  salesBids:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/SalesBidForExport"
+                  pagination:
+                    $ref: "../fleetworks.yaml#/components/schemas/PaginationResponse"
         "400":
-          $ref: "#/components/responses/ErrorResponse"
+          $ref: "../fleetworks.yaml#/components/responses/ErrorResponse"
         "401":
-          $ref: "#/components/responses/ErrorResponse"
+          $ref: "../fleetworks.yaml#/components/responses/ErrorResponse"
         "403":
-          $ref: "#/components/responses/ErrorResponse"
+          $ref: "../fleetworks.yaml#/components/responses/ErrorResponse"
 
 components:
-  responses:
-    ErrorResponse:
-      description: Error response
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
+  schemas:
+    SalesBidForExport:
+      properties:
+        loadId:
+          type: integer
+          description: The internal ID of the load this bid is for
+        originLocation:
+          type: string
+          description: "The origin location for the load."
+        destinationLocation:
+          type: string
+          description: "The destination location for the load."
+        carrierMc:
+          type: string
+          description: "Motor Carrier (MC) number for the carrier."
+        carrierDot:
+          type: string
+          description: "Department of Transportation (DOT) number for the carrier."
+        phoneNumber:
+          type: string
+          description: "Contact phone number for the carrier."
+        extension:
+          type: string
+          description: "Phone extension, if applicable."
+        callerName:
+          type: string
+          description: "Name of the individual making the call."
+        callSummary:
+          type: string
+          description: "Summary of the call details."
+        callDateTime:
+          type: string
+          format: date-time
+          description: "Date and time when the call occurred."

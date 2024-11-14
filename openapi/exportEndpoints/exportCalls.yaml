@@ -9,25 +9,19 @@ paths:
       security:
         - auth: []
       parameters:
-        - name: orgId
-          in: path
-          required: true
-          schema:
-            type: string
-          description: Organization ID to export calls for
         - name: startTime
           in: query
           required: true
           schema:
             type: string
-            format: date-time
+            format: date
           description: Start time for call export in ISO8601 format
         - name: endTime
           in: query
           required: true
           schema:
             type: string
-            format: date-time
+            format: date
           description: End time for call export in ISO8601 format
         - name: loadId
           in: query
@@ -41,28 +35,78 @@ paths:
           schema:
             type: string
           description: Optional MC number to filter calls
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: number
+            minimum: 0
+            default: 0
+          description: Pagination offset
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: number
+            minimum: 1
+            maximum: 500
+            default: 100
+          description: Pagination limit
+
       responses:
         "200":
           description: Successful export
           content:
             application/json:
               schema:
-                $ref: "./schema/exportObjects.yaml#/components/schemas/Calls"
+                type: object
+                properties:
+                  calls:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/CallForExport"
+                  pagination:
+                    $ref: "../fleetworks.yaml#/components/schemas/PaginationResponse"
         "400":
-          $ref: "#/components/responses/ErrorResponse"
+          $ref: "../fleetworks.yaml#/components/responses/ErrorResponse"
         "401":
-          $ref: "#/components/responses/ErrorResponse"
+          $ref: "../fleetworks.yaml#/components/responses/ErrorResponse"
         "403":
-          $ref: "#/components/responses/ErrorResponse"
+          $ref: "../fleetworks.yaml#/components/responses/ErrorResponse"
 
 components:
-  responses:
-    ErrorResponse:
-      description: Error response
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
+  schemas:
+    CallForExport:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The ID of the call
+        vocodeId:
+          type: string
+          nullable: true
+          description: The vocode ID of the call
+        fromPhone:
+          type: string
+          description: The phone number the call came from
+        toPhone:
+          type: string
+          description: The phone number the call was placed to
+        summary:
+          type: string
+          nullable: true
+          description: The summary of the call
+        createdAt:
+          type: string
+          format: date-time
+          description: The date and time the call was created
+        loadId:
+          type: string
+          description: The load ID linked to the call
+        mcNumber:
+          type: string
+          description: The carrier mcNumber
+        recordingUrl:
+          type: string
+          nullable: true
+          description: The URL of the recording of the call
