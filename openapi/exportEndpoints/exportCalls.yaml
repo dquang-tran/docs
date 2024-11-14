@@ -3,7 +3,7 @@ paths:
     get:
       tags:
         - Calls
-      summary: List Calls
+      summary: List calls
       description: List call records for within a specified time range. Optional filtering by load ID and MC number is supported.
       operationId: listCalls
       security:

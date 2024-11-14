@@ -3,8 +3,8 @@ paths:
     post:
       tags:
         - Ingestion
-      summary: Carrier Events Webhook
-      description: FleetWorks can take into account the “standing” of a carrier with your brokerage. We can support different formatting and statuses. By default, we support the shape below. This shape can be adjusted to fit your specific needs. 
+      summary: Carrier events webhook
+      description: FleetWorks can take into account the “standing” of a carrier with your brokerage. We can support different formatting and statuses. By default, we support the shape below. This shape can be adjusted to fit your specific needs.
       operationId: webhooksCarrierEvents
       security:
         - auth: []

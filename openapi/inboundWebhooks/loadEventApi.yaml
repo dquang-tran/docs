@@ -3,7 +3,7 @@ paths:
     post:
       tags:
         - Ingestion
-      summary: Load Events Webhook
+      summary: Load events webhook
       description: This endpoint receives load events for various integrations and ingest to FleetWorks system. The type of integration depends on organization settings.
       operationId: webhooksLoadsEvents
       security:

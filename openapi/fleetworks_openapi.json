@@ -70,7 +70,7 @@
         "security" : [ {
           "auth" : [ ]
         } ],
-        "summary" : "Load Events Webhook",
+        "summary" : "Load events webhook",
         "tags" : [ "Ingestion" ]
       }
     },
@@ -116,7 +116,7 @@
         "security" : [ {
           "auth" : [ ]
         } ],
-        "summary" : "Carrier Events Webhook",
+        "summary" : "Carrier events webhook",
         "tags" : [ "Ingestion" ]
       }
     },
@@ -225,7 +225,7 @@
         "security" : [ {
           "auth" : [ ]
         } ],
-        "summary" : "List Calls",
+        "summary" : "List calls",
         "tags" : [ "Calls" ]
       }
     },
@@ -334,7 +334,7 @@
         "security" : [ {
           "auth" : [ ]
         } ],
-        "summary" : "List Bids",
+        "summary" : "List bids",
         "tags" : [ "Bids" ]
       }
     },
@@ -421,7 +421,7 @@
         "security" : [ {
           "auth" : [ ]
         } ],
-        "summary" : "Get Carriers by Lane",
+        "summary" : "Get carriers by lane",
         "tags" : [ "Carriers" ]
       }
     },

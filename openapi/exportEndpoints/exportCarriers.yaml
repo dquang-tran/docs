@@ -3,7 +3,7 @@ paths:
     get:
       tags:
         - Carriers
-      summary: Get Carriers by Lane
+      summary: Get carriers by lane
       description: Retrieve carrier records that have operated in a specified lane with optional filtering by radius and equipment types
       operationId: getCarriersByLane
       security:
