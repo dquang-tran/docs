@@ -425,7 +425,7 @@
         "tags" : [ "Carriers" ]
       }
     },
-    "/api/custom-use-cases/{agentId}/calls" : {
+    "/api/v1/custom-use-cases/{agentId}/calls" : {
       "post" : {
         "description" : "Trigger outbound call",
         "operationId" : "customUseCasesCall",
