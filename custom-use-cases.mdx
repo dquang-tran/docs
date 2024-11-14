@@ -1,0 +1,110 @@
+
+FleetWorks' voice infrastructure supports a variety of custom use cases beyond carrier sales, including inbound and outbound tracking, Proof of Delivery (POD) collection, and insurance documentation collection.
+
+### How It Works
+
+Users can initiate custom use cases by:
+
+- **Using the UI**: Enter a prompt and manually upload a CSV file containing the necessary data, such as a list of phone numbers, prompt variables, and the scheduled time to trigger the call.
+- **Via API**: Make an API call to initiate the process. Refer to [trigger-outbound-call.yaml](/api-reference/custom-use-cases/trigger-outbound-call) for API details.
+
+## Prompt Engineering
+
+Effective prompt engineering is crucial for the success of your custom agent. This guide shares our insights on crafting prompts that agents can consistently follow.
+
+*This guide is a work in progress and will be updated as we gain more insights. If you have any suggestions or feedback, please let us know.*
+
+### Accessing Prompts
+
+When you create a new use case, we populate a template for you to get started.
+
+### Sectional Prompts
+
+When crafting prompts, it's important to divide system prompts into smaller sections, each focusing on specific aspects such as identity, style, guidelines, tasks, and goals. This approach offers several benefits:
+
+- **Reusability**
+- **Ease of Maintenance**
+- **Enhanced Understanding for LLMs**
+
+```
+#### Identify
+
+You are a professional AI assistant for FleetWorks, specialized in tracking shipments and obtaining status updates from carriers. Your role is to efficiently collect accurate location and ETA information for active loads.
+
+#### Style Guardrails
+
+- **Be clear and direct**: Provide straightforward instructions and questions.
+- **Maintain professionalism**: Engage in a courteous and respectful manner.
+- **Be efficient**: Aim to complete tasks with minimal interaction while ensuring accuracy.
+- **Stay focused**: Keep the conversation centered on tracking information.
+- ...
+
+#### Response Guidelines
+
+- **Return dates in their full form**: Express dates as they would be spoken aloud.
+- **Ask one question at a time**: Ensure interactions are manageable for the user.
+- **Provide concise instructions**: Keep directions simple and easy to follow.
+- **Verify critical information**: Confirm load numbers and locations clearly.
+- ...
+    
+#### Task
+
+1. Greet the carrier representative professionally.
+2. State you are calling about load tracking and provide the load/reference number.
+3. Request current location of the shipment.
+   *Wait for response and call `update_location` function.*
+4. Ask for estimated time of arrival at destination.
+   *Wait for response and call `update_eta` function.*
+5. Thank them for the information and end the call professionally.
+```
+
+### Writing Tasks as Steps
+
+During a call, if you want the agent to follow a specific procedure to guide the conversation, we recommend outlining the tasks as steps. This approach helps the LLM understand what to ask at each stage and how to proceed. You can also incorporate conditional logic within the steps to ensure the agent doesn't ask all questions at once.
+
+**Example:**
+
+```
+## Task
+1. Ask for the shipment tracking number.
+2. Inquire if the user is providing a Proof of Delivery, requesting a status update, or needs assistance with shipment documentation.
+   - If the user is providing a Proof of Delivery, transition to the POD collection process.
+   - If the user is requesting a status update, initiate the tracking inquiry.
+   - If the user needs assistance with documentation, proceed to collect the necessary files.
+3. If the user is providing documentation, request the document upload.
+```
+
+If the agent is not pausing at the appropriate times or needs to follow through certain steps without stopping at each one, you can make it explicit by adding prompts to wait for the user's response:
+
+```
+## Task
+1. Inform the user about the purpose of the call.
+2. Ask for the shipment tracking number.
+   
+    *Wait for user response.*
+
+3. Inquire if the user is providing a Proof of Delivery, requesting a status update, or needs assistance with shipment documentation.
+   
+    *Wait for user response.*
+    - If the user is providing a Proof of Delivery, transition to the POD collection process.
+    - If the user is requesting a status update, initiate the tracking inquiry.
+    - If the user needs assistance with documentation, proceed to collect the necessary files.
+
+4. Request the required documentation.
+   
+    *Wait for user response.*
+```
+
+### Explicitly Indicating When to Call Tools
+
+Often, the LLM may not know when to activate tools, even with descriptions of their functions. To ensure accurate tool activation, clearly specify when to call each tool and refer to them by name.
+
+**Example:**
+
+```
+...
+2. Inquire if the user is providing a Proof of Delivery or requesting a shipment status update.
+   - If the user is providing a Proof of Delivery, call the `collect_pod` function to process the document.
+   - If the user is requesting a shipment status update, call the `initiate_tracking` function.
+...
+```

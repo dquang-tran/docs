@@ -425,7 +425,7 @@
         "tags" : [ "Carriers" ]
       }
     },
-    "/api/v1/custom-use-cases/{agentId}/calls" : {
+    "/api/v1/custom-use-cases/{agentId}/create-phone-call" : {
       "post" : {
         "description" : "Trigger outbound call",
         "operationId" : "customUseCasesCall",
@@ -444,8 +444,20 @@
           "200" : {
             "content" : {
               "application/json" : {
+                "examples" : {
+                  "Success" : {
+                    "value" : {
+                      "success" : true
+                    }
+                  },
+                  "Failure" : {
+                    "value" : {
+                      "success" : false
+                    }
+                  }
+                },
                 "schema" : {
-                  "$ref" : "#/components/schemas/webhooksLoadsEvents_200_response"
+                  "$ref" : "#/components/schemas/customUseCasesCall_200_response"
                 }
               }
             },
@@ -503,6 +515,24 @@
       "CreateCallRequest" : {
         "content" : {
           "application/json" : {
+            "examples" : {
+              "Basic" : {
+                "value" : {
+                  "toPhone" : "+15551234567"
+                }
+              },
+              "WithVariables" : {
+                "value" : {
+                  "toPhone" : "+15551234567",
+                  "dynamicVariables" : {
+                    "loadId" : "123456",
+                    "pickupLocation" : "Chicago, IL",
+                    "deliveryLocation" : "New York, NY",
+                    "rate" : "2500"
+                  }
+                }
+              }
+            },
             "schema" : {
               "$ref" : "#/components/schemas/customUseCasesCall_request"
             }
@@ -544,8 +574,20 @@
       "CreateCallResponse" : {
         "content" : {
           "application/json" : {
+            "examples" : {
+              "Success" : {
+                "value" : {
+                  "success" : true
+                }
+              },
+              "Failure" : {
+                "value" : {
+                  "success" : false
+                }
+              }
+            },
             "schema" : {
-              "$ref" : "#/components/schemas/webhooksLoadsEvents_200_response"
+              "$ref" : "#/components/schemas/customUseCasesCall_200_response"
             }
           }
         },
@@ -1079,10 +1121,32 @@
       "customUseCasesCall_request" : {
         "properties" : {
           "toPhone" : {
+            "description" : "Phone number in E.164 format (e.g. +1XXXXXXXXXX for US numbers). Must include country code with + prefix.",
+            "example" : "+15551234567",
             "type" : "string"
+          },
+          "dynamicVariables" : {
+            "additionalProperties" : true,
+            "description" : "Dynamic variables to be injected into the prompt.",
+            "example" : {
+              "loadId" : "123456",
+              "pickupLocation" : "Chicago, IL",
+              "deliveryLocation" : "New York, NY",
+              "rate" : "2500"
+            },
+            "type" : "object"
           }
         },
         "required" : [ "toPhone" ],
+        "type" : "object"
+      },
+      "customUseCasesCall_200_response" : {
+        "properties" : {
+          "success" : {
+            "example" : true,
+            "type" : "boolean"
+          }
+        },
         "type" : "object"
       },
       "Carrier_lanes_inner" : {

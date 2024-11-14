@@ -34,7 +34,7 @@ paths:
     $ref: "exportEndpoints/exportBids.yaml#/paths/~1"
   "/api/v1/carriers":
     $ref: "exportEndpoints/exportCarriers.yaml#/paths/~1"
-  "/api/v1/custom-use-cases/{agentId}/calls":
+  "/api/v1/custom-use-cases/{agentId}/create-phone-call":
     $ref: "customUseCases/calls.yaml#/paths/~1"
 
 components:

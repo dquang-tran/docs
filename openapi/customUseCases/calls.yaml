@@ -38,6 +38,29 @@ components:
             properties:
               toPhone:
                 type: string
+                description: Phone number in E.164 format (e.g. +1XXXXXXXXXX for US numbers). Must include country code with + prefix.
+                example: "+15551234567"
+              dynamicVariables:
+                type: object
+                description: Dynamic variables to be injected into the prompt.
+                additionalProperties: true
+                example:
+                  loadId: "123456"
+                  pickupLocation: "Chicago, IL"
+                  deliveryLocation: "New York, NY"
+                  rate: "2500"
+          examples:
+            Basic:
+              value:
+                toPhone: "+15551234567"
+            WithVariables:
+              value:
+                toPhone: "+15551234567"
+                dynamicVariables:
+                  loadId: "123456"
+                  pickupLocation: "Chicago, IL"
+                  deliveryLocation: "New York, NY"
+                  rate: "2500"
 
   responses:
     CreateCallResponse:
@@ -49,3 +72,11 @@ components:
             properties:
               success:
                 type: boolean
+                example: true
+          examples:
+            Success:
+              value:
+                success: true
+            Failure:
+              value:
+                success: false

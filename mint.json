@@ -38,7 +38,21 @@
   "navigation": [
     {
       "group": "General",
-      "pages": ["introduction", "voice", "email"]
+      "pages": ["introduction"]
+    },
+    {
+      "group": "Voice",
+      "pages": [
+        {
+          "group": "Telephony",
+          "pages": ["telephony/transfers", "telephony/IVR"]
+        },
+        "custom-use-cases"
+      ]
+    },
+    {
+      "group": "Email",
+      "pages": ["email/how-it-works"]
     },
     {
       "group": "Events",
