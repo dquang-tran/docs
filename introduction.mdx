@@ -1,6 +1,6 @@
 ## Overview
 
-FleetWorks is an AI-powered freight logistics platform that automates carrier sales communications. Our platform seamlessly integrates with your Transportation Management System (TMS) to streamline load management, automate carrier outreach, and process bids through phone and email systems.
+FleetWorks is an AI-powered freight logistics platform that automates carrier communications and transactions. Our platform seamlessly integrates with your Transportation Management System (TMS) to vet carriers, relay load information, negotiate rates, and book loads. The system handles the complete workflow - from initial carrier outreach through rate confirmation - via automated phone and email communications while keeping your TMS updated in real-time.
 
 ## How It Works
 
@@ -13,6 +13,7 @@ sequenceDiagram
     participant Carrier
     TMS->>FleetWorks: Load Event Webhook
     Carrier->>FleetWorks: Call
+    Carrier->>FleetWorks: Email
     FleetWorks->>TMS: Bid Event Webhook
 ```
 
