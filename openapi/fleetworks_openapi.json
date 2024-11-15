@@ -28,7 +28,7 @@
     "name" : "Custom Use Cases"
   } ],
   "paths" : {
-    "/api/webhooks/loads/events" : {
+    "/api/v1/webhooks/loads/events" : {
       "post" : {
         "description" : "This endpoint receives load events for various integrations and ingest to FleetWorks system. The type of integration depends on organization settings.",
         "operationId" : "webhooksLoadsEvents",
@@ -74,7 +74,7 @@
         "tags" : [ "Ingestion" ]
       }
     },
-    "/api/webhooks/carrier/events" : {
+    "/api/v1/webhooks/carrier/events" : {
       "post" : {
         "description" : "FleetWorks can take into account the “standing” of a carrier with your brokerage. We can support different formatting and statuses. By default, we support the shape below. This shape can be adjusted to fit your specific needs.",
         "operationId" : "webhooksCarrierEvents",
