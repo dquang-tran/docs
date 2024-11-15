@@ -1,0 +1,61 @@
+FleetWorks supports integration with your existing telephony infrastructure through two primary methods:
+
+## Elastic SIP Trunking (Recommended)
+
+Elastic SIP Trunking provides a flexible way to connect your existing phone system to FleetWorks' AI agents. It acts as a bridge between:
+
+- Your PBX or VoIP phone system
+- The public telephone network (PSTN)
+- FleetWorks' AI calling infrastructure
+
+We recommend using elastic SIP trunking because it:
+- Requires minimal changes to your existing setup
+- Scales automatically with your call volume
+- Provides enterprise-grade reliability and security
+- Enables both inbound and outbound calling capabilities
+
+### How It Works
+
+1. **Create SIP Trunk**
+   - Set up a SIP trunk with your provider
+   - Configure termination settings for outbound calls
+   - Set up origination settings using FleetWorks' SIP server
+
+2. **Configure Numbers** 
+   - Move your existing numbers to the SIP trunk
+   - Or purchase new numbers through your provider
+
+3. **Import to FleetWorks**
+   - Import your numbers to our platform
+   - Provide the termination SIP URI
+   - Add authentication if required
+
+Once configured, you can use these numbers just like FleetWorks-provided numbers - make calls through our dashboard or API.
+
+## Direct SIP Endpoint Integration
+
+For more complex telephony setups or providers that don't support elastic SIP trunking, you can integrate directly with our SIP endpoints.
+
+This method requires:
+- Your system to handle call routing
+- Integration with your telephony provider's API
+- Registering calls with FleetWorks to obtain endpoints
+
+### Implementation Steps
+
+1. Register the call with FleetWorks to get a `call_id`
+2. Use the `call_id` to construct the SIP endpoint
+3. Route the call to the FleetWorks endpoint
+
+The FleetWorks AI agent will then handle the call using your specified configuration.
+
+## Security Considerations
+
+When setting up either integration method:
+
+- Use secure authentication methods
+- Implement proper access controls
+- Follow telephony security best practices
+- Monitor call activity for unusual patterns
+
+Contact our support team for detailed integration guides specific to your telephony provider.

@@ -45,7 +45,7 @@
       "pages": [
         {
           "group": "Telephony",
-          "pages": ["telephony/transfers", "telephony/IVR"]
+          "pages": ["telephony/transfers", "telephony/IVR", "telephony/custom-telephony"]
         },
         "custom-use-cases"
       ]
