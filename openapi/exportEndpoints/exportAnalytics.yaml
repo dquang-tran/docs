@@ -1,0 +1,43 @@
+paths:
+  /:
+    get:
+      tags:
+        - Analytics
+      summary: Retrieve Analytics Data
+      description: Provides detailed analytics and insights based on FleetWorks data.
+      operationId: getAnalytics
+      security:
+        - auth: []
+      parameters:
+        - name: startDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+          description: Start date for analytics data.
+        - name: endDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+          description: End date for analytics data.
+        - name: metric
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [average_rate, avg_call_duration, total_bids, call_volume, loads_touched, loads_booked]
+          description: Specific metric to retrieve.
+      responses:
+        "200":
+          description: Successful retrieval of analytics data.
+          content:
+            application/json:
+              schema:
+                $ref: "../fleetworks.yaml#/components/schemas/AnalyticsResponse"
+        "400":
+          $ref: "../fleetworks.yaml#/components/responses/ErrorResponse"
+        "401":
+          $ref: "../fleetworks.yaml#/components/responses/ErrorResponse" 

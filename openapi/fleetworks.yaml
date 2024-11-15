@@ -20,6 +20,8 @@ tags:
     description: Endpoints for carriers
   - name: Custom Use Cases
     description: Custom AI agent use case
+  - name: Analytics
+    description: Analytics endpoints
 servers:
   - url: "https://api.fleetworks.ai"
 
@@ -36,6 +38,10 @@ paths:
     $ref: "exportEndpoints/exportCarriers.yaml#/paths/~1"
   "/api/v1/custom-use-cases/{agentId}/create-phone-call":
     $ref: "customUseCases/calls.yaml#/paths/~1"
+  "/api/v1/analytics":
+    $ref: "exportEndpoints/exportAnalytics.yaml#/paths/~1"
+  "/api/v1/price-data":
+    $ref: "exportEndpoints/exportPriceData.yaml#/paths/~1"
 
 components:
   securitySchemes:
@@ -66,3 +72,107 @@ components:
           type: number
         total:
           type: number
+
+    AnalyticsResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              date:
+                type: string
+                format: date-time
+              metrics:
+                type: object
+                properties:
+                  totalCalls:
+                    type: number
+                  successfulCalls:
+                    type: number
+                  averageCallDuration:
+                    type: number
+                  totalBids:
+                    type: number
+                  acceptedBids:
+                    type: number
+        pagination:
+          $ref: "#/components/schemas/PaginationResponse"
+      required:
+        - data
+        - pagination
+    PriceDataResponse:
+      type: object
+      properties:
+        marketAnalytics:
+          $ref: "#/components/schemas/MarketPriceMetrics" 
+        pagination:
+          $ref: "#/components/schemas/PaginationResponse"
+      required:
+        - loads
+        - marketAnalytics
+        - pagination
+
+    LoadPriceEntry:
+      type: object
+      properties:
+        loadId:
+          type: string
+          description: Unique identifier for the load
+        origin:
+          type: string
+          description: Origin location of the load
+        destination:
+          type: string
+          description: Destination location of the load
+        equipmentType:
+          type: string
+          description: Type of equipment required
+        miles:
+          type: number
+          description: Total miles for the load
+        postedRate:
+          type: number
+          description: Rate posted by the broker
+        ratePerMile:
+          type: number
+          description: Rate per mile calculation
+        postDate:
+          type: string
+          format: date-time
+          description: Date and time the load was posted
+      required:
+        - loadId
+        - origin
+        - destination
+        - equipmentType
+        - miles
+        - postedRate
+        - ratePerMile
+        - postDate
+
+    MarketPriceMetrics:
+      type: object
+      properties:
+        laneAverageRate:
+          type: number
+          description: Average rate for loads in this lane
+        marketAverageRate:
+          type: number
+          description: Average rate across all lanes in the market
+        ratePerMileTrend:
+          type: number
+          description: Trend in rate per mile over the selected period
+        volumeTrend:
+          type: number
+          description: Trend in load volume over the selected period
+        dayRangeSpread:
+          type: number
+          description: Spread between highest and lowest rates in the period
+      required:
+        - laneAverageRate
+        - marketAverageRate
+        - ratePerMileTrend
+        - volumeTrend
+        - dayRangeSpread

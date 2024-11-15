@@ -26,6 +26,9 @@
   }, {
     "description" : "Custom AI agent use case",
     "name" : "Custom Use Cases"
+  }, {
+    "description" : "Analytics endpoints",
+    "name" : "Analytics"
   } ],
   "paths" : {
     "/api/v1/webhooks/loads/events" : {
@@ -490,6 +493,185 @@
         "summary" : "Trigger outbound call",
         "tags" : [ "Custom Use Cases" ]
       }
+    },
+    "/api/v1/analytics" : {
+      "get" : {
+        "description" : "Provides detailed analytics and insights based on FleetWorks data.",
+        "operationId" : "getAnalytics",
+        "parameters" : [ {
+          "description" : "Start date for analytics data.",
+          "in" : "query",
+          "name" : "startDate",
+          "required" : true,
+          "schema" : {
+            "format" : "date",
+            "type" : "string"
+          }
+        }, {
+          "description" : "End date for analytics data.",
+          "in" : "query",
+          "name" : "endDate",
+          "required" : true,
+          "schema" : {
+            "format" : "date",
+            "type" : "string"
+          }
+        }, {
+          "description" : "Specific metric to retrieve.",
+          "in" : "query",
+          "name" : "metric",
+          "required" : false,
+          "schema" : {
+            "enum" : [ "average_rate", "avg_call_duration", "total_bids", "call_volume", "loads_touched", "loads_booked" ],
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AnalyticsResponse_1"
+                }
+              }
+            },
+            "description" : "Successful retrieval of analytics data."
+          },
+          "400" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/webhooksLoadsEvents_400_response"
+                }
+              }
+            },
+            "description" : "Error response"
+          },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/webhooksLoadsEvents_400_response"
+                }
+              }
+            },
+            "description" : "Error response"
+          }
+        },
+        "security" : [ {
+          "auth" : [ ]
+        } ],
+        "summary" : "Retrieve Analytics Data",
+        "tags" : [ "Analytics" ]
+      }
+    },
+    "/api/v1/price-data" : {
+      "get" : {
+        "description" : "Fetches comprehensive price data based on specified filters.",
+        "operationId" : "getPriceDataWithAnalytics",
+        "parameters" : [ {
+          "description" : "Start date for the analytics period.",
+          "in" : "query",
+          "name" : "start_date",
+          "required" : false,
+          "schema" : {
+            "format" : "date",
+            "type" : "string"
+          }
+        }, {
+          "description" : "End date for the analytics period.",
+          "in" : "query",
+          "name" : "end_date",
+          "required" : false,
+          "schema" : {
+            "format" : "date",
+            "type" : "string"
+          }
+        }, {
+          "description" : "Filter price data by specific date.",
+          "in" : "query",
+          "name" : "date",
+          "required" : false,
+          "schema" : {
+            "format" : "date",
+            "type" : "string"
+          }
+        }, {
+          "description" : "Origin location to filter price data.",
+          "in" : "query",
+          "name" : "origin",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Destination location to filter price data.",
+          "in" : "query",
+          "name" : "destination",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Pagination offset",
+          "in" : "query",
+          "name" : "offset",
+          "required" : false,
+          "schema" : {
+            "default" : 0,
+            "minimum" : 0,
+            "type" : "number"
+          }
+        }, {
+          "description" : "Number of records to return per page",
+          "in" : "query",
+          "name" : "limit",
+          "required" : false,
+          "schema" : {
+            "default" : 20,
+            "maximum" : 100,
+            "minimum" : 1,
+            "type" : "number"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PriceDataResponse_1"
+                }
+              }
+            },
+            "description" : "Successful retrieval of price data with analytics."
+          },
+          "400" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/webhooksLoadsEvents_400_response"
+                }
+              }
+            },
+            "description" : "Error response"
+          },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/webhooksLoadsEvents_400_response"
+                }
+              }
+            },
+            "description" : "Error response"
+          }
+        },
+        "security" : [ {
+          "auth" : [ ]
+        } ],
+        "summary" : "Retrieve Price Data",
+        "tags" : [ "Price Data", "Pricing Analytics" ]
+      }
     }
   },
   "components" : {
@@ -608,6 +790,98 @@
             "type" : "number"
           }
         },
+        "type" : "object"
+      },
+      "AnalyticsResponse" : {
+        "properties" : {
+          "data" : {
+            "items" : {
+              "$ref" : "#/components/schemas/AnalyticsResponse_data_inner"
+            },
+            "type" : "array"
+          },
+          "pagination" : {
+            "$ref" : "#/components/schemas/PaginationResponse"
+          }
+        },
+        "required" : [ "data", "pagination" ],
+        "type" : "object"
+      },
+      "PriceDataResponse" : {
+        "properties" : {
+          "marketAnalytics" : {
+            "$ref" : "#/components/schemas/MarketPriceMetrics"
+          },
+          "pagination" : {
+            "$ref" : "#/components/schemas/PaginationResponse"
+          }
+        },
+        "required" : [ "loads", "marketAnalytics", "pagination" ],
+        "type" : "object"
+      },
+      "LoadPriceEntry" : {
+        "properties" : {
+          "loadId" : {
+            "description" : "Unique identifier for the load",
+            "type" : "string"
+          },
+          "origin" : {
+            "description" : "Origin location of the load",
+            "type" : "string"
+          },
+          "destination" : {
+            "description" : "Destination location of the load",
+            "type" : "string"
+          },
+          "equipmentType" : {
+            "description" : "Type of equipment required",
+            "type" : "string"
+          },
+          "miles" : {
+            "description" : "Total miles for the load",
+            "type" : "number"
+          },
+          "postedRate" : {
+            "description" : "Rate posted by the broker",
+            "type" : "number"
+          },
+          "ratePerMile" : {
+            "description" : "Rate per mile calculation",
+            "type" : "number"
+          },
+          "postDate" : {
+            "description" : "Date and time the load was posted",
+            "format" : "date-time",
+            "type" : "string"
+          }
+        },
+        "required" : [ "destination", "equipmentType", "loadId", "miles", "origin", "postDate", "postedRate", "ratePerMile" ],
+        "type" : "object"
+      },
+      "MarketPriceMetrics" : {
+        "properties" : {
+          "laneAverageRate" : {
+            "description" : "Average rate for loads in this lane",
+            "type" : "number"
+          },
+          "marketAverageRate" : {
+            "description" : "Average rate across all lanes in the market",
+            "type" : "number"
+          },
+          "ratePerMileTrend" : {
+            "description" : "Trend in rate per mile over the selected period",
+            "type" : "number"
+          },
+          "volumeTrend" : {
+            "description" : "Trend in load volume over the selected period",
+            "type" : "number"
+          },
+          "dayRangeSpread" : {
+            "description" : "Spread between highest and lowest rates in the period",
+            "type" : "number"
+          }
+        },
+        "required" : [ "dayRangeSpread", "laneAverageRate", "marketAverageRate", "ratePerMileTrend", "volumeTrend" ],
         "type" : "object"
       },
       "CallForExport" : {
@@ -767,6 +1041,33 @@
             "type" : "string"
           }
         },
+        "type" : "object"
+      },
+      "AnalyticsResponse_1" : {
+        "properties" : {
+          "data" : {
+            "items" : {
+              "$ref" : "#/components/schemas/AnalyticsResponse_data_inner"
+            },
+            "type" : "array"
+          },
+          "pagination" : {
+            "$ref" : "#/components/schemas/PaginationResponse"
+          }
+        },
+        "required" : [ "data", "pagination" ],
+        "type" : "object"
+      },
+      "PriceDataResponse_1" : {
+        "properties" : {
+          "marketAnalytics" : {
+            "$ref" : "#/components/schemas/MarketPriceMetrics"
+          },
+          "pagination" : {
+            "$ref" : "#/components/schemas/PaginationResponse"
+          }
+        },
+        "required" : [ "loads", "marketAnalytics", "pagination" ],
         "type" : "object"
       },
       "NativeLoadEvent" : {
@@ -1145,6 +1446,38 @@
           "success" : {
             "example" : true,
             "type" : "boolean"
+          }
+        },
+        "type" : "object"
+      },
+      "AnalyticsResponse_data_inner_metrics" : {
+        "properties" : {
+          "totalCalls" : {
+            "type" : "number"
+          },
+          "successfulCalls" : {
+            "type" : "number"
+          },
+          "averageCallDuration" : {
+            "type" : "number"
+          },
+          "totalBids" : {
+            "type" : "number"
+          },
+          "acceptedBids" : {
+            "type" : "number"
+          }
+        },
+        "type" : "object"
+      },
+      "AnalyticsResponse_data_inner" : {
+        "properties" : {
+          "date" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "metrics" : {
+            "$ref" : "#/components/schemas/AnalyticsResponse_data_inner_metrics"
           }
         },
         "type" : "object"
