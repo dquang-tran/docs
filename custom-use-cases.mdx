@@ -1,18 +1,70 @@
-
 FleetWorks' voice infrastructure supports a variety of custom use cases beyond carrier sales, including inbound and outbound tracking, Proof of Delivery (POD) collection, and insurance documentation collection.
 
-### How It Works
+## How It Works
+
+1. The custom use case is triggered.
+2. It makes an outbound call and completes the given task. For example, collecting a carrier's current location.
+3. It then sends the results to your server URL.
+
+### Triggering a Custom Use Case
 
 Users can initiate custom use cases by:
 
 - **Using the UI**: Enter a prompt and manually upload a CSV file containing the necessary data, such as a list of phone numbers, prompt variables, and the scheduled time to trigger the call.
-- **Via API**: Make an API call to initiate the process. Refer to [trigger-outbound-call.yaml](/api-reference/custom-use-cases/trigger-outbound-call) for API details.
+- **Via API**: Make an API call to initiate the process. Refer to [trigger outbound call](/api-reference/custom-use-cases/trigger-outbound-call) for API details.
+
+### Receiving Results
+
+Each organization has a user-specified webhook URL and server secret that receives the results of the call. We allow you to specify the shape of the data you expect to receive.
+
+You can expect to receive a JSON object with the following shape after the call is completed:
+
+```json
+{
+  "dataExtraction": {
+    "your_field_name": "value extracted from the call",
+    "another_field_name": "another value extracted from the call"
+  },
+  "transcript": [
+    {
+      "role": "bot",
+      "message": "Hi. This is Fred. I am calling to ...",
+      "time": 1731636051209,
+      "endTime": 1731636080399.001,
+      "secondsFromStart": 0,
+      "duration": 7740.0009765625,
+      "source": ""
+    },
+    {
+      "role": "user",
+      "message": "Hey, ...",
+      "time": 1731636081669,
+      "endTime": 1731636083159,
+      "secondsFromStart": 30.46,
+      "duration": 1490
+    },
+    ...
+    {
+      "role": "bot",
+      "message": "Thank you for your time. Have a great day.",
+      "time": 1731636090578.998,
+      "endTime": 1731636092939,
+      "secondsFromStart": 39.369998046875,
+      "duration": 2360.001953125,
+      "source": ""
+    }
+  ],
+  "recordingUrl": "https://storage.vapi.ai/e13e336c...ono.wav",
+  "secret": "123",
+  "callId": 123
+}
+```
 
 ## Prompt Engineering
 
 Effective prompt engineering is crucial for the success of your custom agent. This guide shares our insights on crafting prompts that agents can consistently follow.
 
-*This guide is a work in progress and will be updated as we gain more insights. If you have any suggestions or feedback, please let us know.*
+_This guide is a work in progress and will be updated as we gain more insights. If you have any suggestions or feedback, please let us know._
 
 ### Accessing Prompts
 
@@ -46,7 +98,7 @@ You are a professional AI assistant for FleetWorks, specialized in tracking ship
 - **Provide concise instructions**: Keep directions simple and easy to follow.
 - **Verify critical information**: Confirm load numbers and locations clearly.
 - ...
-    
+
 #### Task
 
 1. Greet the carrier representative professionally.
@@ -80,18 +132,18 @@ If the agent is not pausing at the appropriate times or needs to follow through 
 ## Task
 1. Inform the user about the purpose of the call.
 2. Ask for the shipment tracking number.
-   
+
     *Wait for user response.*
 
 3. Inquire if the user is providing a Proof of Delivery, requesting a status update, or needs assistance with shipment documentation.
-   
+
     *Wait for user response.*
     - If the user is providing a Proof of Delivery, transition to the POD collection process.
     - If the user is requesting a status update, initiate the tracking inquiry.
     - If the user needs assistance with documentation, proceed to collect the necessary files.
 
 4. Request the required documentation.
-   
+
     *Wait for user response.*
 ```
 

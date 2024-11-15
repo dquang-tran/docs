@@ -430,7 +430,7 @@
     },
     "/api/v1/custom-use-cases/{agentId}/create-phone-call" : {
       "post" : {
-        "description" : "Trigger outbound call",
+        "description" : "Trigger an outbound call. When finished, the results will be sent to your server URL. Agent ID can be found in the UI when creating or editing a custom use case under \"API trigger\". Read more about [how it works](/custom-use-cases).",
         "operationId" : "customUseCasesCall",
         "parameters" : [ {
           "in" : "path",
