@@ -1,0 +1,56 @@
+For [Custom Use Case](/custom-use-cases), FleetWorks sends an event to your service after the outbound call finished. The payload contains details about the call and summary data extraction.
+
+## Event Payload
+
+<ResponseField name="callId" type="number" required>
+  Unique call identifier
+</ResponseField>
+
+<ResponseField name="event" type="string" required>
+  Event type: `completed`
+</ResponseField>
+
+<ResponseField name="createdAt" type="string" required>
+  Call created time
+</ResponseField>
+
+<ResponseField name="recordingUrl" type="string">
+  URL to download call recording
+</ResponseField>
+
+<ResponseField name="formattedTranscript" type="string">
+  Text transcription of the call
+</ResponseField>
+
+<ResponseField name="transcript" type="TranscriptMessage[]">
+  <Expandable title="properties">
+    <ResponseField name="role" type="string">
+      The role of the message in the conversation: `user`, `bot`
+    </ResponseField>
+    
+    <ResponseField name="message" type="string">
+      The message content
+    </ResponseField>
+
+    <ResponseField name="time" type="number">
+      The timestamp when the message was sent
+    </ResponseField>
+
+    <ResponseField name="endTime" type="number">
+      The timestamp when the message ended
+    </ResponseField>
+
+    <ResponseField name="secondsFromStart" type="number">
+      The number of seconds from the start of the conversation
+    </ResponseField>
+
+    <ResponseField name="duration" type="number">
+      The duration of the message in seconds
+    </ResponseField>
+
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="extractedData" type="object">
+  Extraction data from call's transcript
+</ResponseField>

@@ -15,16 +15,21 @@ Users can initiate custom use cases by:
 
 ### Receiving Results
 
-Each organization has a user-specified webhook URL and server secret that receives the results of the call. We allow you to specify the shape of the data you expect to receive.
+Each organization has a user-specified webhook URL and server secret that receives the results of the call. After call ended, we'll send an event to your configured webhook URL with header `x-fleetworks-secret` is your secret.
 
-You can expect to receive a JSON object with the following shape after the call is completed:
+We allow you to specify the shape of the data you expect to receive. You can expect to receive a [JSON object](/events/custom-use-case-result) with the following shape after the call is completed:
 
 ```json
 {
-  "dataExtraction": {
+  "callId": 123,
+  "event": "completed",
+  "createdAt": "2024-11-16T17:57:23.583Z",
+  "recordingUrl": "https://storage.vapi.ai/e13e336c...ono.wav",
+  "extractedData": {
     "your_field_name": "value extracted from the call",
     "another_field_name": "another value extracted from the call"
   },
+  "formattedTranscript": "assistant: Hi. This is Fred from... \nuser: Hey, ...",
   "transcript": [
     {
       "role": "bot",
@@ -53,10 +58,7 @@ You can expect to receive a JSON object with the following shape after the call 
       "duration": 2360.001953125,
       "source": ""
     }
-  ],
-  "recordingUrl": "https://storage.vapi.ai/e13e336c...ono.wav",
-  "secret": "123",
-  "callId": 123
+  ]
 }
 ```
 

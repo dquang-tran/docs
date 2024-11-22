@@ -38,29 +38,43 @@
   "navigation": [
     {
       "group": "General",
-      "pages": ["introduction"]
+      "pages": [
+        "introduction"
+      ]
     },
     {
       "group": "Voice",
       "pages": [
         {
           "group": "Telephony",
-          "pages": ["telephony/transfers", "telephony/IVR", "telephony/custom-telephony"]
+          "pages": [
+            "telephony/transfers",
+            "telephony/IVR",
+            "telephony/custom-telephony"
+          ]
         },
         "custom-use-cases"
       ]
     },
     {
       "group": "Email",
-      "pages": ["email/how-it-works"]
+      "pages": [
+        "email/how-it-works"
+      ]
     },
     {
       "group": "Events",
-      "pages": ["events/bids", "events/calls"]
+      "pages": [
+        "events/bids",
+        "events/calls",
+        "events/custom-use-case-result"
+      ]
     },
     {
       "group": "API Documentation",
-      "pages": ["api-reference/authentication"]
+      "pages": [
+        "api-reference/authentication"
+      ]
     }
   ],
   "footerSocials": {
