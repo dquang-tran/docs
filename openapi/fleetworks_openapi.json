@@ -1263,6 +1263,30 @@
             "nullable" : true,
             "title" : "NativeLoadEvent.shipmentContactNumber",
             "type" : "string"
+          },
+          "bookingUrl" : {
+            "description" : "The URL to send to the carrier to book the load, if booking is done through a web portal",
+            "nullable" : true,
+            "title" : "NativeLoadEvent.bookingUrl",
+            "type" : "string"
+          },
+          "assignedCarrierMc" : {
+            "description" : "The MC number of the carrier assigned to this load",
+            "nullable" : true,
+            "title" : "NativeLoadEvent.assignedCarrierMc",
+            "type" : "string"
+          },
+          "assignedCarrierDot" : {
+            "description" : "The DOT number of the carrier assigned to this load",
+            "nullable" : true,
+            "title" : "NativeLoadEvent.assignedCarrierDot",
+            "type" : "string"
+          },
+          "bookedRate" : {
+            "description" : "The final rate that was agreed upon with the carrier",
+            "nullable" : true,
+            "title" : "NativeLoadEvent.bookedRate",
+            "type" : "number"
           }
         },
         "required" : [ "destination", "dropoffTime", "id", "origin", "pickupTime", "status" ],

@@ -168,6 +168,26 @@ components:
           description: A string representing a phone number in E.164 format, i.e. "+18008463400". If extension is present, "+15152733178;ext=3178"
           nullable: true
           type: string
+        bookingUrl:
+          title: NativeLoadEvent.bookingUrl
+          description: The URL to send to the carrier to book the load, if booking is done through a web portal
+          nullable: true
+          type: string
+        assignedCarrierMc:
+          title: NativeLoadEvent.assignedCarrierMc
+          description: The MC number of the carrier assigned to this load
+          nullable: true
+          type: string
+        assignedCarrierDot:
+          title: NativeLoadEvent.assignedCarrierDot
+          description: The DOT number of the carrier assigned to this load
+          nullable: true
+          type: string
+        bookedRate:
+          title: NativeLoadEvent.bookedRate
+          description: The final rate that was agreed upon with the carrier
+          nullable: true
+          type: number
       required:
         - id
         - pickupTime
