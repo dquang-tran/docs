@@ -1007,6 +1007,45 @@
                 }
               }
             }
+          },
+          "carrier": {
+            "type": "object",
+            "properties": {
+              "highwayConnectionStatus": {
+                "type": "string",
+                "enum": [
+                  "ONBOARDED",
+                  "NEEDS_TO_ONBOARD",
+                  "NEEDS_TO_ONBOARD_BUT_CAN_REMAIN_ACTIVE",
+                  "DO_NOT_DISPATCH",
+                  "NOT_ONBOARDED"
+                ],
+                "description": "The Highway connection status of the carrier"
+              },
+              "rulesAssessment": {
+                "type": "string",
+                "enum": [
+                  "PASS",
+                  "PARTIAL_PASS",
+                  "INCOMPLETE",
+                  "FAIL",
+                  "NOT_AVAILABLE"
+                ],
+                "description": "The assessment of the carrier's rules"
+              },
+              "actionToImprove": {
+                "type": "string",
+                "description": "The actions to improve the carrier's rules result"
+              },
+              "mcNumber": {
+                "type": "string",
+                "description": "The MC number of the carrier"
+              },
+              "dotNumber": {
+                "type": "number",
+                "description": "The DOT number of the carrier"
+              }
+            }
           }
         }
       },
