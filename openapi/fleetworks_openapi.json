@@ -232,6 +232,72 @@
         "tags" : [ "Calls" ]
       }
     },
+    "/api/v1/calls/caller/{phoneNumber}": {
+      "get": {
+        "description": "List latest call record for a specified phone number.",
+        "operationId": "getCallByPhoneNumber",
+        "parameters": [
+          {
+            "description": "Caller phone number in E.164 format. For example: +18008463400 or +15152733178",
+            "in": "path",
+            "name": "phoneNumber",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/getCallByPhoneNumber_200_response"
+                }
+              }
+            },
+            "description": "Success"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/webhooksLoadsEvents_400_response"
+                }
+              }
+            },
+            "description": "Error response, or incorrect phone number format"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/webhooksLoadsEvents_400_response"
+                }
+              }
+            },
+            "description": "Error response"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/webhooksLoadsEvents_400_response"
+                }
+              }
+            },
+            "description": "Error response"
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "summary": "Fetch call by number",
+        "tags": ["Calls"]
+      }
+    },
     "/api/v1/bids" : {
       "get" : {
         "description" : "List bid records for an organization within a specified time range. Optional filtering by load ID and MC number is supported.",
@@ -884,6 +950,66 @@
         "required" : [ "dayRangeSpread", "laneAverageRate", "marketAverageRate", "ratePerMileTrend", "volumeTrend" ],
         "type" : "object"
       },
+      "LatestCallerInfo": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The ID of the carrier sale"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "CARRIER_SALE",
+              "CARRIER_SALE_INBOUND",
+              "OTHER",
+              "UNKNOWN",
+              "OUTBOUND"
+            ],
+            "description": "The type of the carrier sale"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["COMPLETED", "IN_PROGRESS", "ANSWERED"],
+            "description": "The status of the carrier sale"
+          },
+          "time": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time of the carrier sale"
+          },
+          "summary": {
+            "type": "string",
+            "nullable": true,
+            "description": "An optional summary of the carrier sale"
+          },
+          "bids": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "loadId": {
+                  "type": "string",
+                  "description": "The load ID associated with the bid"
+                },
+                "id": {
+                  "type": "integer",
+                  "description": "The ID of the bid"
+                },
+                "bidAmount": {
+                  "type": "string",
+                  "description": "The amount of the bid"
+                },
+                "initialBid": {
+                  "type": "string",
+                  "nullable": true,
+                  "description": "The initial bid amount, if any"
+                }
+              }
+            }
+          }
+        }
+      },
       "CallForExport" : {
         "properties" : {
           "id" : {
@@ -1414,6 +1540,13 @@
           }
         },
         "type" : "object"
+      },
+      "getCallByPhoneNumber_200_response" : {
+        "allOf": [
+          {
+            "$ref" : "#/components/schemas/LatestCallerInfo"
+          }
+        ]
       },
       "listBids_200_response" : {
         "properties" : {
