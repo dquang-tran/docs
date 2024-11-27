@@ -1,0 +1,98 @@
+openapi: 3.0.0
+info:
+  title: Calls API
+  version: 1.0.0
+paths:
+  /calls/caller/{phoneNumber}:
+    get:
+      tags:
+        - Calls
+      summary: Get calls by phone number
+      description: Fetch call records associated with a specific phone number.
+      operationId: getCallByPhoneNumber
+      parameters:
+        - name: phoneNumber
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The phone number to fetch call records for
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CarrierSale'
+        "400":
+          $ref: '#/components/responses/ErrorResponse'
+        "401":
+          $ref: '#/components/responses/ErrorResponse'
+        "403":
+          $ref: '#/components/responses/ErrorResponse'
+
+components:
+  schemas:
+    Bid:
+      type: object
+      properties:
+        loadId:
+          type: string
+          description: The load ID associated with the bid
+        id:
+          type: integer
+          description: The ID of the bid
+        bidAmount:
+          type: string
+          description: The amount of the bid
+        initialBid:
+          type: string
+          nullable: true
+          description: The initial bid amount, if any
+    CarrierSale:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The ID of the carrier sale
+        type:
+          type: string
+          enum:
+            - CARRIER_SALE
+            - CARRIER_SALE_INBOUND
+            - OTHER
+            - UNKNOWN
+            - OUTBOUND
+          description: The type of the carrier sale
+        status:
+          type: string
+          enum:
+            - COMPLETED
+            - IN_PROGRESS
+            - ANSWERED
+          description: The status of the carrier sale
+        time:
+          type: string
+          format: date-time
+          description: The date and time of the carrier sale
+        summary:
+          type: string
+          nullable: true
+          description: An optional summary of the carrier sale
+        bids:
+          type: array
+          items:
+            $ref: '#/components/schemas/Bid'
+
+  responses:
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: The error code
+        message:
+          type: string
+          description: A message describing the error

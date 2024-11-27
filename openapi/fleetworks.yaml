@@ -32,6 +32,8 @@ paths:
     $ref: "inboundWebhooks/carrierEventApi.yaml#/paths/~1"
   "/api/v1/calls":
     $ref: "exportEndpoints/exportCalls.yaml#/paths/~1"
+  "/api/v1/calls/caller/{phoneNumber}":
+    $ref: "exportEndpoints/exportCallsCaller.yaml#/paths/~1"
   "/api/v1/bids":
     $ref: "exportEndpoints/exportBids.yaml#/paths/~1"
   "/api/v1/carriers":
