@@ -1533,7 +1533,10 @@
             "items" : {
               "$ref" : "#/components/schemas/CallForExport"
             },
-            "type" : "object"
+            "type" : "array"
+          },
+          "pagination" : {
+            "$ref" : "#/components/schemas/PaginationResponse"
           }
         },
         "type" : "object"
