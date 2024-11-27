@@ -234,11 +234,11 @@
     },
     "/api/v1/calls/caller/{phoneNumber}": {
       "get": {
-        "description": "Fetch latest call for a specified phone number",
+        "description": "Fetch latest call for a specified caller ID",
         "operationId": "getCallByPhoneNumber",
         "parameters": [
           {
-            "description": "Caller phone number in E.164 format. For example: +18008463400 or +15152733178",
+            "description": "Phone number in E.164 format. For example: +18008463400 or +15152733178",
             "in": "path",
             "name": "phoneNumber",
             "required": true,
@@ -294,7 +294,7 @@
             "auth": []
           }
         ],
-        "summary": "Fetch latest call by phone number",
+        "summary": "Fetch latest call by caller ID",
         "tags": ["Calls"]
       }
     },
