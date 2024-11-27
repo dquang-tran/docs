@@ -234,7 +234,7 @@
     },
     "/api/v1/calls/caller/{phoneNumber}": {
       "get": {
-        "description": "List latest call record for a specified phone number.",
+        "description": "Fetch latest call for a specified phone number",
         "operationId": "getCallByPhoneNumber",
         "parameters": [
           {
@@ -294,7 +294,7 @@
             "auth": []
           }
         ],
-        "summary": "Fetch call by number",
+        "summary": "Fetch latest call by phone number",
         "tags": ["Calls"]
       }
     },
@@ -955,7 +955,7 @@
         "properties": {
           "id": {
             "type": "integer",
-            "description": "The ID of the carrier sale"
+            "description": "The ID of the call"
           },
           "type": {
             "type": "string",
@@ -966,22 +966,22 @@
               "UNKNOWN",
               "OUTBOUND"
             ],
-            "description": "The type of the carrier sale"
+            "description": "The type of the call"
           },
           "status": {
             "type": "string",
             "enum": ["COMPLETED", "IN_PROGRESS", "ANSWERED"],
-            "description": "The status of the carrier sale"
+            "description": "The status of the call"
           },
           "time": {
             "type": "string",
             "format": "date-time",
-            "description": "The date and time of the carrier sale"
+            "description": "The date and time of the call"
           },
           "summary": {
             "type": "string",
             "nullable": true,
-            "description": "An optional summary of the carrier sale"
+            "description": "An optional summary of the call. May be null if the call is IN_PROGRESS or processing has not completed yet."
           },
           "bids": {
             "type": "array",
