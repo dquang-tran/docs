@@ -66,8 +66,7 @@
       "group": "Events",
       "pages": [
         "events/bids",
-        "events/calls",
-        "events/custom-use-case-result"
+        "events/custom-use-case-events"
       ]
     },
     {

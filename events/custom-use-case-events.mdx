@@ -1,13 +1,13 @@
-For [Custom Use Case](/custom-use-cases), FleetWorks sends an event to your service after the outbound call finished. The payload contains details about the call and summary data extraction.
+For [Custom Use Case](/custom-use-cases), FleetWorks sends to your service `tool_calls` events during the call and `call_ended` event after the outbound call finished.
 
-## Event Payload
+## Call Ended Event Payload
+
+<ResponseField name="event" type="string" required>
+  Event type: `call_ended`
+</ResponseField>
 
 <ResponseField name="callId" type="number" required>
   Unique call identifier
-</ResponseField>
-
-<ResponseField name="event" type="string" required>
-  Event type: `completed`
 </ResponseField>
 
 <ResponseField name="createdAt" type="string" required>
@@ -53,4 +53,30 @@ For [Custom Use Case](/custom-use-cases), FleetWorks sends an event to your serv
 
 <ResponseField name="extractedData" type="object">
   Extraction data from call's transcript
+</ResponseField>
+
+## Tool Calls Event Payload
+
+<ResponseField name="event" type="string" required>
+  Event type: `tool_calls`
+</ResponseField>
+
+<ResponseField name="callId" type="number" required>
+  Unique call identifier
+</ResponseField>
+
+<ResponseField name="createdAt" type="string" required>
+  Call created time
+</ResponseField>
+
+<ResponseField name="function" type="ToolCallFunction">
+  <Expandable title="properties">
+    <ResponseField name="name" type="string">
+      Tool call function name
+    </ResponseField>
+
+    <ResponseField name="arguments" type="object">
+      Tool call function arguments
+    </ResponseField>
+  </Expandable>
 </ResponseField>
