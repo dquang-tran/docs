@@ -17,12 +17,12 @@ Users can initiate custom use cases by:
 
 Each organization has a user-specified webhook URL and server secret that receives the results of the call. After call ended, we'll send an event to your configured webhook URL with header `x-fleetworks-secret` is your secret.
 
-We allow you to specify the shape of the data you expect to receive. You can expect to receive a [JSON object](/events/custom-use-case-result) with the following shape after the call is completed:
+We allow you to specify the shape of the data you expect to receive. You can expect to receive a [JSON object](/events/custom-use-case-events#call-ended-event-payload) with the following shape after the call is completed:
 
 ```json
 {
+  "event": "call_ended",
   "callId": 123,
-  "event": "completed",
   "createdAt": "2024-11-16T17:57:23.583Z",
   "recordingUrl": "https://storage.vapi.ai/e13e336c...ono.wav",
   "extractedData": {
