@@ -1,0 +1,78 @@
+---
+title: "FleetWorks <> McLeod Integration"
+description: "Description of your new file."
+---
+
+## Introduction
+
+Welcome to FleetWorks! This guide will walk you through the process of integrating our system with your Mcleod setup. This integration will allow you to create a new user and set up rapid alerts to send JSON data to a dedicated webhook endpoint upon load creation/updates. Note that each version of Mcleod is slightly different, so it’s possible that not all the steps in this doc would completely coincide with what you see in your version.&#x20;
+
+## Prerequisites
+
+Before starting, ensure you have:
+
+* Administrative access to your Mcleod system.
+
+* Your FleetWorks API token.
+
+## Step-by-Step Guide
+
+### 1. Creating a New User in Mcleod
+
+1. Log in to Mcleod Admin Panel:
+
+   1. Navigate to your Mcleod admin panel.
+
+   2. Enter your administrative credentials to log in.
+
+2. Navigate to User Management:
+
+   1. From the main dashboard, go to the **Administration** section.
+
+   2. Click on **User Management**.
+
+3. Add a New User:
+
+   1. Click on the Add New User button.
+
+   2. Fill in the required details:
+
+      1. **Username**: Choose a username for the new user.
+
+      2. **Email**: Enter the email address associated with this user.
+
+      3. **Password**: Create a strong password.
+
+      4. **Role**: Assign the appropriate role (e.g., API User or Integration User).
+
+4. Set Permissions:
+
+   1. Ensure the new user has the necessary permissions to access and modify load information. Typically, this includes Read and Write access to the Load Management module.
+
+   2. Save the new user.
+
+### 2. Setting up Rapid Alerts
+
+1. Navigate to Rapid Alerts
+
+   1. Dispatch -> Rapid Alert -> Rapid Alert Scheduler
+
+2. Create a new Table Change Alert:
+
+   1. Click on the `Add` button.
+
+   2. Choose `Table Change Alert` as the alert type for this alert.
+
+   3. Change `Alert at` to `Both`.&#x20;
+
+   4. Now select `Remote Profile` and create a new profile. Set the format to be JSON. If you don’t see the remote profile field, it might mean your Mcleod version is slightly older.&#x20;
+
+   5. Click on `Communication profile`. Set **Type** to be `External API` or `URL` (Different instances of Mcleod tend to have different fields, but either of the 2 would work).
+
+   6. In the new window, enter the webhook url: [`https://api.fleetworks.ai/api/webhooks/loads/events`](https://api.fleetworks.ai/api/webhooks/loads/events)
+
+   7. Click on `Authentication`. Select type Token and enter the FW provided UUID token.
+
+   8. Click on Headers (Not Auth Headers). Put “Bearer \<UUID token>” as a “Authorization” header.&#x20;
+
+   9. Optional (if McLeod requires this): In Miscellaneous tab, set the Local directory \<mcleod\_api\_url>/ws/doc and check “Use default directory”.&#x20;
