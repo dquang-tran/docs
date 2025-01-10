@@ -3,15 +3,18 @@ FleetWorks' voice infrastructure supports a variety of custom use cases beyond c
 ## How It Works
 
 1. The custom use case is triggered.
+
 2. It makes an outbound call and completes the given task. For example, collecting a carrier's current location.
-3. It then sends the results to your server URL.
+
+3. It then sends the results to your server URL.&#x20;
 
 ### Triggering a Custom Use Case
 
 Users can initiate custom use cases by:
 
-- **Using the UI**: Enter a prompt and manually upload a CSV file containing the necessary data, such as a list of phone numbers, prompt variables, and the scheduled time to trigger the call.
-- **Via API**: Make an API call to initiate the process. Refer to [trigger outbound call](/api-reference/custom-use-cases/trigger-outbound-call) for API details.
+* **Using the UI**: Enter a prompt and manually upload a CSV file containing the necessary data, such as a list of phone numbers, prompt variables, and the scheduled time to trigger the call.
+
+* **Via API**: Make an API call to initiate the process. Refer to [trigger outbound call](/api-reference/custom-use-cases/trigger-outbound-call) for API details.
 
 ### Receiving Results
 
@@ -66,7 +69,7 @@ We allow you to specify the shape of the data you expect to receive. You can exp
 
 Effective prompt engineering is crucial for the success of your custom agent. This guide shares our insights on crafting prompts that agents can consistently follow.
 
-_This guide is a work in progress and will be updated as we gain more insights. If you have any suggestions or feedback, please let us know._
+*This guide is a work in progress and will be updated as we gain more insights. If you have any suggestions or feedback, please let us know.*
 
 ### Accessing Prompts
 
@@ -76,9 +79,11 @@ When you create a new use case, we populate a template for you to get started.
 
 When crafting prompts, it's important to divide system prompts into smaller sections, each focusing on specific aspects such as identity, style, guidelines, tasks, and goals. This approach offers several benefits:
 
-- **Reusability**
-- **Ease of Maintenance**
-- **Enhanced Understanding for LLMs**
+* **Reusability**
+
+* **Ease of Maintenance**
+
+* **Enhanced Understanding for LLMs**
 
 ```
 #### Identify
