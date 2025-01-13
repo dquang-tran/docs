@@ -10,7 +10,7 @@ FleetWorks sends bid events to your TMS when carriers submit bids on loads. The 
   Load identifier
 </ParamField>
 
-<ParamField path="bidAmount" type="number" required>
+<ParamField path="amount" type="number" required>
   Bid amount
 </ParamField>
 
@@ -31,22 +31,79 @@ FleetWorks sends bid events to your TMS when carriers submit bids on loads. The 
     <ParamField path="id" type="string" required>
       Unique identifier of the source (call ID or email thread ID)
     </ParamField>
+    <ParamField path="direction" type="string" required>
+      Direction of communication ("inbound" or "outbound")
+    </ParamField>
+    <ParamField path="initiator" type="object" required>
+      Party that initiated the communication
+      <Expandable>
+        <ParamField path="type" type="string" required>
+          Type of party ("carrier" or "broker")
+        </ParamField>
+        <ParamField path="phone" type="object">
+          Phone contact details
+          <Expandable>
+            <ParamField path="number" type="string">
+              Phone number in E.164 format
+            </ParamField>
+            <ParamField path="extension" type="string">
+              Phone extension
+            </ParamField>
+          </Expandable>
+        </ParamField>
+        <ParamField path="email" type="string">
+          Email address
+        </ParamField>
+        <ParamField path="name" type="string">
+          Name of the initiating party
+        </ParamField>
+      </Expandable>
+    </ParamField>
+    <ParamField path="receiver" type="object" required>
+      Party that received the communication
+      <Expandable>
+        <ParamField path="type" type="string" required>
+          Type of party ("carrier" or "broker")
+        </ParamField>
+        <ParamField path="phone" type="object">
+          Phone contact details
+          <Expandable>
+            <ParamField path="number" type="string">
+              Phone number in E.164 format
+            </ParamField>
+            <ParamField path="extension" type="string">
+              Phone extension
+            </ParamField>
+          </Expandable>
+        </ParamField>
+        <ParamField path="email" type="string">
+          Email address
+        </ParamField>
+        <ParamField path="name" type="string">
+          Name of the receiving party
+        </ParamField>
+      </Expandable>
+    </ParamField>
   </Expandable>
 </ParamField>
 
-<ParamField path="phone" type="string">
-  Carrier phone number (E.164 format, e.g. +14155552671)
+<ParamField path="carrier" type="object">
+  Carrier details
+  <Expandable>
+    <ParamField path="mcNumber" type="string">
+      Carrier MC number
+    </ParamField>
+    <ParamField path="dotNumber" type="string">
+      Carrier DOT number
+    </ParamField>
+    <ParamField path="companyName" type="string">
+      Carrier company name
+    </ParamField>
+    <ParamField path="phone" type="string">
+      Carrier phone number in E.164 format
+    </ParamField>
+    <ParamField path="email" type="string">
+      Carrier email address
+    </ParamField>
+  </Expandable>
 </ParamField>
-
-<ParamField path="email" type="string">
-  Carrier email address
-</ParamField>
-
-<ParamField path="mcNumber" type="string">
-  Carrier MC number
-</ParamField>
-
-<ParamField path="dotNumber" type="string">
-  Carrier DOT number
-</ParamField>
-
