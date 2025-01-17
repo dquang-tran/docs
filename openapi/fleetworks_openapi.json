@@ -232,72 +232,6 @@
         "tags" : [ "Calls" ]
       }
     },
-    "/api/v1/calls/caller/{phoneNumber}": {
-      "get": {
-        "description": "Fetch latest call for a specified caller ID",
-        "operationId": "getCallByPhoneNumber",
-        "parameters": [
-          {
-            "description": "Phone number in E.164 format. For example: +18008463400 or +15152733178",
-            "in": "path",
-            "name": "phoneNumber",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/getCallByPhoneNumber_200_response"
-                }
-              }
-            },
-            "description": "Success"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/webhooksLoadsEvents_400_response"
-                }
-              }
-            },
-            "description": "Error response, or incorrect phone number format"
-          },
-          "401": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/webhooksLoadsEvents_400_response"
-                }
-              }
-            },
-            "description": "Error response"
-          },
-          "403": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/webhooksLoadsEvents_400_response"
-                }
-              }
-            },
-            "description": "Error response"
-          }
-        },
-        "security": [
-          {
-            "auth": []
-          }
-        ],
-        "summary": "Fetch latest call by caller ID",
-        "tags": ["Calls"]
-      }
-    },
     "/api/v1/bids" : {
       "get" : {
         "description" : "List bid records for an organization within a specified time range. Optional filtering by load ID and MC number is supported.",
@@ -950,105 +884,6 @@
         "required" : [ "dayRangeSpread", "laneAverageRate", "marketAverageRate", "ratePerMileTrend", "volumeTrend" ],
         "type" : "object"
       },
-      "LatestCallerInfo": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "description": "The ID of the call"
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "CARRIER_SALE",
-              "CARRIER_SALE_INBOUND",
-              "OTHER",
-              "UNKNOWN",
-              "OUTBOUND"
-            ],
-            "description": "The type of the call"
-          },
-          "status": {
-            "type": "string",
-            "enum": ["COMPLETED", "IN_PROGRESS", "ANSWERED"],
-            "description": "The status of the call"
-          },
-          "time": {
-            "type": "string",
-            "format": "date-time",
-            "description": "The date and time of the call"
-          },
-          "summary": {
-            "type": "string",
-            "nullable": true,
-            "description": "An optional summary of the call. May be null if the call is IN_PROGRESS or processing has not completed yet."
-          },
-          "bids": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "loadId": {
-                  "type": "string",
-                  "description": "The load ID associated with the bid"
-                },
-                "id": {
-                  "type": "integer",
-                  "description": "The ID of the bid"
-                },
-                "bidAmount": {
-                  "type": "string",
-                  "description": "The amount of the bid"
-                },
-                "initialBid": {
-                  "type": "string",
-                  "nullable": true,
-                  "description": "The initial bid amount, if any"
-                }
-              }
-            }
-          },
-          "carrier": {
-            "type": "object",
-            "properties": {
-              "highwayConnectionStatus": {
-                "type": "string",
-                "enum": [
-                  "ONBOARDED",
-                  "NEEDS_TO_ONBOARD",
-                  "NEEDS_TO_ONBOARD_BUT_CAN_REMAIN_ACTIVE",
-                  "DO_NOT_DISPATCH",
-                  "NOT_ONBOARDED"
-                ],
-                "description": "The Highway connection status of the carrier"
-              },
-              "rulesAssessment": {
-                "type": "string",
-                "enum": [
-                  "PASS",
-                  "PARTIAL_PASS",
-                  "INCOMPLETE",
-                  "FAIL",
-                  "NOT_AVAILABLE"
-                ],
-                "description": "The assessment of the carrier's rules"
-              },
-              "actionToImprove": {
-                "type": "string",
-                "description": "The actions to improve the carrier's rules result"
-              },
-              "mcNumber": {
-                "type": "string",
-                "description": "The MC number of the carrier"
-              },
-              "dotNumber": {
-                "type": "number",
-                "description": "The DOT number of the carrier"
-              }
-            }
-          }
-        }
-      },
       "CallForExport" : {
         "properties" : {
           "id" : {
@@ -1310,6 +1145,12 @@
             "nullable" : true,
             "title" : "NativeLoadEvent.pickupEndTime",
             "type" : "string"
+          },
+          "multiPickupDaysCount" : {
+            "description" : "The number of days the pickup is spread out over",
+            "nullable" : true,
+            "title" : "NativeLoadEvent.multiPickupDaysCount",
+            "type" : "number"
           },
           "dropoffTime" : {
             "description" : "The local start time for the dropoff in the ISO format",
@@ -1579,13 +1420,6 @@
           }
         },
         "type" : "object"
-      },
-      "getCallByPhoneNumber_200_response" : {
-        "allOf": [
-          {
-            "$ref" : "#/components/schemas/LatestCallerInfo"
-          }
-        ]
       },
       "listBids_200_response" : {
         "properties" : {

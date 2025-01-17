@@ -65,6 +65,11 @@ components:
           description: The local end time for the pickup in the ISO format. Send this if pick up time is a window
           nullable: true
           type: string
+        multiPickupDaysCount:
+          title: NativeLoadEvent.multiPickupDaysCount
+          description: The number of days the pickup is spread out over
+          nullable: true
+          type: number
         dropoffTime:
           title: NativeLoadEvent.dropoffTime
           description: The local start time for the dropoff in the ISO format
