@@ -45,11 +45,12 @@
     {
       "group": "Voice",
       "pages": [
+        "telephony/how-it-works",
         {
           "group": "Telephony",
           "pages": [
             "telephony/transfers",
-            "telephony/IVR",
+            "telephony/ivr-navigation",
             "telephony/custom-telephony"
           ]
         },

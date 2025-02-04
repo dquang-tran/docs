@@ -4,7 +4,7 @@ paths:
       tags:
         - Ingestion
       summary: Carrier events webhook
-      description: FleetWorks can take into account the “standing” of a carrier with your brokerage. We can support different formatting and statuses. By default, we support the shape below. This shape can be adjusted to fit your specific needs.
+      description: FleetWorks integrates with your carrier data to track carrier standing and performance metrics. The API accepts customizable carrier status formats and classifications, with a default schema provided below that can be tailored to your specific requirements.
       operationId: webhooksCarrierEvents
       security:
         - auth: []

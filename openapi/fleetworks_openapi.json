@@ -33,7 +33,7 @@
   "paths" : {
     "/api/v1/webhooks/loads/events" : {
       "post" : {
-        "description" : "This endpoint receives load events for various integrations and ingest to FleetWorks system. The type of integration depends on organization settings.",
+        "description" : "Webhook endpoint for ingesting load events from external integrations into the FleetWorks platform.",
         "operationId" : "webhooksLoadsEvents",
         "requestBody" : {
           "$ref" : "#/components/requestBodies/WebhooksLoadsEventsRequest"
@@ -79,7 +79,7 @@
     },
     "/api/v1/webhooks/carrier/events" : {
       "post" : {
-        "description" : "FleetWorks can take into account the “standing” of a carrier with your brokerage. We can support different formatting and statuses. By default, we support the shape below. This shape can be adjusted to fit your specific needs.",
+        "description" : "FleetWorks integrates with your carrier data to track carrier standing and performance metrics. The API accepts customizable carrier status formats and classifications, with a default schema provided below that can be tailored to your specific requirements.",
         "operationId" : "webhooksCarrierEvents",
         "requestBody" : {
           "$ref" : "#/components/requestBodies/webhooksCarrierEventsRequest"
@@ -1093,7 +1093,7 @@
             "country" : "US",
             "timezone" : "America/Los_Angeles"
           },
-          "status" : "active",
+          "status" : "UNASSIGNED",
           "customerName" : "Nike",
           "stops" : [ {
             "type" : "pickup",
@@ -1334,7 +1334,7 @@
       },
       "LoadStatus" : {
         "description" : "Represents the current status of the load",
-        "enum" : [ "INACTIVE", "ACTIVE" ],
+        "enum" : [ "OPPORTUNITY", "UNASSIGNED", "TENDERED", "COVERED" ],
         "title" : "LoadStatus",
         "type" : "string"
       },

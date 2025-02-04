@@ -25,7 +25,7 @@ FleetWorks sends bid events to your TMS when carriers submit bids on loads. The 
 <ParamField path="source" type="object" required>
   Source of the bid
   <Expandable>
-    <ParamField path="type" type="string" required>
+    <ParamField path="sourceType" type="string" required>
       Type of source ("call" or "email")
     </ParamField>
     <ParamField path="id" type="string" required>
@@ -34,10 +34,10 @@ FleetWorks sends bid events to your TMS when carriers submit bids on loads. The 
     <ParamField path="direction" type="string" required>
       Direction of communication ("inbound" or "outbound")
     </ParamField>
-    <ParamField path="initiator" type="object" required>
+    <ParamField path="fromParty" type="object" required>
       Party that initiated the communication
       <Expandable>
-        <ParamField path="type" type="string" required>
+        <ParamField path="partyType" type="string" required>
           Type of party ("carrier" or "broker")
         </ParamField>
         <ParamField path="phone" type="object">
@@ -59,10 +59,10 @@ FleetWorks sends bid events to your TMS when carriers submit bids on loads. The 
         </ParamField>
       </Expandable>
     </ParamField>
-    <ParamField path="receiver" type="object" required>
+    <ParamField path="toParty" type="object" required>
       Party that received the communication
       <Expandable>
-        <ParamField path="type" type="string" required>
+        <ParamField path="partyType" type="string" required>
           Type of party ("carrier" or "broker")
         </ParamField>
         <ParamField path="phone" type="object">
@@ -99,11 +99,34 @@ FleetWorks sends bid events to your TMS when carriers submit bids on loads. The 
     <ParamField path="companyName" type="string">
       Carrier company name
     </ParamField>
-    <ParamField path="phone" type="string">
-      Carrier phone number in E.164 format
+    <ParamField path="phone" type="object">
+      Phone contact details
+      <Expandable>
+        <ParamField path="number" type="string">
+          Phone number in E.164 format
+        </ParamField>
+        <ParamField path="extension" type="string">
+          Phone extension
+        </ParamField>
+      </Expandable>
     </ParamField>
     <ParamField path="email" type="string">
       Carrier email address
     </ParamField>
+    <ParamField path="compliance" type="object">
+      Compliance details
+      <Expandable>
+        <ParamField path="hwConnectionStatus" type="string">
+          HighwayWise connection status
+        </ParamField>
+        <ParamField path="hwRulesAssessment" type="string">
+          HighwayWise rules assessment
+        </ParamField>
+      </Expandable>
+    </ParamField>
   </Expandable>
+</ParamField>
+
+<ParamField path="metadata" type="object">
+  Additional metadata as key-value pairs
 </ParamField>

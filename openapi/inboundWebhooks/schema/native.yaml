@@ -20,7 +20,7 @@ components:
           state: "CA"
           country: "US"
           timezone: "America/Los_Angeles"
-        status: "active"
+        status: "UNASSIGNED"
         customerName: "Nike"
         stops:
           - type: "pickup"
@@ -89,7 +89,7 @@ components:
           title: NativeLoadEvent.destination
         status:
           $ref: "#/components/schemas/LoadStatus"
-          description: The status of the load, either "active" or "inactive". Set load to active when you want it to be surfaced to the carriers and "inactive" when it's either new and not ready to be posted, or already covered
+          description: The status of the load. OPPORTUNITY is a potential shipment that the broker is trying to secure from the shipper. UNASSIGNED means broker won the load but hasn't assigned to a carrier. TENDERED means load is tendered to carrier. COVERED means carrier has accepted.
           title: NativeLoadEvent.status
         customerName:
           title: NativeLoadEvent.customerName
@@ -206,8 +206,10 @@ components:
 
     LoadStatus:
       enum:
-        - INACTIVE
-        - ACTIVE
+        - OPPORTUNITY
+        - UNASSIGNED
+        - TENDERED
+        - COVERED
       description: Represents the current status of the load
       title: LoadStatus
       type: string

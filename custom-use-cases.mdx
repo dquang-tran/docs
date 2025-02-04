@@ -1,26 +1,29 @@
 FleetWorks' voice infrastructure supports a variety of custom use cases beyond carrier sales, including inbound and outbound tracking, Proof of Delivery (POD) collection, and insurance documentation collection.
 
+---
+
 ## How It Works
 
-1. The custom use case is triggered.
+1. A custom use case is triggered.
+2. An outbound call is made to complete the designated task (for example, collecting a carrier's current location).
+3. The results are sent to your server URL.
 
-2. It makes an outbound call and completes the given task. For example, collecting a carrier's current location.
+---
 
-3. It then sends the results to your server URL.&#x20;
-
-### Triggering a Custom Use Case
+## Triggering a Custom Use Case
 
 Users can initiate custom use cases by:
 
-* **Using the UI**: Enter a prompt and manually upload a CSV file containing the necessary data, such as a list of phone numbers, prompt variables, and the scheduled time to trigger the call.
+- **Using the UI**: Enter a prompt and manually upload a CSV file containing the necessary data—such as a list of phone numbers, prompt variables, and the scheduled time to trigger the call.
+- **Via API**: Make an API call to initiate the process. Refer to [trigger outbound call](/api-reference/custom-use-cases/trigger-outbound-call) for API details.
 
-* **Via API**: Make an API call to initiate the process. Refer to [trigger outbound call](/api-reference/custom-use-cases/trigger-outbound-call) for API details.
+---
 
-### Receiving Results
+## Receiving Results
 
-Each organization has a user-specified webhook URL and server secret that receives the results of the call. After call ended, we'll send an event to your configured webhook URL with header `x-fleetworks-secret` is your secret.
+Each organization has a user-specified webhook URL and server secret that receives the call results. Once the call ends, an event is sent to your configured webhook URL with the header `x-fleetworks-secret` (your secret).
 
-We allow you to specify the shape of the data you expect to receive. You can expect to receive a [JSON object](/events/custom-use-case-events#call-ended-event-payload) with the following shape after the call is completed:
+The response is a JSON object with the following structure:
 
 ```json
 {
@@ -65,105 +68,141 @@ We allow you to specify the shape of the data you expect to receive. You can exp
 }
 ```
 
+---
+
 ## Prompt Engineering
 
-Effective prompt engineering is crucial for the success of your custom agent. This guide shares our insights on crafting prompts that agents can consistently follow.
+Effective prompt engineering is crucial to ensure your custom agents perform tasks accurately and consistently. This guide provides insights on crafting prompts that are clear, structured, and adaptable to various use cases.
 
-*This guide is a work in progress and will be updated as we gain more insights. If you have any suggestions or feedback, please let us know.*
+*This guide is a work in progress and will be updated as new insights emerge. Your feedback is welcome.*
 
 ### Accessing Prompts
 
-When you create a new use case, we populate a template for you to get started.
+When you create a new use case, we populate a template to help you get started. These templates are designed for ease of use, maintainability, and clarity.
 
 ### Sectional Prompts
 
-When crafting prompts, it's important to divide system prompts into smaller sections, each focusing on specific aspects such as identity, style, guidelines, tasks, and goals. This approach offers several benefits:
+Dividing system prompts into distinct sections—such as identity, style, response guidelines, and tasks—provides the following benefits:
 
-* **Reusability**
+- **Reusability**: Use common sections across multiple use cases.
+- **Ease of Maintenance**: Update individual sections without overhauling the entire prompt.
+- **Enhanced Understanding**: Structured prompts are easier for language models to follow.
 
-* **Ease of Maintenance**
+---
 
-* **Enhanced Understanding for LLMs**
+## Track-and-Trace Prompt Example
+
+Below is an example prompt tailored for a track-and-trace use case.
 
 ```
-#### Identify
+[Role]
+You're Fred, an assistant for FleetWorks' track-and-trace system. Your primary task is to contact truck drivers to verify their current status, location, and cargo details.
 
-You are a professional AI assistant for FleetWorks, specialized in tracking shipments and obtaining status updates from carriers. Your role is to efficiently collect accurate location and ETA information for active loads.
+[Context]
+You're engaging with a truck driver as part of routine operations. Your goal is to confirm the driver's identity, current location, load status, any delays or issues, and the estimated time of arrival at the next destination. Stick strictly to this context and avoid any unrelated topics.
 
-#### Style Guardrails
+[Response Handling]
+When asking questions, evaluate the driver's answers to ensure they provide clear and sufficient information. If a response is vague or incomplete, ask specific clarifying questions. Once an answer is confirmed, move on to the next step without repeating previous questions.
 
-- **Be clear and direct**: Provide straightforward instructions and questions.
-- **Maintain professionalism**: Engage in a courteous and respectful manner.
-- **Be efficient**: Aim to complete tasks with minimal interaction while ensuring accuracy.
-- **Stay focused**: Keep the conversation centered on tracking information.
-- ...
+[Response Guidelines]
+- Keep responses concise and direct.
+- Ask one question at a time, combining related questions only when it enhances clarity.
+- Use a calm, professional, and helpful tone.
+- Provide answers only to the questions asked.
+- Present times and locations in clear, standard formats (e.g., "Boston", "ten thirty AM").
+- Avoid mentioning technical terms like "tools" or "functions."
+- Do not over-explain; focus solely on gathering the necessary information.
 
-#### Response Guidelines
+[Error Handling]
+- If a driver's response is unclear, ask a specific clarifying question (e.g., "Could you please provide more details about your location?").
+- In case of any issues with the response, inform the driver briefly and request the information again.
 
-- **Return dates in their full form**: Express dates as they would be spoken aloud.
-- **Ask one question at a time**: Ensure interactions are manageable for the user.
-- **Provide concise instructions**: Keep directions simple and easy to follow.
-- **Verify critical information**: Confirm load numbers and locations clearly.
-- ...
+[Conversation Flow]
+1. Ask: "Hello, this is Fred from FleetWorks track-and-trace. May I ask you a few quick questions to confirm your current status?"
+   - If the driver agrees, proceed to step 2.
+   - If the driver declines, proceed to 'Call Closing.'
 
-#### Task
+2. Ask: "Could you please confirm your driver ID for verification?"
+   - Validate the provided ID. If it's unclear, request clarification.
 
-1. Greet the carrier representative professionally.
-2. State you are calling about load tracking and provide the load/reference number.
-3. Request current location of the shipment.
-   *Wait for response and call `update_location` function.*
-4. Ask for estimated time of arrival at destination.
-   *Wait for response and call `update_eta` function.*
-5. Thank them for the information and end the call professionally.
+3. Ask: "What is your current location? Please provide your city or the nearest landmark."
+   - Once received, move to step 4.
+
+4. Ask: "Are you currently loaded or empty?"
+   - If loaded, ask: "Can you specify the type of cargo and its condition?" then proceed to step 5.
+   - If empty, ask: "Are you available for a new assignment?" then proceed to step 5.
+
+5. Ask: "Are you experiencing any delays or issues, such as heavy traffic, severe weather, or mechanical problems?"
+   - If yes, ask: "Could you describe the issue briefly?" then proceed to step 6.
+   - If no, proceed directly to step 6.
+
+6. Ask: "What is your estimated time of arrival at your next destination?"
+   - Confirm the provided ETA and proceed to step 7.
+
+7. Ask: "Have there been any recent changes to your route or schedule that dispatch should know about?"
+   - If yes, ask: "Please provide the updated details."
+   - If no, proceed to step 8.
+
+8. Ask: "To confirm, could you repeat your current location and cargo status?"
+   - Once confirmed, proceed to 'Call Closing.'
+
+[Call Closing]
+- Thank the driver for the update and confirm that the information has been recorded.
+- Conclude the conversation professionally.
 ```
+
+---
 
 ### Writing Tasks as Steps
 
-During a call, if you want the agent to follow a specific procedure to guide the conversation, we recommend outlining the tasks as steps. This approach helps the LLM understand what to ask at each stage and how to proceed. You can also incorporate conditional logic within the steps to ensure the agent doesn't ask all questions at once.
+When designing a call flow for track-and-trace use cases, structuring the conversation into clear, sequential steps ensures that each piece of information is gathered methodically. Below is an example derived from our track-and-trace prompt:
 
-**Example:**
+1. **Greeting and Consent**  
+   - **Step**: Ask, "Hello, this is Fred from FleetWorks track-and-trace. May I ask you a few quick questions to confirm your current status?"  
+   - **Action**: *Wait for the driver's response.*  
+   - **Outcome**:  
+     - If the driver agrees, move to the next step.  
+     - If the driver declines, transition to the call closing procedure.
 
-```
-## Task
-1. Ask for the shipment tracking number.
-2. Inquire if the user is providing a Proof of Delivery, requesting a status update, or needs assistance with shipment documentation.
-   - If the user is providing a Proof of Delivery, transition to the POD collection process.
-   - If the user is requesting a status update, initiate the tracking inquiry.
-   - If the user needs assistance with documentation, proceed to collect the necessary files.
-3. If the user is providing documentation, request the document upload.
-```
+2. **Identity Verification**  
+   - **Step**: Ask, "Could you please confirm your driver ID for verification?"  
+   - **Action**: *Wait for the driver's response and validate the provided ID. If the response is unclear, ask for clarification.*
 
-If the agent is not pausing at the appropriate times or needs to follow through certain steps without stopping at each one, you can make it explicit by adding prompts to wait for the user's response:
+3. **Location Confirmation**  
+   - **Step**: Ask, "What is your current location? Please provide your city or the nearest landmark."  
+   - **Action**: *Wait for the response before proceeding.*
 
-```
-## Task
-1. Inform the user about the purpose of the call.
-2. Ask for the shipment tracking number.
+4. **Load Status Inquiry**  
+   - **Step**: Ask, "Are you currently loaded or empty?"  
+   - **Action**: *Wait for the driver's response.*  
+   - **Outcome**:  
+     - If **loaded**, follow up with: "Can you specify the type of cargo and its condition?"  
+     - If **empty**, ask: "Are you available for a new assignment?"  
+   - **Action**: *Wait for the relevant response before moving on.*
 
-    *Wait for user response.*
+5. **Delay or Issue Check**  
+   - **Step**: Ask, "Are you experiencing any delays or issues, such as heavy traffic, severe weather, or mechanical problems?"  
+   - **Action**: *Wait for the response.*  
+   - **Outcome**:  
+     - If issues are reported, ask: "Could you describe the issue briefly?"  
+     - Otherwise, proceed to the next step.
 
-3. Inquire if the user is providing a Proof of Delivery, requesting a status update, or needs assistance with shipment documentation.
+6. **ETA Confirmation**  
+   - **Step**: Ask, "What is your estimated time of arrival at your next destination?"  
+   - **Action**: *Wait for the response and confirm the provided ETA.*
 
-    *Wait for user response.*
-    - If the user is providing a Proof of Delivery, transition to the POD collection process.
-    - If the user is requesting a status update, initiate the tracking inquiry.
-    - If the user needs assistance with documentation, proceed to collect the necessary files.
+7. **Route Update Inquiry**  
+   - **Step**: Ask, "Have there been any recent changes to your route or schedule that dispatch should know about?"  
+   - **Action**: *Wait for the response.*  
+   - **Outcome**:  
+     - If changes are mentioned, ask for the updated details.
 
-4. Request the required documentation.
+8. **Final Confirmation**  
+   - **Step**: Ask, "To confirm, could you repeat your current location and cargo status?"  
+   - **Action**: *Wait for the driver's confirmation before proceeding.*
 
-    *Wait for user response.*
-```
+9. **Call Closing**  
+   - **Step**: Thank the driver for their time and confirm that the information has been recorded.  
+   - **Action**: *End the conversation professionally.*
 
-### Explicitly Indicating When to Call Tools
-
-Often, the LLM may not know when to activate tools, even with descriptions of their functions. To ensure accurate tool activation, clearly specify when to call each tool and refer to them by name.
-
-**Example:**
-
-```
-...
-2. Inquire if the user is providing a Proof of Delivery or requesting a shipment status update.
-   - If the user is providing a Proof of Delivery, call the `collect_pod` function to process the document.
-   - If the user is requesting a shipment status update, call the `initiate_tracking` function.
-...
-```
+This ensures that every necessary detail is captured while maintaining a smooth and efficient conversation flow.
